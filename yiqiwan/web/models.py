@@ -2,9 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from model_utils import Choices
 from model_utils.fields import SplitField,StatusField,MonitorField
-'''
-statium info
-'''
+
 class Place(models.Model):
     """
     活动地址的定义
