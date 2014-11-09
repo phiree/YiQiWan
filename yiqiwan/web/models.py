@@ -3,12 +3,10 @@ from django.contrib.auth.models import User
 
 from model_utils import Choices
 from model_utils.fields import SplitField,StatusField,MonitorField
+
 from datetime import  datetime as DateTime
 from decimal import Decimal, ROUND_HALF_EVEN
 
-'''
-statium info
-'''
 class Place(models.Model):
     """
     活动地址的定义
