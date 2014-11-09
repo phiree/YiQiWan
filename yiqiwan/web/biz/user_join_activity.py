@@ -9,11 +9,11 @@ def user_join_activity(user=User,activity=Activity):
     current_participants=len(activity.participants)
     if current_participants==activity.max_participant:
         return (False,'no rooms')
-    min_pay=activity.total_price/ ( activity.min_participant if current_participants<=activity.min_participant else current_participants)
+    min_pay=activity.total_cost_expected/ ( activity.min_participant if current_participants<=activity.min_participant else current_participants)
     if user.user_acount.balance<min_pay:
-        if user.user_acount.balance<activity.total_price/activity.max_participant:
+        if user.user_acount.balance<activity.total_cost_expected/activity.max_participant:
             return (False,'not enough money')
         else:
-            return (False,'not enough money for now. you can take part in when the particapant amount reach '+activity.total_price/user.user_acount.balance)
+            return (False,'not enough money for now. you can take part in when the particapant amount reach '+activity.total_cost_expected/user.user_acount.balance)
 
 
