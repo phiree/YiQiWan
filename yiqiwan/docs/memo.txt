@@ -1,0 +1,8 @@
+花了好几个小时处理一些应该很容易的问题:
+1)html5 的 input type=datetime-local 存储到django model时格式错误 没解决
+2)createview 如何设置来自request的默认值,比如 活动.创建者=request.user 不需要从forms获得.
+解决:1 models中,founder null=True,blank=True
+     2 重写createview的 form_valid
+问题:model中的null属性是为了数据库约束,不应该
+
+是不是该考虑放弃django平台....转用.net mvc....用了半年的django了...

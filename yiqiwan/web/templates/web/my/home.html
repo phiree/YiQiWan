@@ -1,0 +1,24 @@
+{% extends "web/base.html" %}
+
+{%load staticfiles%}
+{%block content%}
+<div data-role="page" class="ui-page-theme-b" data-quicklinks="true">
+    <div class="ui-panel-wrapper">
+        <div data-role="header" role="banner" class="ui-header-b ui-bar-inherit">
+            <h1 class="ui-title" role="heading" aria-level="1">我的地盤</h1>
+            <a href="{%url 'web:site_home'%}" data-rel="back"
+               class="ui-btn-left ui-btn ui-icon-back ui-btn-icon-notext ui-shadow ui-corner-all"
+               data-role="button" role="button">Back</a>
+        </div>
+        <ul data-role="listview" data-theme="c" data-inset="true">
+            <li><a href="{%url 'web:my_create_activity' %}">創建活動</a></li>
+            <li><a href="#">Audi</a></li>
+            <li><a href="#">BMW</a></li>
+            <li><a href="#">Cadillac</a></li>
+            <li><a href="#">Ferrari</a></li>
+        </ul>
+
+    </div>
+</div>
+
+{%endblock%}

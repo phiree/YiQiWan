@@ -82,3 +82,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+DATETIME_INPUT_FORMATS=(
+    '%Y-%M-%dT%H:%m:%SZ',
+    '%Y-%m-%dT%H:%M',#2014-11-11T11:11
+    '%Y-%m-%d %H:%m:%S',
+    '%Y-%m-%d %H:%M:%S.%f',
+    '%Y-%m-%d %H:%M',
+    '%Y-%m-%d',
+    '%Y/%m/%dT%H:%M:%S',
+    '%Y/%m/%d %H:%M:%S',
+    '%Y/%m/%d %H:%M:%S.%f',
+    '%Y/%m/%d %H:%M',
+    '%Y/%m/%d',
+)

@@ -4,5 +4,5 @@ from django.dispatch import receiver
 from ..models import Financial_Statement
 @receiver(post_save, sender=Financial_Statement)
 def modify_balance(self):
-
+    cc=1
     pass

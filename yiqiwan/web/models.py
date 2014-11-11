@@ -4,7 +4,8 @@ from django.contrib.auth.models import User
 from model_utils import Choices
 from model_utils.fields import SplitField,StatusField,MonitorField
 
-from datetime import  datetime as DateTime
+#from datetime import  datetime as DateTime
+from django.utils.timezone import datetime as DateTime
 from decimal import Decimal, ROUND_HALF_EVEN
 
 class Place(models.Model):
@@ -21,40 +22,42 @@ class Place(models.Model):
     last_update_time=models.DateTimeField()
     photo=models.ImageField(blank=True,null=True)
     pass
+    def __str__(self):
+        return self.address
 
 
 class Activity(models.Model):
     """
     活动的定义.
     """
-    founder=models.ForeignKey(User,related_name='activity_founder',help_text='创建者')
-    name=models.CharField(max_length=300)
-    description=SplitField(max_length=8000)
+    founder=models.ForeignKey(User,related_name='activity_founder',verbose_name='创建者',blank=True,
+                              null=True, help_text='创建者')
+    name=models.CharField(max_length=300,null=True,blank=True)
+    description=SplitField(max_length=8000,null=True,blank=True)
     place=models.ForeignKey(Place)
     min_participants=models.IntegerField()
     max_participants=models.IntegerField()
     start_time=models.DateTimeField()
     end_time=models.DateTimeField()
     #founder close the activity.
-    close_time=MonitorField(monitor='status',when='Closed')
+    close_time=MonitorField(monitor='status',null=True,blank=True, when='Closed')
     participate_deadline=models.DateTimeField()
-    activity_type=models.CharField(max_length=100)
+    activity_type=models.CharField(max_length=100,null=True,blank=True)
     #can ensure the cost
     total_cost_expected=models.IntegerField()
     #can't ensure
-    total_cost_min_expected=models.IntegerField()
     total_cost_max_expected=models.IntegerField()
-    total_cost_actual=models.DecimalField(max_digits=9,decimal_places=1)
-    participants=models.ManyToManyField(User,related_name='activity_participants')
+    total_cost_actual=models.DecimalField(null=True,blank=True, max_digits=9,decimal_places=1)
+    participants=models.ManyToManyField(User,related_name='activity_participants',null=True,blank=True)
     STATUS=Choices('Open','Progressing','Over','Closed')
-    status=StatusField(STATUS)
+    status=StatusField(STATUS,default='Open',blank=True)
 
     @property
     def balance_required(self):
         participant_amount=self.participants.count() if self.participants.count()>=self.min_participants else self.min_participants
         total_price=self.total_cost_expected if self.total_cost_expected else self.total_cost_max_expected
-        return total_price/participant_amount
-
+        return Decimal(total_price/participant_amount)
+    #增加參與者
     def add_participant(self,participant):
         #check total participants
         if participant==self.founder:
@@ -72,12 +75,27 @@ class Activity(models.Model):
 
         self.participants.add(participant)
         #check money
-
         if participant.balance.amount<self.balance_required:
             return (False,'not enought money')
+        #凍結預付款 所有用戶都一樣.
+        participant.balance.amount_withhold=self.balance_required
+        participant.balance.amount-=self.balance_required
+        participant.balance.save()
+        #增加創建者的預收款
 
         return (True,'')
-
+    #移除參與者.
+    def remote_participant(self):
+        pass
+    def clean(self):
+        pass
+#活動的時間線
+class Activity_Timeline(models.Model):
+    """記錄用戶的 參與/離去時間"""
+    user=models.ForeignKey(User)
+    occur_time=models.DateTimeField(default=DateTime.now())
+    direction=models.CharField(choices=(('L','leave'),('J','join')),max_length=10)
+#如果用戶選擇線下付款
 class Financial_Statement(models.Model):
     """
     借贷表

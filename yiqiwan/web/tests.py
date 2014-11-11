@@ -1,7 +1,8 @@
 from django.test import TestCase
 from unittest.mock import  Mock,MagicMock
 from web.models import Activity,User,User_Balance,Place,Checkout_Strategy,Financial_Statement
-from datetime import   datetime as DateTime,timedelta
+from datetime import   timedelta
+from django.utils.timezone import datetime as DateTime
 # Create your tests here.
 from model_mommy import mommy
 from model_mommy.recipe import Recipe, foreign_key
@@ -142,6 +143,8 @@ class activity_test(TestCase):
                             -fs.amount_for_founder_profit
                             -fs.amount_for_system_profit,
                          'not balance')
+        #update balance for each account
+
 
 
 
