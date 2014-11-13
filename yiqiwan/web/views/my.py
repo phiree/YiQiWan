@@ -39,7 +39,7 @@ class ActivityCreate(CreateView):
     def get_initial(self):
 
         return{
-            'founder':self.request.user
+            'other_user':self.request.user
         }
     def form_valid(self, form):
         user = self.request.user

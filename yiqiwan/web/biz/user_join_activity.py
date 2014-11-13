@@ -14,6 +14,6 @@ def user_join_activity(user=User,activity=Activity):
         if user.user_acount.balance<activity.total_cost_expected/activity.max_participant:
             return (False,'not enough money')
         else:
-            return (False,'not enough money for now. you can take part in when the particapant amount reach '+activity.total_cost_expected/user.user_acount.balance)
+            return (False,'not enough money for now. you can take part in when the particapant amount_debet reach '+activity.total_cost_expected/user.user_acount.balance)
 
 

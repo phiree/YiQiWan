@@ -1,8 +1,8 @@
 from django.test import TestCase
 from unittest.mock import  Mock,MagicMock
-from web.models import Activity,User,User_Balance,Place,Checkout_Strategy,Financial_Statement
+from web.models import Activity,User,User_Balance,User_User_Balance,System_Balance, Place,Checkout_Strategy,Financial_Statement
 from datetime import   timedelta
-from django.utils.timezone import datetime as DateTime
+from django.utils import timezone as DateTime
 # Create your tests here.
 from model_mommy import mommy
 from model_mommy.recipe import Recipe, foreign_key
@@ -22,14 +22,26 @@ class activity_test(TestCase):
             max_participants=4,
             participate_deadline=DateTime.now()+timedelta(hours=1),
             total_cost_expected=100,
-            total_cost_min_expected=50,
             total_cost_max_expected=120,
             total_cost_actual=100
         )
-        self.user_balance=mommy.make("User_Balance",user=self.user1, amount=10)
+        self.system_balance=mommy.make("System_Balance",amount_capital_debt=0)
+        self.user1_balance=mommy.make("User_Balance",owner=self.user1, amount_capital_debt=10)
+        self.user2_balance=mommy.make("User_Balance",owner=self.user2, amount_capital_debt=10)
+        self.user3_balance=mommy.make("User_Balance",owner=self.user3, amount_capital_debt=10)
+        self.user4_balance=mommy.make("User_Balance",owner=self.user4, amount_capital_debt=10)
+        self.user5_balance=mommy.make("User_Balance",owner=self.user5, amount_capital_debt=10)
+        self.user6_balance=mommy.make("User_Balance",owner=self.user6, amount_capital_debt=10)
+
+        self.user2_user_balance=mommy.make("User_User_Balance",owner=self.user2, other_user=self.user1, amount_capital_debt=10)
+        self.user3_user_balance=mommy.make("User_User_Balance",owner=self.user3, other_user=self.user1, amount_capital_debt=10)
+        self.user4_user_balance=mommy.make("User_User_Balance",owner=self.user4, other_user=self.user1, amount_capital_debt=10)
+        self.user5_user_balance=mommy.make("User_User_Balance",owner=self.user5, other_user=self.user1, amount_capital_debt=10)
+        self.user6_user_balance=mommy.make("User_User_Balance",owner=self.user6, other_user=self.user1, amount_capital_debt=10)
+
     def test_add_participant_already_in(self):
 
-        #founder no need join
+        #other_user no need join
         result1=self.activity1.add_participant(self.user1)
         self.assertFalse(result1[0],result1[1])
         #repeat join
@@ -57,27 +69,22 @@ class activity_test(TestCase):
         #ensure other conditions
         self.activity1.participate_deadline=DateTime.now()+ timedelta(hours=1)
         #not enough money
-        self.user2.balance.amount=10
-        self.user2.balance.save()
-        self.assertFalse(self.activity1.add_participant(self.user2)[0])
+        self.user2.user_balance.amount=10
+        self.user2.user_balance.save()
+        self.assertIn('waring:not enough money to',self.activity1.add_participant(self.user2)[1])
         #enougn money
-        user_balance3=mommy.make("User_Balance",user=self.user3,amount=50)
         result=self.activity1.add_participant(self.user3)
         self.assertTrue(result[0],msg=result[1])
 
     def test_check_out_founder_not_free(self):
 
-        self.user1.balance.amount=0
-        #self.user1.
-        user_balance2=mommy.make("User_Balance",user=self.user2,amount=50)
-        user_balance3=mommy.make("User_Balance",user=self.user3,amount=50)
-        user_balance4=mommy.make("User_Balance",user=self.user4,amount=50)
+        self.user1.user_balance.amount_capital_debt=0
 
         self.activity1.add_participant(self.user2)
         self.activity1.add_participant(self.user3)
         self.activity1.add_participant(self.user4)
-        checkout_stratege=mommy.make('Checkout_Strategy',activity=self.activity1,founder_profit_percent=0.2)
-        checkout_stratege.checkout()
+        checkout_strategy=mommy.make('Checkout_Strategy',activity=self.activity1,founder_profit_percent=0.2)
+        checkout_strategy.checkout()
         fs=Financial_Statement.objects.all()[0]
         print(fs.amount_for_participants/(fs.activity.participants.count()+1))
         print(fs.amount_for_participants)
@@ -94,18 +101,14 @@ class activity_test(TestCase):
         """
         创建者不需要支付aa费用,仅获取分成.
         """
-        self.user1.balance.amount=0
-        #self.user1.
-        user_balance2=mommy.make("User_Balance",user=self.user2,amount=50)
-        user_balance3=mommy.make("User_Balance",user=self.user3,amount=50)
-        user_balance4=mommy.make("User_Balance",user=self.user4,amount=50)
+        self.user1.user_balance.amount_capital_debt=0
 
         self.activity1.add_participant(self.user2)
         self.activity1.add_participant(self.user3)
         self.activity1.add_participant(self.user4)
-        checkout_stratege=mommy.make('Checkout_Strategy',activity=self.activity1
+        checkout_strategy=mommy.make('Checkout_Strategy',activity=self.activity1
                                      ,is_founder_free=True, founder_profit_percent=0.2)
-        checkout_stratege.checkout()
+        checkout_strategy.checkout()
         fs=Financial_Statement.objects.all()[0]
         print(fs.amount_for_participants/fs.activity.participants.count())
         print(fs.amount_for_participants)
@@ -120,18 +123,13 @@ class activity_test(TestCase):
 
     def test_check_out_fix_charge(self):
         """系统收取固定费用"""
-        self.user1.balance.amount=0
-        #self.user1.
-        user_balance2=mommy.make("User_Balance",user=self.user2,amount=50)
-        user_balance3=mommy.make("User_Balance",user=self.user3,amount=50)
-        user_balance4=mommy.make("User_Balance",user=self.user4,amount=50)
-
+        self.user1.user_balance.amount_capital_debt=0
         self.activity1.add_participant(self.user2)
         self.activity1.add_participant(self.user3)
         self.activity1.add_participant(self.user4)
-        checkout_stratege=mommy.make('Checkout_Strategy_Fix_Charge',fix_charge=5, activity=self.activity1
+        checkout_strategy=mommy.make('Checkout_Strategy_Fix_Charge',fix_charge=5, activity=self.activity1
                                      ,is_founder_free=True, founder_profit_percent=0.2)
-        checkout_stratege.checkout()
+        checkout_strategy.checkout()
         fs=Financial_Statement.objects.all()[0]
         print(fs.amount_for_participants/fs.activity.participants.count())
         print(fs.amount_for_participants)
