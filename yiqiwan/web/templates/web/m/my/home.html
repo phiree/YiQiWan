@@ -1,5 +1,4 @@
-{% extends "web/base.html" %}
-
+{% extends "web/m/base.html" %}
 {%load staticfiles%}
 {%block content%}
 <div data-role="page" class="ui-page-theme-b" data-quicklinks="true">
@@ -12,8 +11,8 @@
         </div>
         <ul data-role="listview" data-theme="c" data-inset="true">
             <li><a href="{%url 'web:my_create_activity' %}">創建活動</a></li>
-            <li><a href="#">Audi</a></li>
-            <li><a href="#">BMW</a></li>
+            <li><a href="#">我创建的活动</a></li>
+            <li><a href="#">我参与的活动</a></li>
             <li><a href="#">Cadillac</a></li>
             <li><a href="#">Ferrari</a></li>
         </ul>

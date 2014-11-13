@@ -5,7 +5,8 @@ from model_utils import Choices
 from model_utils.fields import SplitField,StatusField,MonitorField
 
 #from datetime import  datetime as DateTime
-from django.utils.timezone import datetime as DateTime
+from django.utils import timezone as DateTime
+#from django.utils.timezone import datetime as DateTime
 from decimal import Decimal, ROUND_HALF_EVEN
 
 class Place(models.Model):
@@ -24,7 +25,6 @@ class Place(models.Model):
     pass
     def __str__(self):
         return self.address
-
 
 class Activity(models.Model):
     """
@@ -51,7 +51,7 @@ class Activity(models.Model):
     participants=models.ManyToManyField(User,related_name='activity_participants',null=True,blank=True)
     STATUS=Choices('Open','Progressing','Over','Closed')
     status=StatusField(STATUS,default='Open',blank=True)
-
+    create_time=models.DateTimeField(auto_now=True)
     @property
     def balance_required(self):
         participant_amount=self.participants.count() if self.participants.count()>=self.min_participants else self.min_participants
@@ -73,10 +73,12 @@ class Activity(models.Model):
         if self.participants.count()>=self.max_participants:
             return (False,'full')
 
-        self.participants.add(participant)
+
         #check money
         if participant.balance.amount<self.balance_required:
             return (False,'not enought money')
+
+        self.participants.add(participant)
         #凍結預付款 所有用戶都一樣.
         participant.balance.amount_withhold=self.balance_required
         participant.balance.amount-=self.balance_required
@@ -87,8 +89,8 @@ class Activity(models.Model):
     #移除參與者.
     def remote_participant(self):
         pass
-    def clean(self):
-        pass
+    def __str__(self):
+        return self.name+"_"+self.activity_type+"_"+self.place.name
 #活動的時間線
 class Activity_Timeline(models.Model):
     """記錄用戶的 參與/離去時間"""
@@ -118,16 +120,38 @@ class Financial_Statement(models.Model):
     occur_time=models.DateTimeField()
     #结束时间
     complete_time=models.DateTimeField(null=True)
-    #账户余额
 
-class User_Balance(models.Model):
+#拥护充值记录: 用户与用户,拥护与平台.
+class Recharge(models.Model):
+    occur_time=models.DateTimeField()
+    to_balance=models.ForeignKey(Base_Balance)
+    from_balance=models.ForeignKey(Base_Balance)
+    amount=models.DecimalField(default=0,max_digits=6,decimal_places=1,help_text='金额')
+    pass
+
+class Base_Balance(models.Model):
+    owner=models.ForeignKey(User)
+    amount=models.DecimalField(default=0,max_digits=6,decimal_places=1,help_text='可用余额')
+    amount_withhold=models.DecimalField(default=0,max_digits=6,decimal_places=1,help_text='预付总额')
+    amount_advance_receive=models.DecimalField(default=0,max_digits=6,decimal_places=1,help_text='预收总额')
+    class Meta:
+        abstract=True
+
+    #用户的系统账户余额
+class User_Balance(Base_Balance):
     user=models.ForeignKey(User)
     amount=models.DecimalField(default=0,max_digits=6,decimal_places=1,help_text='可用余额')
     amount_withhold=models.DecimalField(default=0,max_digits=6,decimal_places=1,help_text='预付总额')
     amount_advance_receive=models.DecimalField(default=0,max_digits=6,decimal_places=1,help_text='预收总额')
 User.balance=property(lambda u:User_Balance.objects.get_or_create(user=u)[0])
 
+#用户之间的账户
+class User_User_Balance(Base_Balance):
 
+    founder=models.ForeignKey(User)
+
+
+#平台帐户
 class System_Balance(models.Model):
     """
     系统账户余额
@@ -154,7 +178,8 @@ class Checkout_Strategy(models.Model):
         real_cost_each=math.ceil(total_amount_occur/participant_amount)
         #每个参与者的aa费用求整之后的总费用
         tatal_amount_need_charge=real_cost_each*participant_amount
-
+        #利润分要分为两部分,线上支付的aa费用产生的利润, 线下用户直接付给创建者的费用.
+        #第一部分的利润由平台和创建者分享, 后一部分由创建者独享.
         amount_profit=tatal_amount_need_charge-self.activity.total_cost_actual
         amount_profit_founder=Decimal(amount_profit*self.founder_profit_percent).quantize(Decimal('.1'), rounding=ROUND_HALF_EVEN)
         amount_profit_system=amount_profit-amount_profit_founder

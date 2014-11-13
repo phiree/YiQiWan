@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admindocs',
+    'django_tables2',
     'web',
 )
 
@@ -67,7 +68,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-cn'
 
 TIME_ZONE = 'UTC'
 
@@ -82,16 +83,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
-DATETIME_INPUT_FORMATS=(
-    '%Y-%M-%dT%H:%m:%SZ',
-    '%Y-%m-%dT%H:%M',#2014-11-11T11:11
-    '%Y-%m-%d %H:%m:%S',
-    '%Y-%m-%d %H:%M:%S.%f',
-    '%Y-%m-%d %H:%M',
-    '%Y-%m-%d',
-    '%Y/%m/%dT%H:%M:%S',
-    '%Y/%m/%d %H:%M:%S',
-    '%Y/%m/%d %H:%M:%S.%f',
-    '%Y/%m/%d %H:%M',
-    '%Y/%m/%d',
+MEDIA_URL='/media/'
+LOGIN_REDIRECT_URL='/my/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR,'locale'),
 )

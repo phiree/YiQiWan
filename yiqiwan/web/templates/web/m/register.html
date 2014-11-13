@@ -1,0 +1,8 @@
+{% extends "web/m/base.html" %}
+        {%block content%}
+        <form method="post">
+            {%csrf_token%}
+            {{form.as_ul}}
+            <input type="submit" value="注册">
+        </form>
+        {%endblock%}

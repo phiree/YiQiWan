@@ -5,7 +5,7 @@ from ..forms import fm_activity
 from ..models import Activity
 from django.core.urlresolvers import reverse
 def my_home(request):
-    return render(request,'web/my/home.html')
+    return render(request,'web/m/my/home.html')
 
 def create_activity(request):
 
@@ -20,16 +20,19 @@ def create_activity(request):
         except_msg=''
         if fm.is_valid():
             try:
-                fm.save()
-                return HttpResponseRedirect('web/my/create_succes.html')
+                fm_model=fm.save(commit=False)
+                m=Activity()
+                fm_model.status=m.status
+
+                return HttpResponseRedirect('web/m/my/create_succes.html')
             except AttributeError as e:
                 except_msg=e
                 pass
-        return render(request,'web/my/create_activity.html',{'form':fm,'except_msg':except_msg})
+        return render(request,'web/m/my/create_activity.html',{'form':fm,'except_msg':except_msg})
 class ActivityCreate(CreateView):
     model=Activity
     form_class =fm_activity.ActivityForm
-    template_name = 'web/my/create_activity.html'
+    template_name = 'web/m/my/create_activity.html'
 
     def get_success_url(self):
         return reverse('web:my_home')
