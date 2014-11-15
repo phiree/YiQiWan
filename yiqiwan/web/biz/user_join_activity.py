@@ -1,5 +1,5 @@
 __author__ = 'Administrator'
-from ..models import User,Activity,User_Account
+from ..models import User,Activity,Balance_Flow,User_User_Balance
 from datetime import datetime as DateTime
 def user_join_activity(user=User,activity=Activity):
     now=DateTime.now()
@@ -15,5 +15,3 @@ def user_join_activity(user=User,activity=Activity):
             return (False,'not enough money')
         else:
             return (False,'not enough money for now. you can take part in when the particapant amount_debet reach '+activity.total_cost_expected/user.user_acount.balance)
-
-

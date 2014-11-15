@@ -1,6 +1,6 @@
 from django.test import TestCase
 from unittest.mock import  Mock,MagicMock
-from web.models import Activity,User,User_Balance,User_User_Balance,System_Balance, Place,Checkout_Strategy,Financial_Statement
+from web.models import Activity,User,User_Balance,User_User_Balance, Place,Checkout_Strategy,Financial_Statement
 from datetime import   timedelta
 from django.utils import timezone as DateTime
 # Create your tests here.
@@ -25,7 +25,7 @@ class activity_test(TestCase):
             total_cost_max_expected=120,
             total_cost_actual=100
         )
-        self.system_balance=mommy.make("System_Balance",amount_capital_debt=0)
+
         self.user1_balance=mommy.make("User_Balance",owner=self.user1, amount_capital_debt=10)
         self.user2_balance=mommy.make("User_Balance",owner=self.user2, amount_capital_debt=10)
         self.user3_balance=mommy.make("User_Balance",owner=self.user3, amount_capital_debt=10)
@@ -77,9 +77,7 @@ class activity_test(TestCase):
         self.assertTrue(result[0],msg=result[1])
 
     def test_check_out_founder_not_free(self):
-
         self.user1.user_balance.amount_capital_debt=0
-
         self.activity1.add_participant(self.user2)
         self.activity1.add_participant(self.user3)
         self.activity1.add_participant(self.user4)
@@ -144,7 +142,29 @@ class activity_test(TestCase):
         #update balance for each account
 
 
+    def test_check_balance(self):
+        """账户余额"""
+        self.activity1.total_cost_expected=100
+        self.user2_balance.amount_capital_debt=10
+        self.activity1.add_participant(self.user2)
+        user2_user_balance=User_User_Balance.objects.filter(owner=self.user2,other_user=self.user1)[0]
+        user2_balance=self.user2.user_balance
+        user3_user_balance=User_User_Balance.objects.filter(owner=self.user3,other_user=self.user1)[0]
+        user3_balance=self.user3.user_balance
+        #在线账户 应付款10(标记为-10)
+        self.assertEqual(user2_balance.amount_payables_receivables,-10)
+        self.assertEqual(user2_balance.amount_capital_debt,0)
+        #与 user1 相关的离线账户 资产额为-30
+        self.assertEqual(user2_user_balance.amount_capital_debt ,-30)
+        self.assertEqual(user2_user_balance.amount_payables_receivables,-40)
 
+        print('amount_capital_debt_before'+str(user3_user_balance.amount_capital_debt))
+        self.activity1.add_participant(self.user3)
+        user3_user_balance=User_User_Balance.objects.filter(owner=self.user3,other_user=self.user1)[0]
+        print('amount_capital_debt_after'+str(user3_user_balance.amount_capital_debt))
+
+        self.activity1.add_participant(self.user4)
+        print('amount_capital_debt4_after'+str(User_User_Balance.objects.filter(owner=self.user4,other_user=self.user1)[0].amount_capital_debt))
 
 
 

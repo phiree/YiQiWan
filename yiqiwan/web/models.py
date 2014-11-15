@@ -54,9 +54,12 @@ class Activity(models.Model):
     create_time=models.DateTimeField(auto_now=True)
     @property
     def balance_required(self):
-        participant_amount=self.participants.count() if self.participants.count()>=self.min_participants else self.min_participants
+
+        max_participant_amount=self.participants.count() if self.participants.count()>=self.min_participants else self.min_participants
+        #min_participant_amount=self.participants.count()
         total_price=self.total_cost_expected if self.total_cost_expected else self.total_cost_max_expected
-        return Decimal(total_price/participant_amount)
+
+        return Decimal(total_price/max_participant_amount)
     #增加參與者
     def add_participant(self,participant):
         #check total participants
@@ -82,20 +85,9 @@ class Activity(models.Model):
         #todo 事务处理
         self.participants.add(participant)
         #凍結預付款 所有用戶都一樣. 该过程只影响离线账户
-        balance_flow=Balance_Flow.objects.create(flow_type=flow_type_choice[0][0]
-                    #todo ensure the account exits only one
-                    #应收应付 已经
-                    ,from_account=User_User_Balance.objects.filter(owner=participant,other_user=self.founder)[0]
-                    ,to_account=None
-                    ,amount=self.balance_required
-                    ,occur_time=DateTime.now()
-                    ,activity=self
-                    ,applied=False
-                    )
-        #todo 事务处理
-        balance_flow.apply_flow()
-        balance_flow.applied=True
-        balance_flow.save()
+        #如果用户的在线账户本来就有余额,那么优先使用在线账户.
+        #离线账户
+        participant_checkout(participant=participant,activity=self,balance_required=self.balance_required,flow_type=flow_type_choice[0][0])
         Activity_Timeline.objects.create(user=participant,activity=self,occur_time=DateTime.now(),direction='J')
         return (True,msg)
     #移除參與者.
@@ -159,6 +151,10 @@ class Base_Balance(models.Model):
 #在线账户总额 每个用户只能有一个在线账户
 class User_Balance(Base_Balance):
     owner=models.OneToOneField(User)
+#用户之间的账户:离线账户
+class User_User_Balance(Base_Balance):
+    owner=models.ForeignKey(User,related_name='user_user_balance_owner')
+    other_user=models.ForeignKey(User,related_name='user_user_balance_other_user')
 
 #流水帐. 类型,1)参与活动(预扣款)2)活动结帐(实际扣款) 3)为线上账户充值 4)从线上账户提现 5)创建者为参与者离线账户充值 6)用户从离线账户取现(现场取回现金)
 flow_type_choice=(('activity_pre_checkout','活动预结帐'),
@@ -170,11 +166,12 @@ flow_type_choice=(('activity_pre_checkout','活动预结帐'),
                      ('recharge_online','离线充值'),#用户之间的余额转移,如 参与者交款给 创建者
                     ('withdraw_online','离线提现'),#                     参与者要回现金
 )#同上
-#借贷流水
+#借贷流水,
 class Balance_Flow(models.Model):
     flow_type=models.CharField(choices=flow_type_choice,max_length=50)
-    from_account=models.ForeignKey(Base_Balance,related_name='balance_flow_from')
-    to_account=models.ForeignKey(Base_Balance,related_name='balance_flow_to',null=True,blank=True)
+    account=models.ForeignKey(Base_Balance,related_name='balance_flow_from')
+    #account 收支平衡 不需要 to-account 因为流水双方已经在同一个account,面了
+    #to_account=models.ForeignKey(Base_Balance,related_name='balance_flow_to',null=True,blank=True)
     amount=models.DecimalField(default=0,max_digits=6,decimal_places=1,help_text='金额')
     occur_time=models.DateTimeField(auto_now=True,default=DateTime.now())
     activity=models.ForeignKey(Activity,null=True,blank=True)
@@ -183,53 +180,80 @@ class Balance_Flow(models.Model):
     def apply_flow(self):
         """根据流水,更新各个账户
         离线账户的一笔流水只需要记一次. 因为离线账户已经包含了贷方(比如活动预结帐里的创建者)
+
         """
         if self.applied:
             return (False,'Error.flow had been checked, cannot apply again ')
 
         if self.flow_type==flow_type_choice[0][0]:
-            #from_account 是参与者账户,to 是创建者账户
-            self.from_account.amount_payables_receivables+=-1*self.amount #应付增加 减法
-            self.from_account.amount_capital_debt+=-1*self.amount#资产负债增加,减法
+            #优先使用在线账户.
+
+            self.account.amount_payables_receivables+=-1*self.amount #应付增加 减法
+            self.account.amount_capital_debt+=-1*self.amount#资产负债增加,减法
             #self.to_account.amount_payables_receivables+=self.amount #应收 增加
 
         elif self.flow_type==flow_type_choice[1][0]:
-            self.from_account.amount_payables_receivables+=self.amount #应付减少 加法.
+            self.account.amount_payables_receivables+=self.amount #应付减少 加法.
             #self.to_account.amount_payables_receivables-=self.amount #应收减少
             #self.to_account.amount_capital_debt+=self.amount #资产增加
 
         elif self.flow_type== flow_type_choice[2][0]:
-            self.from_account.amount_payables_receivables+=self.amount#应付减少
-            self.from_account.amount_capital_debt+=self.amount#资产增加
+            self.account.amount_payables_receivables+=self.amount#应付减少
+            self.account.amount_capital_debt+=self.amount#资产增加
             #self.to_acount.amount_payables_receivables-=self.amount #应收减少
 
         elif self.flow_type== flow_type_choice[3][0]: #在线充值
-            self.from_account.amount_capital_debt+=self.amount
+            self.account.amount_capital_debt+=self.amount
             self.to_account.amount_capital_debt-=self.amount
 
         elif self.flow_type== flow_type_choice[4][0]:#在线提现
-            self.from_account.amount_capital_debt-=self.amount
+            self.account.amount_capital_debt-=self.amount
             self.to_account.amount_capital_debt+=self.amount
         elif self.flow_type== flow_type_choice[5][0]:#离线充值
-            self.from_account.amount_capital_debt+=self.amount
+            self.account.amount_capital_debt+=self.amount
         elif self.flow_type==flow_type_choice[6][0]:#离线充值
-            self.from_account.amount_capital_debt-=self.amount
+            self.account.amount_capital_debt-=self.amount
 
         #todo 事务处理
-        self.from_account.save()
-        if self.to_account:
-            self.to_account.save()
+        self.account.save()
+
         return True
+def participant_checkout(participant,activity,balance_required,flow_type):
+    balance_online=participant.user_balance
+    pay_amount_online=balance_required if balance_online.amount_capital_debt>=balance_required\
+        else balance_online.amount_capital_debt
+    pay_amount_offline=balance_required-pay_amount_online
+    if balance_online.amount_capital_debt>0:
 
-#用户之间的账户:离线账户
-class User_User_Balance(Base_Balance):
-    owner=models.ForeignKey(User,related_name='user_user_balance_owner')
-    other_user=models.ForeignKey(User,related_name='user_user_balance_other_user')
+        balance_flow=Balance_Flow.objects.create(flow_type=flow_type
+                    #todo ensure the account exits only one
+                    #应收应付 已经
+                    ,account=balance_online
+                    ,amount=pay_amount_online
+                    ,occur_time=DateTime.now()
+                    ,activity=activity
+                    ,applied=False
+                    )
+        #todo 事务处理
+        balance_flow.apply_flow()
+        balance_flow.applied=True
+        balance_flow.save()
+     #在线账户支付后的余额
+    if pay_amount_offline>0:
+        balance_flow_offline=Balance_Flow.objects.create(flow_type=flow_type
+                    #todo ensure the account exits only one
+                    #应收应付 已经
+                    ,account=User_User_Balance.objects.filter(owner=participant,other_user=activity.founder)[0]
+                    ,amount=pay_amount_offline
+                    ,occur_time=DateTime.now()
+                    ,activity=activity
+                    ,applied=False
+                    )
+        #todo 事务处理
+        balance_flow_offline.apply_flow()
+        balance_flow_offline.applied=True
+        balance_flow_offline.save()
 
-#平台帐户
-class System_Balance(Base_Balance):
-    pass
-#结算策略.
 import math
 class Checkout_Strategy(models.Model):
 
@@ -265,27 +289,10 @@ class Checkout_Strategy(models.Model):
 
         #更新账户:
         for participant in self.activity.participants.all():
-            #优先使用在线账户支付.如果不足,再使用离线账户
-            balance_flow=Balance_Flow(flow_type=flow_type_choice[1][0]
-                    ,from_account=participant.user_balance
-                    ,to_account=System_Balance.objects.all()[0] #系统账户只能有一个.
-                    ,amount=self.activity.balance_required
-                    ,occur_time=DateTime.now()
-                    ,activity=self.activity
-                    ,applied=False
-                    )
-            #todo 使用财务期间的方式 减少对流水表的访问,提高性能
-            #todo 需要使用事务.
-            if participant.user_balance.balance_actual>=real_cost_each:
-
-                pass
-            else:
-                #离线账户支付
-                balance_flow.to_account=None
-                balance_flow.from_account=from_account=User_User_Balance.objects.filter(owner=participant,other_user=self.activity.founder)[0]
-                pass
-            balance_flow.apply_flow()
-
+            #优先使用在线账户支付.如果不足,再使用离线账户. 剩余账户为负 由 创建者找用户解决.
+            participant_checkout(participant=participant
+                                 ,activity=self.activity,balance_required=real_cost_each
+                                 ,flow_type=flow_type_choice[1][0])
 
         #营业收入表
         Financial_Statement.objects.create(
