@@ -79,10 +79,9 @@ class Activity(models.Model):
         max_participants = self.max_participants if self.max_participants else self.min_participants
         if self.participants.count() >= max_participants:
             return (False, 'full')
-
+        offline_balance,created=User_User_Balance.objects.get_or_create(owner=participant,other_user=self.founder)
         if participant.user_balance.amount_capital_debt < self.balance_required and \
-                        participant.user_user_balance_owner.filter(other_user=self.founder)[
-                            0].amount_capital_debt < self.balance_required:
+                        offline_balance.amount_capital_debt < self.balance_required:
             msg = 'waring:not enough money to pay the amount_debet online,please pay cash to the other_user and ask him to add balance to your account.'
             #预扣款应该支付给 和创建者相关的离线账号.
 
