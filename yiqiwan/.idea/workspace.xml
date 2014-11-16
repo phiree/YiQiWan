@@ -22,9 +22,41 @@
     <favorites_list name="yiqiwan" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.4735605">
+    <splitter split-orientation="horizontal" split-proportion="0.6149029">
       <split-first>
         <leaf>
+          <file leaf-file-name="models.py" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/web/models.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="6537" max-vertical-offset="7923">
+                  <caret line="351" column="12" selection-start-line="351" selection-start-column="8" selection-end-line="351" selection-end-column="12" />
+                  <folding>
+                    <element signature="e#0#28#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="case.py" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://F:/Platform/Python34/Lib/unittest/case.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="10535" max-vertical-offset="26467">
+                  <caret line="576" column="0" selection-start-line="576" selection-start-column="0" selection-end-line="576" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="timezone.py" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/../env_yiqiwan/Lib/site-packages/django/utils/timezone.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="5904" max-vertical-offset="7239">
+                  <caret line="323" column="0" selection-start-line="323" selection-start-column="0" selection-end-line="323" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file leaf-file-name="login.html" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/web/templates/web/m/login.html">
               <provider selected="true" editor-type-id="text-editor">
@@ -38,72 +70,18 @@
           <file leaf-file-name="tests.py" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/web/tests.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.625" vertical-offset="1966" max-vertical-offset="2698">
-                  <caret line="158" column="62" selection-start-line="158" selection-start-column="0" selection-end-line="159" selection-end-column="0" />
-                  <folding>
-                    <element signature="e#0#32#0" expanded="true" />
-                    <element signature="e#3902#4800#0" expanded="false" />
-                    <element signature="e#4853#5860#0" expanded="false" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="testcases.py" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/../env_yiqiwan/Lib/site-packages/django/test/testcases.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="2662" max-vertical-offset="22382">
-                  <caret line="186" column="0" selection-start-line="186" selection-start-column="0" selection-end-line="186" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="suite.py" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://F:/Platform/Python34/Lib/unittest/suite.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="1442" max-vertical-offset="6213">
-                  <caret line="86" column="0" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="runner.py" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://F:/Platform/Python34/Lib/unittest/runner.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="3038" max-vertical-offset="4066">
-                  <caret line="172" column="0" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="activity_detail.html" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/web/templates/web/m/activity_detail.html">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="230" max-vertical-offset="570">
-                  <caret line="19" column="33" selection-start-line="19" selection-start-column="33" selection-end-line="19" selection-end-column="33" />
+                <state vertical-scroll-proportion="0.77690804" vertical-offset="3061" max-vertical-offset="4237">
+                  <caret line="186" column="68" selection-start-line="186" selection-start-column="68" selection-end-line="186" selection-end-column="68" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
           <file leaf-file-name="__init__.py" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/../env_yiqiwan/Lib/site-packages/django/db/models/fields/__init__.py">
+            <entry file="file://$PROJECT_DIR$/tests/__init__.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="24605" max-vertical-offset="39007">
-                  <caret line="1295" column="0" selection-start-line="1295" selection-start-column="0" selection-end-line="1295" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="base.py" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/../env_yiqiwan/Lib/site-packages/django/db/models/base.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="10528" max-vertical-offset="27607">
-                  <caret line="590" column="0" selection-start-line="590" selection-start-column="0" selection-end-line="590" selection-end-column="0" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="133">
+                  <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -112,7 +90,7 @@
           <file leaf-file-name="related.py" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/../env_yiqiwan/Lib/site-packages/django/db/models/fields/related.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="10471" max-vertical-offset="43757">
+                <state vertical-scroll-proportion="0.0" vertical-offset="10489" max-vertical-offset="43757">
                   <caret line="580" column="0" selection-start-line="580" selection-start-column="0" selection-end-line="580" selection-end-column="0" />
                   <folding />
                 </state>
@@ -123,63 +101,37 @@
       </split-first>
       <split-second>
         <leaf>
-          <file leaf-file-name="case.py" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://F:/Platform/Python34/Lib/unittest/case.py">
+          <file leaf-file-name="models.py" pinned="false" current="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/web/models.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="10615" max-vertical-offset="26467">
-                  <caret line="579" column="0" selection-start-line="579" selection-start-column="0" selection-end-line="579" selection-end-column="0" />
+                <state vertical-scroll-proportion="0.3072407" vertical-offset="3871" max-vertical-offset="7391">
+                  <caret line="240" column="0" selection-start-line="240" selection-start-column="0" selection-end-line="240" selection-end-column="0" />
+                  <folding>
+                    <element signature="e#0#28#0" expanded="true" />
+                    <element signature="e#4376#4624#0" expanded="false" />
+                    <element signature="e#4679#5558#0" expanded="false" />
+                    <element signature="e#5617#5915#0" expanded="false" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="tests.py" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/web/tests.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="2237" max-vertical-offset="4237">
+                  <caret line="130" column="0" selection-start-line="130" selection-start-column="0" selection-end-line="130" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="models.py" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/web/models.py">
+          <file leaf-file-name="case.py" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://F:/Platform/Python34/Lib/unittest/case.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="231" max-vertical-offset="1140">
-                  <caret line="155" column="70" selection-start-line="155" selection-start-column="47" selection-end-line="155" selection-end-column="70" />
-                  <folding>
-                    <element signature="e#397#934#0" expanded="false" />
-                    <element signature="e#397#420#1" expanded="false" />
-                    <element signature="e#915#934#0" expanded="false" />
-                    <element signature="e#970#4228#0" expanded="false" />
-                    <element signature="e#970#992#1" expanded="false" />
-                    <element signature="e#2269#2621#0" expanded="false" />
-                    <element signature="e#2684#4077#0" expanded="false" />
-                    <element signature="e#4132#4136#0" expanded="false" />
-                    <element signature="e#4168#4227#0" expanded="false" />
-                    <element signature="e#4279#4515#0" expanded="false" />
-                    <element signature="e#4570#5418#0" expanded="false" />
-                    <element signature="e#5476#5761#0" expanded="false" />
-                    <element signature="e#5801#6489#0" expanded="false" />
-                    <element signature="e#5867#5894#0" expanded="false" />
-                    <element signature="e#6320#6375#0" expanded="false" />
-                    <element signature="e#6429#6488#0" expanded="false" />
-                    <element signature="e#6549#6581#0" expanded="false" />
-                    <element signature="e#7350#9639#0" expanded="false" />
-                    <element signature="e#7955#9639#0" expanded="false" />
-                    <element signature="e#7955#8035#1" expanded="false" />
-                    <element signature="e#9719#11165#0" expanded="false" />
-                    <element signature="e#11223#13287#0" expanded="false" />
-                    <element signature="e#11449#11500#0" expanded="false" />
-                    <element signature="e#11587#13287#0" expanded="false" />
-                    <element signature="e#13348#13504#0" expanded="false" />
-                    <element signature="e#13450#13504#0" expanded="false" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="tests.py" pinned="false" current="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/web/tests.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.7096774" vertical-offset="1909" max-vertical-offset="2698">
-                  <caret line="158" column="0" selection-start-line="158" selection-start-column="0" selection-end-line="158" selection-end-column="0" />
-                  <folding>
-                    <element signature="e#0#32#0" expanded="true" />
-                    <element signature="e#3902#4800#0" expanded="false" />
-                    <element signature="e#4853#5860#0" expanded="false" />
-                  </folding>
+                <state vertical-scroll-proportion="0.0" vertical-offset="10860" max-vertical-offset="26467">
+                  <caret line="593" column="0" selection-start-line="593" selection-start-column="0" selection-end-line="593" selection-end-column="0" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -272,6 +224,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -300,57 +253,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="yiqiwan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="yiqiwan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="yiqiwan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="yiqiwan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="yiqiwan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="yiqiwan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="yiqiwan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="biz" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -370,7 +273,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -611,7 +513,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="yiqiwan" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/manage.py" />
-      <option name="PARAMETERS" value="test web" />
+      <option name="PARAMETERS" value="test web.tests.activity_test.test_check_out_actual_cost_less_than_expected" />
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PyDebugRunner" />
@@ -664,18 +566,18 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.10799136" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1032666" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.50431967" sideWeight="0.7281369" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15858799" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4438445" sideWeight="0.7281369" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32841823" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.41900647" sideWeight="0.90304184" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.40280777" sideWeight="0.90304184" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -705,48 +607,38 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/web/biz/signals.py</url>
-          <line>6</line>
-          <option name="timeStamp" value="44" />
+        <line-breakpoint type="python-line">
+          <condition expression="User_Balance.objects.filter(owner__id =2)[0].amount_payables_receivables==-10" />
+          <url>file://$PROJECT_DIR$/web/models.py</url>
+          <line>319</line>
+          <option name="timeStamp" value="132" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/web/views/my.py</url>
-          <line>22</line>
-          <option name="timeStamp" value="56" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/web/views/my.py</url>
-          <line>17</line>
-          <option name="timeStamp" value="58" />
+        <line-breakpoint type="python-line">
+          <condition expression="User_Balance.objects.filter(owner__id =2)[0].amount_payables_receivables==-10" />
+          <url>file://$PROJECT_DIR$/web/models.py</url>
+          <line>336</line>
+          <option name="timeStamp" value="133" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/web/tests.py</url>
-          <line>158</line>
-          <option name="timeStamp" value="87" />
+          <line>130</line>
+          <option name="timeStamp" value="135" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="89" />
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+      <option name="time" value="142" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://F:/Platform/Python34/Lib/wsgiref/simple_server.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.30718955" vertical-offset="2205" max-vertical-offset="3040">
-          <caret line="125" column="0" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://F:/Platform/Python34/Lib/wsgiref/handlers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334" vertical-offset="2425" max-vertical-offset="10450">
-          <caret line="136" column="0" selection-start-line="136" selection-start-column="0" selection-end-line="136" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../env_yiqiwan/Lib/site-packages/django/contrib/staticfiles/handlers.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.503268" vertical-offset="929" max-vertical-offset="1235">
@@ -990,7 +882,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="456">
           <caret line="9" column="52" selection-start-line="9" selection-start-column="43" selection-end-line="9" selection-end-column="52" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -998,7 +889,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="171">
           <caret line="1" column="50" selection-start-line="1" selection-start-column="50" selection-end-line="1" selection-end-column="50" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1006,15 +896,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="81" max-vertical-offset="988">
           <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/templates/web/m/activity_detail.html">
+    <entry file="file://$PROJECT_DIR$/web/biz/user_join_activity.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="230" max-vertical-offset="570">
-          <caret line="19" column="33" selection-start-line="19" selection-start-column="33" selection-end-line="19" selection-end-column="33" />
-          <folding />
+        <state vertical-scroll-proportion="0.3645084" vertical-offset="0" max-vertical-offset="437">
+          <caret line="8" column="24" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="24" />
         </state>
       </provider>
     </entry>
@@ -1026,10 +914,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../env_yiqiwan/Lib/site-packages/django/test/testcases.py">
+    <entry file="file://$PROJECT_DIR$/web/templates/web/m/activity_detail.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2662" max-vertical-offset="22382">
-          <caret line="186" column="0" selection-start-line="186" selection-start-column="0" selection-end-line="186" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.43389422" vertical-offset="0" max-vertical-offset="832">
+          <caret line="19" column="33" selection-start-line="19" selection-start-column="33" selection-end-line="19" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://F:/Platform/Python34/Lib/unittest/runner.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.09728507" vertical-offset="3087" max-vertical-offset="4066">
+          <caret line="172" column="0" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1042,34 +938,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://F:/Platform/Python34/Lib/unittest/runner.py">
+    <entry file="file://$PROJECT_DIR$/../env_yiqiwan/Lib/site-packages/django/test/testcases.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3038" max-vertical-offset="4066">
-          <caret line="172" column="0" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../env_yiqiwan/Lib/site-packages/django/db/models/fields/related.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="10471" max-vertical-offset="43757">
-          <caret line="580" column="0" selection-start-line="580" selection-start-column="0" selection-end-line="580" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../env_yiqiwan/Lib/site-packages/django/db/models/base.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="10528" max-vertical-offset="27607">
-          <caret line="590" column="0" selection-start-line="590" selection-start-column="0" selection-end-line="590" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/biz/user_join_activity.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3645084" vertical-offset="0" max-vertical-offset="437">
-          <caret line="8" column="24" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="24" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="2662" max-vertical-offset="22382">
+          <caret line="186" column="0" selection-start-line="186" selection-start-column="0" selection-end-line="186" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1082,58 +954,61 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/models.py">
+    <entry file="file://$PROJECT_DIR$/../env_yiqiwan/Lib/site-packages/django/db/models/base.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="231" max-vertical-offset="1140">
-          <caret line="155" column="70" selection-start-line="155" selection-start-column="47" selection-end-line="155" selection-end-column="70" />
-          <folding>
-            <element signature="e#397#934#0" expanded="false" />
-            <element signature="e#397#420#1" expanded="false" />
-            <element signature="e#915#934#0" expanded="false" />
-            <element signature="e#970#4228#0" expanded="false" />
-            <element signature="e#970#992#1" expanded="false" />
-            <element signature="e#2269#2621#0" expanded="false" />
-            <element signature="e#2684#4077#0" expanded="false" />
-            <element signature="e#4132#4136#0" expanded="false" />
-            <element signature="e#4168#4227#0" expanded="false" />
-            <element signature="e#4279#4515#0" expanded="false" />
-            <element signature="e#4570#5418#0" expanded="false" />
-            <element signature="e#5476#5761#0" expanded="false" />
-            <element signature="e#5801#6489#0" expanded="false" />
-            <element signature="e#5867#5894#0" expanded="false" />
-            <element signature="e#6320#6375#0" expanded="false" />
-            <element signature="e#6429#6488#0" expanded="false" />
-            <element signature="e#6549#6581#0" expanded="false" />
-            <element signature="e#7350#9639#0" expanded="false" />
-            <element signature="e#7955#9639#0" expanded="false" />
-            <element signature="e#7955#8035#1" expanded="false" />
-            <element signature="e#9719#11165#0" expanded="false" />
-            <element signature="e#11223#13287#0" expanded="false" />
-            <element signature="e#11449#11500#0" expanded="false" />
-            <element signature="e#11587#13287#0" expanded="false" />
-            <element signature="e#13348#13504#0" expanded="false" />
-            <element signature="e#13450#13504#0" expanded="false" />
-          </folding>
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="9650" max-vertical-offset="27607">
+          <caret line="545" column="0" selection-start-line="545" selection-start-column="0" selection-end-line="545" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../env_yiqiwan/Lib/site-packages/django/utils/timezone.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="5904" max-vertical-offset="7239">
+          <caret line="323" column="0" selection-start-line="323" selection-start-column="0" selection-end-line="323" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="641">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../env_yiqiwan/Lib/site-packages/django/db/models/fields/related.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="10489" max-vertical-offset="43757">
+          <caret line="580" column="0" selection-start-line="580" selection-start-column="0" selection-end-line="580" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://F:/Platform/Python34/Lib/unittest/case.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="10615" max-vertical-offset="26467">
-          <caret line="579" column="0" selection-start-line="579" selection-start-column="0" selection-end-line="579" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="10535" max-vertical-offset="26467">
+          <caret line="576" column="0" selection-start-line="576" selection-start-column="0" selection-end-line="576" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="6537" max-vertical-offset="7923">
+          <caret line="351" column="12" selection-start-line="351" selection-start-column="8" selection-end-line="351" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/tests.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.625" vertical-offset="1966" max-vertical-offset="2698">
-          <caret line="158" column="62" selection-start-line="158" selection-start-column="0" selection-end-line="159" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-            <element signature="e#3902#4800#0" expanded="false" />
-            <element signature="e#4853#5860#0" expanded="false" />
-          </folding>
+        <state vertical-scroll-proportion="0.77690804" vertical-offset="3061" max-vertical-offset="4237">
+          <caret line="186" column="68" selection-start-line="186" selection-start-column="68" selection-end-line="186" selection-end-column="68" />
+          <folding />
         </state>
       </provider>
     </entry>
