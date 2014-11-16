@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext  as _,ungettext
 from django.views.generic import DetailView
 from django.contrib.auth.models import User
-from ..models import Activity
+from ..models import Activity,User_Balance,User_User_Balance
 def home(request):
     activity_list=Activity.objects.all()
     return render(request,'web/m/home.html',{'activity_list':activity_list})
@@ -31,8 +31,9 @@ def register(request):
     if request.method=="POST":
         form=fm_register.RegisterForm(request.POST)
         if form.is_valid():
-            User.objects.create_user(username=form.cleaned_data['username'],
+            created_user=User.objects.create_user(username=form.cleaned_data['username'],
                                      password= form.cleaned_data['password'])
+            User_Balance.objects.get_or_create(owner=created_user)
             return HttpResponseRedirect(redirect_to= reverse('web:register_success'))
     return render(request,'web/m/register.html',{'form':form})
 

@@ -42,6 +42,7 @@ class ActivityCreate(CreateView):
             'other_user':self.request.user
         }
     def form_valid(self, form):
+        form.instance.status='Open'
         user = self.request.user
         form.instance.founder = user
         return super(ActivityCreate, self).form_valid(form)
