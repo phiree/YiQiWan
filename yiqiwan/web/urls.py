@@ -8,7 +8,7 @@ urlpatterns = patterns(''
 
                        , url(r'^accounts/login.*', 'django.contrib.auth.views.login',
                              {'template_name': 'web/m/login.html'}, name='login')
-                       , url(r'^accounts/logout.*', 'django.contrib.auth.views.logout',
+                       , url(r'^account/logout.*', 'django.contrib.auth.views.logout',
                              {'template_name': 'web/m/logout.html'}, name='logout')
                        , url(r'^account/register$', register, name='register')
                        , url(r'^account/register_success$', register_success, name='register_success')

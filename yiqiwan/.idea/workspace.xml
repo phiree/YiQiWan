@@ -23,10 +23,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="my.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="my.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/views/my.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="2.6765873" vertical-offset="0" max-vertical-offset="1653">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1653">
               <caret line="71" column="44" selection-start-line="71" selection-start-column="44" selection-end-line="71" selection-end-column="44" />
               <folding>
                 <element signature="e#0#57#0" expanded="true" />
@@ -40,16 +40,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="10.821428" vertical-offset="797" max-vertical-offset="1501">
               <caret line="26" column="45" selection-start-line="26" selection-start-column="40" selection-end-line="26" selection-end-column="45" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="profile.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/templates/web/m/my/profile.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.821428" vertical-offset="0" max-vertical-offset="418">
-              <caret line="13" column="60" selection-start-line="13" selection-start-column="58" selection-end-line="13" selection-end-column="60" />
               <folding />
             </state>
           </provider>
@@ -90,8 +80,8 @@
       <file leaf-file-name="settings.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/yiqiwan/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1412" max-vertical-offset="1995">
-              <caret line="98" column="44" selection-start-line="98" selection-start-column="44" selection-end-line="98" selection-end-column="44" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1976">
+              <caret line="89" column="19" selection-start-line="89" selection-start-column="19" selection-end-line="89" selection-end-column="19" />
               <folding>
                 <element signature="e#318#327#0" expanded="true" />
               </folding>
@@ -103,7 +93,7 @@
         <entry file="file://$PROJECT_DIR$/web/urls.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="703">
-              <caret line="11" column="27" selection-start-line="11" selection-start-column="27" selection-end-line="11" selection-end-column="27" />
+              <caret line="11" column="60" selection-start-line="11" selection-start-column="54" selection-end-line="11" selection-end-column="60" />
               <folding>
                 <element signature="e#29#80#0" expanded="true" />
               </folding>
@@ -111,11 +101,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="home.html" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="home.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web/templates/web/m/my/home.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.5" vertical-offset="0" max-vertical-offset="456">
+            <state vertical-scroll-proportion="0.5588235" vertical-offset="0" max-vertical-offset="476">
               <caret line="14" column="55" selection-start-line="14" selection-start-column="55" selection-end-line="14" selection-end-column="55" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="login.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/templates/web/m/login.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-2.0357144" vertical-offset="0" max-vertical-offset="266">
+              <caret line="3" column="44" selection-start-line="3" selection-start-column="44" selection-end-line="3" selection-end-column="44" />
               <folding />
             </state>
           </provider>
@@ -124,7 +124,7 @@
       <file leaf-file-name="models.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2884" max-vertical-offset="7828">
+            <state vertical-scroll-proportion="0.0" vertical-offset="2599" max-vertical-offset="7828">
               <caret line="169" column="76" selection-start-line="169" selection-start-column="76" selection-end-line="169" selection-end-column="76" />
               <folding />
             </state>
@@ -160,7 +160,6 @@
         <option value="$PROJECT_DIR$/web/templates/web/m/register.html" />
         <option value="$PROJECT_DIR$/web/templates/web/m/register_success.html" />
         <option value="$PROJECT_DIR$/web/templates/web/m/join_result.html" />
-        <option value="$PROJECT_DIR$/web/templates/web/m/login.html" />
         <option value="$PROJECT_DIR$/web/forms/fm_register.py" />
         <option value="$PROJECT_DIR$/docs/needs.txt" />
         <option value="$PROJECT_DIR$/web/admin.py" />
@@ -172,7 +171,6 @@
         <option value="$PROJECT_DIR$/locale/en/LC_MESSAGES/django.po" />
         <option value="$PROJECT_DIR$/locale/zh/LC_MESSAGES/django.po" />
         <option value="$PROJECT_DIR$/yiqiwan/urls.py" />
-        <option value="$PROJECT_DIR$/yiqiwan/settings.py" />
         <option value="$PROJECT_DIR$/web/templates/web/m/my/joint_activity_list.html" />
         <option value="$PROJECT_DIR$/web/templates/web/m/my/settings.html" />
         <option value="$PROJECT_DIR$/web/templates/web/m/activity_detail.html" />
@@ -180,10 +178,12 @@
         <option value="$PROJECT_DIR$/web/templates/web/m/my/profile.html" />
         <option value="$PROJECT_DIR$/web/templates/web/m/my/home.html" />
         <option value="$PROJECT_DIR$/web/views/my.py" />
-        <option value="$PROJECT_DIR$/web/urls.py" />
         <option value="$PROJECT_DIR$/web/models.py" />
         <option value="$PROJECT_DIR$/web/templates/web/m/my/balance.html" />
         <option value="$PROJECT_DIR$/web/templates/web/m/base.html" />
+        <option value="$PROJECT_DIR$/yiqiwan/settings.py" />
+        <option value="$PROJECT_DIR$/web/urls.py" />
+        <option value="$PROJECT_DIR$/web/templates/web/m/login.html" />
       </list>
     </option>
   </component>
@@ -651,7 +651,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="7" />
+    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -846,14 +846,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="11267" max-vertical-offset="26714">
           <caret line="593" column="0" selection-start-line="593" selection-start-column="0" selection-end-line="593" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/templates/web/m/login.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.7142856" vertical-offset="0" max-vertical-offset="247">
-          <caret line="4" column="24" selection-start-line="4" selection-start-column="19" selection-end-line="4" selection-end-column="24" />
           <folding />
         </state>
       </provider>
@@ -1062,64 +1054,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2884" max-vertical-offset="7828">
-          <caret line="169" column="76" selection-start-line="169" selection-start-column="76" selection-end-line="169" selection-end-column="76" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/templates/web/m/my/balance.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="10.821428" vertical-offset="797" max-vertical-offset="1501">
           <caret line="26" column="45" selection-start-line="26" selection-start-column="40" selection-end-line="26" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/templates/web/m/my/created_activity_list.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.428571" vertical-offset="0" max-vertical-offset="361">
-          <caret line="8" column="55" selection-start-line="8" selection-start-column="40" selection-end-line="8" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/views/front_web_mobile.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="241" max-vertical-offset="931">
-          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#56#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/yiqiwan/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1489" max-vertical-offset="1995">
-          <caret line="98" column="44" selection-start-line="98" selection-start-column="44" selection-end-line="98" selection-end-column="44" />
-          <folding>
-            <element signature="e#318#327#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="703">
-          <caret line="11" column="27" selection-start-line="11" selection-start-column="27" selection-end-line="11" selection-end-column="27" />
-          <folding>
-            <element signature="e#29#80#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/templates/web/m/my/home.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.5" vertical-offset="0" max-vertical-offset="456">
-          <caret line="14" column="55" selection-start-line="14" selection-start-column="55" selection-end-line="14" selection-end-column="55" />
           <folding />
         </state>
       </provider>
@@ -1134,11 +1072,73 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web/views/my.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.6765873" vertical-offset="0" max-vertical-offset="1653">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1653">
           <caret line="71" column="44" selection-start-line="71" selection-start-column="44" selection-end-line="71" selection-end-column="44" />
           <folding>
             <element signature="e#0#57#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yiqiwan/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1976">
+          <caret line="89" column="19" selection-start-line="89" selection-start-column="19" selection-end-line="89" selection-end-column="19" />
+          <folding>
+            <element signature="e#318#327#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="703">
+          <caret line="11" column="60" selection-start-line="11" selection-start-column="54" selection-end-line="11" selection-end-column="60" />
+          <folding>
+            <element signature="e#29#80#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/views/front_web_mobile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="241" max-vertical-offset="931">
+          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#56#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/templates/web/m/my/created_activity_list.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.428571" vertical-offset="0" max-vertical-offset="361">
+          <caret line="8" column="55" selection-start-line="8" selection-start-column="40" selection-end-line="8" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2884" max-vertical-offset="7828">
+          <caret line="169" column="76" selection-start-line="169" selection-start-column="76" selection-end-line="169" selection-end-column="76" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/templates/web/m/login.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.0357144" vertical-offset="0" max-vertical-offset="266">
+          <caret line="3" column="44" selection-start-line="3" selection-start-column="44" selection-end-line="3" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/templates/web/m/my/home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5588235" vertical-offset="0" max-vertical-offset="476">
+          <caret line="14" column="55" selection-start-line="14" selection-start-column="55" selection-end-line="14" selection-end-column="55" />
+          <folding />
         </state>
       </provider>
     </entry>

@@ -1,7 +1,8 @@
 {% extends "web/m/base.html" %}     {%load staticfiles%}
         {%block content%}
-            <form method="post">
-            {%csrf_token%}
+            <form method="post" action="{%url 'web:login'%} "> {%csrf_token%}
+             <input type="hidden" name="next" value="{%if next%}{{next}}{%else%}{%url 'web:home'%}{%endif%}" />
+
             {{form.as_ul}}
             <input type="submit" value="登录">
         </form>
