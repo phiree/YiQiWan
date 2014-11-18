@@ -1,0 +1,27 @@
+{% extends "web/m/base.html" %}
+{% load i18n %}
+{%load staticfiles%}
+{%block header%}
+ 设置
+{%endblock%}
+{%block content%}
+
+<a href="#popupLogin" data-rel="popup" data-position-to="window" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-check ui-btn-icon-left ui-btn-a" data-transition="pop">{%trans 'choose language'%}</a>
+        <h3>{{LANGUAGE_CODE}}</h3>
+<div data-role="popup" id="popupLogin" data-theme="a" class="ui-corner-all">
+<form action="{% url 'set_language' %}?" method="post">
+    {% csrf_token %}
+    <input name="next" type="hidden" value="{{ redirect_to }}"/>
+    <select name="language">
+        {% get_language_info_list for LANGUAGES as languages %}
+        {% for language in languages %}
+        <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
+        {{ language.name_local }} ({{ language.code }})
+        {{language}}
+        </option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Go"/>
+</form>
+</div>
+{%endblock%}

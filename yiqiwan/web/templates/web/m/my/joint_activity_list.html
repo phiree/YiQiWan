@@ -1,0 +1,14 @@
+{% extends "web/m/base.html" %}
+        {% load i18n %}
+ {%block header%}
+       {%trans 'my joint activity list'%}
+        {%endblock%}
+{%block content%}
+        <ul data-role="listview"   data-inset="true">
+            {%for activity in activity_list%}
+                <li><a href="{%url 'web:activity_detail' activity.id %}">{{activity}}</a></li>
+            {%endfor%}
+
+
+        </ul>
+        {%endblock%}

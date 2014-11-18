@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from django.conf import global_settings
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -48,8 +49,11 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 )
-
+TEMPLATE_CONTEXT_PROCESSORS=global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
+    'django.core.context_processors.i18n',
+)
 ROOT_URLCONF = 'yiqiwan.urls'
 
 WSGI_APPLICATION = 'yiqiwan.wsgi.application'
@@ -90,3 +94,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 LOCALE_PATHS = (
     os.path.join(BASE_DIR,'locale'),
 )
+LANGUAGES=LANGUAGES = (
+    ('en', 'English'),
+    ('zh-cn', u'简体中文'), # instead of 'zh-CN'
+    )

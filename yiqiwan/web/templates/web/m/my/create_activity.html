@@ -1,41 +1,32 @@
 {% extends "web/m/base.html" %}
 {%load staticfiles%}
+{%block header%}
+<h1>創建活動</h1>
+{%endblock%}
 {%block content%}
-<div data-role="page" class="ui-page-theme-b" data-quicklinks="true">
-    <div class="ui-panel-wrapper">
-        <div data-role="header" role="banner" class="ui-header-b ui-bar-inherit">
-            <h1 class="ui-title" role="heading" aria-level="1">創建活動</h1>
-            <a href="{%url 'web:my_home'%}" data-rel="back"
-               class="ui-btn-left ui-btn ui-icon-back ui-btn-icon-notext ui-shadow ui-corner-all"
-               data-role="button" role="button">Back</a>
 
-        </div>
-        <div>
-            {{form.errors}}
-            {{except_msg}}
-        </div>
-        <div class="ui-content" role="main">
-            <form method="post">{%csrf_token%}
-
-                    <label for="id_place">活動地點</label>
-                    {{form.place}}
-                    <a href="{%url 'web:my_create_place'%}">创建新地点</a>
-
-
-                <label for="id_total_cost">活動費用</label>
-                {{form.total_cost_expected}}
-
-                {{form.total_cost_max_expected}}
-                <label for="id_participant_amount">人數</label>
-                {{form.min_participants}} {{form.max_participants}}
-                <label for="id_start_time">活动時間</label>
-               {{form.start_time}} {{form.end_time}}
-                 <label for="id_participate_deadline">报名截止时间</label>
-                 {{form.participate_deadline}}
-                <button type="submit">創建活動</button>
-            </form>
-        </div>
-    </div>
+<div>
+    {{form.errors}}
+    {{except_msg}}
 </div>
+
+<form method="post">{%csrf_token%}
+
+
+    {{ form.place.label_tag }}
+    {{form.place}}
+    <a href="{%url 'web:my_create_place'%}">创建新地点</a>
+    <label for="id_total_cost">活動費用</label>
+    {{form.total_cost_expected}}
+    {{form.total_cost_max_expected}}
+    <label for="id_participant_amount">人數</label>
+    {{form.min_participants}} {{form.max_participants}}
+    <label for="id_start_time">活动時間</label>
+    {{form.start_time}} {{form.end_time}}
+    <label for="id_participate_deadline">报名截止时间</label>
+    {{form.participate_deadline}}
+    <button type="submit">創建活動</button>
+</form>
+
 
 {%endblock%}

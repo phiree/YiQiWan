@@ -1,0 +1,74 @@
+{% extends "web/m/base.html" %}
+{% load i18n %}
+{%block header%}
+{%trans 'my balance'%}
+{%endblock%}
+{%block content%}
+<div>
+
+</div>
+  
+<div class="ui-body ui-body-a ui-corner-all">
+    <h3> {%trans 'online balance'%}</h3>
+          <p>{%trans 'capital/debt'%}:{{balance_online.amount_capital_debt}}</p>
+
+    <p>{%trans 'payables/receivables'%}:{{balance_online.amount_profit_loss}}</p>
+
+    <p>{%trans 'profit/loss'%}:{{balance_online.amount_payables_receivables}}</p>
+      
+</div>
+<div class="ui-body ui-body-a ui-corner-all">
+    <h3> {%trans 'offline balance as owner'%}</h3>
+    <table data-role="table" class="ui-responsive table-stroke">
+        <thead>
+        <tr>
+
+            <th>{%trans 'balance other_user'%}</th>
+            <th>{%trans 'capital/debt'%}</th>
+            <th>{%trans 'payables/receivables'%}</th>
+
+        </tr>
+        </thead>
+        <tbody>{%for balance in balance_offline_list_owner%}
+               
+        <tr>
+            <td>{{balance.other_user}}</td>
+            <td>{{balance.amount_capital_debt}}</td>
+            <td>{{balance.amount_payables_receivables}}</td>
+
+        </tr>
+
+        {%endfor%}
+
+        </tbody>
+    </table>
+     
+</div>
+
+<div class="ui-body ui-body-a ui-corner-all">
+    <h3> {%trans 'offline balance as other user'%}</h3> 
+    <table data-role="table" class="ui-responsive table-stroke">
+        <thead>
+        <tr>
+
+            <th>{%trans 'balance owner'%}</th>
+            <th>{%trans 'capital/debt'%}</th>
+            <th>{%trans 'payables/receivables'%}</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {%for balance in balance_offline_list_other_user%}   
+        <tr>
+            <td>{{balance.owner}}</td>
+            <td>{{balance.amount_capital_debt}}</td>
+            <td>{{balance.amount_payables_receivables}}</td>
+
+        </tr>
+        {%endfor%}
+        </tbody>
+    </table>
+     
+      
+</div>
+{%endblock%}

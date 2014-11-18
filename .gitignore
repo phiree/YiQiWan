@@ -1,5 +1,5 @@
 env_yiqiwan/
-
+__pycache__/
 #################
 ## Eclipse
 #################
@@ -216,3 +216,5 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+*.pyc
+*.pyc

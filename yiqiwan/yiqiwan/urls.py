@@ -9,4 +9,5 @@ urlpatterns = patterns('',
     url(r'',include('web.urls',namespace ='web')),
     url(r'^admin/', include(admin.site.urls)),
     (r'^admin/doc/', include('django.contrib.admindocs.urls'))
+    , (r'^i18n/', include('django.conf.urls.i18n'))
 )

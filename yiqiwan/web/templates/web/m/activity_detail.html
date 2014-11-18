@@ -1,15 +1,26 @@
-{% extends "web/m/base.html" %}     {%load staticfiles%}
+{% extends "web/m/base.html" %}
+{% load i18n %}
+{%block header%}
+活动详情
+{%endblock%}
+{%load staticfiles%}
         {% load render_table from django_tables2 %}
         {%block content%}
 {{object.meta.fields}}
             <div><span>活动名称:</span>{{object.name}}</div>
          <div>地点名称:{{object.place}}</div>
-        <div>地址:{{object.place.address}}</div>
+         <div>地址:{{object.place.address}}</div>
         <div>描述:{{object.description}}</div>
          <div>开始时间:{{object.start_time}}</div>
          <div>结束时间:{{object.description}}</div>
          <div>报名截止时间:{{object.participate_deadline}}</div>
          <div>费用预计:{{object.total_cost_expected}}</div>
+        <div>当前状态:{%trans object.status%}</div>
+        <div>参与者:
+            {%for participant in object.participants.all%}
+                <span>{{participant.username}}</span>
+            {%endfor%}
+            <span></span> </div>
 <div>已报名:
 {%for p in objects.participants%}
          <span>描述:{{object.description}}_</span>
@@ -17,6 +28,7 @@
         <div>
             <form method="post" action="{%url 'web:join_activity' object.pk%}">
                 {%csrf_token%}
+                {#todo: participant no need to see this button#}
                 <input type="submit" value="加入" />
             </form>
 

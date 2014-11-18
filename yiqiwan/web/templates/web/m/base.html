@@ -2,28 +2,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>YiQiWan</title>
-	<link rel="stylesheet" href="{%static 'web/jquery/jquery_mobile/css/themes/default/jquery.mobile-1.4.5.min.css'%}">
-    <link rel="stylesheet" href="{%static 'web/jquery/jquery_mobile/css/themes/default/theme-classic.css'%}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>YiQiWan</title>
 
-	<script src="{%static 'web/jquery/jquery.min.js'%}"></script>
-	<script src="{%static 'web/jquery/jquery_mobile/jquery.mobile-1.4.5.min.js'%}"></script>
+    <script src="{%static 'web/jquery/jquery.min.js'%}"></script>
+    <script src="{%static 'web/jquery/jquery_mobile/jquery.mobile-1.4.5.min.js'%}"></script>
+    <link rel="stylesheet" href="{%static 'web/jquery/jquery_mobile/css/themes/default/jquery.mobile-1.4.5.min.css'%}">
+
 </head>
-<body class="ui-mobile-viewport ui-overlay-a">
-<div>
-    <a href="{%url 'web:site_home' %}" rel="nofollow">首页</a>
- {%if user.is_anonymous %}
-            <a href="{%url 'web:login'%}" rel="nofollow">登录</a>|<a
-                href="{%url 'web:register'%}" rel="nofollow">注册</a>|
-            {%else%}
-            欢迎您,{{user}}|<a href="{%url 'web:my_home'%}">个人中心</a>|
-            <a href="{%url 'web:logout'%}" rel="nofollow">注销</a>|
-            {%endif%}
-    </div>
-{%block content%}
+<body>
+<div data-role="page" data-title="{%block page_title%}一起玩{%endblock%}">
 
-{%endblock%}
+    <div data-role="header">
+       <a href="#" data-rel="back" class="ui-btn ui-shadow ui-corner-all ui-icon-back ui-btn-icon-notext"></a>
+        <h1>
+        {%block header%}
+
+        {%endblock%}
+            </h1>
+    </div>
+    <div role="main"  data-role="ui-content">
+        {%block content%}
+
+        {%endblock%}
+    </div>
+    {%block footer%}
+
+
+    <div data-role="footer" data-position="fixed">
+        <a href="{%url 'web:site_home' %}" rel="nofollow">活动</a>
+        <a href="{%url 'web:my_home'%}"
+           rel="nofollow">我的</a>
+
+    </div>
+    {%endblock%}
+</div>
 </body>
 </html>

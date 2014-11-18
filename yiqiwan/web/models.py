@@ -167,7 +167,7 @@ class Base_Balance(models.Model):
 #在线账户总额 每个用户只能有一个在线账户
 class User_Balance(Base_Balance):
     owner = models.OneToOneField(User)
-
+User.user_balance=property(lambda u:User_Balance.objects.get_or_create(owner=u)[0])
 
 #用户之间的账户:离线账户
 class User_User_Balance(Base_Balance):

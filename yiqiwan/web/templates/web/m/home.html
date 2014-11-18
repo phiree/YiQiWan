@@ -3,8 +3,8 @@
         {%load staticfiles%}
         {%block content%}
         {%for activity in activity_list%}
-        <div>
-         <a href="{%url 'web:activity_detail' activity.id%}">{{activity}}</a>
-        </div>
-{%endfor%}
+            <div>
+             <a href="{%url 'web:activity_detail' activity.id%}">{{activity}}</a>
+            </div>
+        {%endfor%}
 {%endblock%}
