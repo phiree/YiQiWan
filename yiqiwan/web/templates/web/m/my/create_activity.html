@@ -12,7 +12,8 @@
 
 <form method="post">{%csrf_token%}
 
-
+    {{ form.name.label_tag }}
+    {{form.name}}
     {{ form.place.label_tag }}
     {{form.place}}
     <a href="{%url 'web:my_create_place'%}">创建新地点</a>

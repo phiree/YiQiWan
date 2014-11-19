@@ -1,37 +1,37 @@
 {% extends "web/m/base.html" %}
 {% load i18n %}
 {%block header%}
-活动详情
+{%trans 'activity detail'%}
 {%endblock%}
 {%load staticfiles%}
-        {% load render_table from django_tables2 %}
-        {%block content%}
-{{object.meta.fields}}
-            <div><span>活动名称:</span>{{object.name}}</div>
-         <div>地点名称:{{object.place}}</div>
-         <div>地址:{{object.place.address}}</div>
-        <div>描述:{{object.description}}</div>
-         <div>开始时间:{{object.start_time}}</div>
-         <div>结束时间:{{object.description}}</div>
-         <div>报名截止时间:{{object.participate_deadline}}</div>
-         <div>费用预计:{{object.total_cost_expected}}</div>
-        <div>当前状态:{%trans object.status%}</div>
-        <div>参与者:
-            {%for participant in object.participants.all%}
-                <span>{{participant.username}}</span>
-            {%endfor%}
-            <span></span> </div>
-<div>已报名:
-{%for p in objects.participants%}
-         <span>描述:{{object.description}}_</span>
-        {%endfor%}</div>
-        <div>
-            <form method="post" action="{%url 'web:join_activity' object.pk%}">
-                {%csrf_token%}
-                {#todo: participant no need to see this button#}
-                <input type="submit" value="加入" />
-            </form>
 
-        </div>
-        </form>
-        {%endblock%}
+{%block content%}
+
+<div><span>{%trans 'name'%}:</span>{{object.name}}</div>
+<div>{%trans 'status'%}:{%trans object.status%}</div>
+<div>{%trans 'founder'%}:{{object.founder}}</div>
+<div>{%trans 'place'%}:{{object.place}}</div>
+<div>{%trans 'address'%}:{{object.place.address}}</div>
+<div>{%trans 'start time'%}:{{object.start_time}}</div>
+<div>{%trans 'end time'%}:{{object.end_time}}</div>
+<div>{%trans 'register deadline'%}:{{object.participate_deadline}}</div>
+<div>{%trans 'total cost expected'%}:{{object.total_cost_expected}}</div>
+ <div>{%trans 'withhold'%}:{{object.balance_required}}</div>
+        <div>{%trans 'real_time cost'%}:{{object.checkout_strategy.get_each_pay}}</div>
+        <div style="color:gray">{%trans 'note:real cost will  to the '%}</div>
+<div>{%trans 'participants'%}:
+    {%for participant in object.participants.all%}
+    <span>{{participant.username}}</span>
+    {%endfor%}
+</div>
+        <div>{%trans 'description'%}:{{object.description}}</div>
+<div>
+    <form method="post" action="{%url 'web:join_activity' object.pk%}">
+        {%csrf_token%}
+        {#todo: participant no need to see this button#}
+        <input type="submit" value="加入"/>
+    </form>
+
+</div>
+</form>
+{%endblock%}

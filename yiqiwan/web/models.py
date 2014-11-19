@@ -1,3 +1,4 @@
+from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -8,6 +9,7 @@ from model_utils.fields import SplitField, StatusField, MonitorField
 from django.utils import timezone as DateTime
 #from django.utils.timezone import datetime as DateTime
 from decimal import Decimal, ROUND_HALF_EVEN
+from model_utils.managers import InheritanceManager
 
 
 class Place(models.Model):
@@ -27,7 +29,6 @@ class Place(models.Model):
 
     def __str__(self):
         return self.address
-
 
 class Activity(models.Model):
     """
@@ -51,16 +52,60 @@ class Activity(models.Model):
     #can't ensure
     total_cost_max_expected = models.IntegerField()
     total_cost_actual = models.DecimalField(null=True, blank=True, max_digits=9, decimal_places=1)
+    checkout_strategy=models.ForeignKey('Checkout_Strategy')
     participants = models.ManyToManyField(User, related_name='activity_participants', null=True, blank=True)
     STATUS = Choices('Open', 'Progressing', 'Over', 'Closed')
     status = StatusField(STATUS, default='Open', blank=True)
     create_time = models.DateTimeField(auto_now=True)
 
+    def get_each_pay(self):
+        total_amount_occur = self.total_cost_actual+self.checkout_strategy.get_charge_amount(self.total_cost_actual)
+        participant_amount = self.participants.count()
+        if not self.checkout_strategy.is_founder_free:
+            participant_amount += 1
+        return math.ceil(Decimal(total_amount_occur/participant_amount))
+    #结帐
+    def checkout(self):
+        #活动需要收取的原始费用(参与者支付额未求整之前)
+        real_cost_each = self.get_each_pay()
+        #确认参与者的两个账户至少有一个的余额能够支付本次活动.
+        #或者,允许参加,只不过应付账款增加. 需要参与者线下督促用户付现金.
+        #每个参与者的aa费用求整之后的总费用
+        total_amount_need_charge = real_cost_each * self.participants.count()
+        #利润分要分为两部分,线上支付的aa费用产生的利润, 线下用户直接付给创建者的费用.
+        #第一部分的利润由平台和创建者分享, 后一部分由创建者独享.
+        amount_profit = total_amount_need_charge - self.total_cost_actual
+        #如果利润小于0,则创建者承担全部亏损
+        if amount_profit < 0:
+            self.checkout_strategy.founder_profit_percent = 1
+
+        amount_profit_founder = Decimal(amount_profit * self.checkout_strategy.founder_profit_percent).quantize(Decimal('.1'),
+                                                                                              rounding=ROUND_HALF_EVEN)
+        amount_profit_system = amount_profit - amount_profit_founder
+
+        #更新账户:
+        for participant in self.participants.all():
+            #优先使用在线账户支付.如果不足,再使用离线账户. 剩余账户为负 由 创建者找用户解决.
+
+            participant_checkout(participant=participant
+                                 , activity=self, amount=real_cost_each
+                                 , flow_type=flow_type_choice[1][0])
+
+        #营业收入表
+        Financial_Statement.objects.create(
+            activity=self,
+            amount_for_participants=total_amount_need_charge,  #参与者(包括创建者应该支付的费用)
+            amount_for_founder=self.total_cost_actual,  #活动参与者收取的费用(用于线下支付给商家)
+            amount_for_founder_profit=amount_profit_founder,
+            amount_for_system_profit=amount_profit_system,
+            occur_time=DateTime.now()
+        )
+
     @property
     def balance_required(self):
         total_price = self.total_cost_expected if self.total_cost_expected else self.total_cost_max_expected
 
-        return Decimal(total_price / self.min_participants)
+        return math.ceil(Decimal(total_price / self.min_participants))
 
     #增加參與者
     def add_participant(self, participant):
@@ -101,7 +146,20 @@ class Activity(models.Model):
 
     def __str__(self):
         return self.name + "_" + self.activity_type + "_" + self.place.name
+    #自动套用strategy
+    def save(self, *args, **kwargs):
+        try:
+            #todo 为 model-utils 的inheritmanager 增加一个  get_or_create_subclass 方法
+            strategy= Checkout_Strategy.objects.get_subclass(
+                enabled=True
+            )
+        except MultipleObjectsReturned:
+            raise
+        except ObjectDoesNotExist:
+            strategy= Checkout_Strategy.objects.create(enabled=True)
 
+        self.checkout_strategy=strategy
+        super(Activity,self).save(*args,**kwargs)
 
 #活動的時間線
 class Activity_Timeline(models.Model):
@@ -341,66 +399,42 @@ import math
 
 
 class Checkout_Strategy(models.Model):
-    activity = models.OneToOneField(Activity)
+    """结帐策略:"""
     #创建者分红比例
-    founder_profit_percent = models.DecimalField(max_digits=2, decimal_places=1)
+    objects = InheritanceManager()
+    founder_profit_percent = models.DecimalField(default=0.2, max_digits=2, decimal_places=1)
+    #创建者是否免单
     is_founder_free = models.BooleanField(default=False)
-
-    def get_amount_occur(self):
-        return self.activity.total_cost_actual
+    last_update_time=models.DateTimeField(auto_now=True, default=DateTime.now())
+    #todo:ensure there is only one suitable strategy for certain condition.
+    #目前还没有其他条件
+    enabled=models.BooleanField(default=False)
+    # 向上取整前产生的额外费用.
+    def get_charge_amount(self,any):
+        return 0
         pass
 
+        real_cost_each = math.ceil(total_amount_occur / participant_amount)
     #成立条件:参与者在线账户或者对创建者的离线账户余额不能少于aa费用.否则提醒创建者让用户交钱.
 
-    def checkout(self):
-        #活动需要收取的原始费用(参与者支付额未求整之前)
-        total_amount_occur = self.get_amount_occur()
-        participant_amount = self.activity.participants.count()
-        if not self.is_founder_free:
-            participant_amount += 1
-
-        real_cost_each = math.ceil(total_amount_occur / participant_amount)
-        #确认参与者的两个账户至少有一个的余额能够支付本次活动.
-        #或者,允许参加,只不过应付账款增加. 需要参与者线下督促用户付现金.
-        #每个参与者的aa费用求整之后的总费用
-        tatal_amount_need_charge = real_cost_each * participant_amount
-        #利润分要分为两部分,线上支付的aa费用产生的利润, 线下用户直接付给创建者的费用.
-        #第一部分的利润由平台和创建者分享, 后一部分由创建者独享.
-        amount_profit = tatal_amount_need_charge - self.activity.total_cost_actual
-        #如果利润小于0,则创建者承担全部亏损
-        if amount_profit < 0:
-            self.founder_profit_percent = 1
-
-        amount_profit_founder = Decimal(amount_profit * self.founder_profit_percent).quantize(Decimal('.1'),
-                                                                                              rounding=ROUND_HALF_EVEN)
-        amount_profit_system = amount_profit - amount_profit_founder
-
-        #更新账户:
-        for participant in self.activity.participants.all():
-            #优先使用在线账户支付.如果不足,再使用离线账户. 剩余账户为负 由 创建者找用户解决.
-
-            participant_checkout(participant=participant
-                                 , activity=self.activity, amount=real_cost_each
-                                 , flow_type=flow_type_choice[1][0])
-
-        #营业收入表
-        Financial_Statement.objects.create(
-            activity=self.activity,
-            amount_for_participants=tatal_amount_need_charge,  #参与者(包括创建者应该支付的费用)
-            amount_for_founder=self.activity.total_cost_actual,  #活动参与者收取的费用(用于线下支付给商家)
-            amount_for_founder_profit=amount_profit_founder,
-            amount_for_system_profit=amount_profit_system,
-            occur_time=DateTime.now()
-        )
-
-
+#固定费用
 class Checkout_Strategy_Fix_Charge(Checkout_Strategy):
     fix_charge = models.DecimalField(max_digits=9, decimal_places=1)
+    def get_charge_amount(self,any):
+        return  self.fix_charge
 
-    def get_amount_occur(self):
-        return self.activity.total_cost_actual + self.fix_charge
+#总额的比例 前期是否设定为10%?
+class Checkout_Strategy_Percent_Charge(Checkout_Strategy):
+    percent_charge = models.DecimalField(max_digits=3, decimal_places=2)
+    max_charge= models.IntegerField()
+    def get_charge_amount(self,total_cost_actual):
+        charge= total_cost_actual*self.percent_charge
+        charge=charge if charge<=self.max_charge else self.max_charge
+        return  charge
 
+#多种策略可以选择
 
+#如何决定每个活动的 结帐策略?
 
 
 
