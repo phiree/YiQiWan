@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,HttpResponseRedirect
 from django.http import HttpResponseRedirect
 from ..forms import fm_register,fm_activity
@@ -5,6 +6,7 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext  as _,ungettext
 from django.views.generic import DetailView
 from django.contrib.auth.models import User
+from django.contrib.auth import login
 from ..models import Activity,User_Balance,User_User_Balance
 def home(request):
     activity_list=Activity.objects.all()
@@ -15,6 +17,7 @@ class ActivityDetail(DetailView):
     template_name = 'web/m/activity_detail.html'
     slug_field = 'id'
     slug_url_kwarg ='activity_id'
+@login_required
 def join_activity(request,activity_id):
     result=()
     if request.method=='POST':
@@ -34,6 +37,8 @@ def register(request):
             created_user=User.objects.create_user(username=form.cleaned_data['username'],
                                      password= form.cleaned_data['password'])
             User_Balance.objects.get_or_create(owner=created_user)
+            created_user.backend = 'django.contrib.auth.backends.ModelBackend'
+            login(request, user=created_user)
             return HttpResponseRedirect(redirect_to= reverse('web:register_success'))
     return render(request,'web/m/register.html',{'form':form})
 

@@ -1,8 +1,11 @@
 {% extends "web/m/base.html" %}     {%load staticfiles%}
+        {%load i18n%}
         {%block content%}
             <form method="post" action="{%url 'web:login'%}{%if next%}?next={{next}}{%endif%}"> {%csrf_token%}
 
             {{form.as_ul}}
             <input type="submit" value="登录">
+
         </form>
+        <a href="{%url 'web:register'%}{%if next%}?next={{next}}{%endif%}">{%trans 'register'%}</a>
         {%endblock%}

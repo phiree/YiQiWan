@@ -87,7 +87,7 @@ class activity_test(TestCase):
         self.activity1.add_participant(self.user2)
         self.activity1.add_participant(self.user3)
         self.activity1.add_participant(self.user4)
-        self.activity1.checkout()
+        self.activity1.checkout(100)
         fs=Financial_Statement.objects.all()[0]
         print(fs.amount_for_participants/(fs.activity.participants.count()+1))
         print(fs.amount_for_participants)
@@ -110,7 +110,7 @@ class activity_test(TestCase):
         self.activity1.add_participant(self.user3)
         self.activity1.add_participant(self.user4)
 
-        self.activity1.checkout()
+        self.activity1.checkout(100)
         fs=Financial_Statement.objects.all()[0]
         print(fs.amount_for_participants/fs.activity.participants.count())
         print(fs.amount_for_participants)
@@ -130,7 +130,7 @@ class activity_test(TestCase):
         self.activity1.add_participant(self.user2)
         self.activity1.add_participant(self.user3)
         self.activity1.add_participant(self.user4)
-        self.activity1.checkout()
+        self.activity1.checkout(100)
         user2_user_balance=self.user2.user_user_balance_owner.filter(other_user=self.user1)[0]
         self.assertEqual(user2_user_balance.amount_capital_debt,-7)
         self.assertEqual(user2_user_balance.amount_payables_receivables,0)
@@ -158,7 +158,7 @@ class activity_test(TestCase):
         self.activity1.add_participant(self.user3)
         self.activity1.add_participant(self.user4)
         self.activity1.total_cost_actual=200
-        self.activity1.checkout()
+        self.activity1.checkout(200)
         user2_user_balance=self.user2.user_user_balance_owner.filter(other_user=self.user1)[0]
         self.assertEqual(user2_user_balance.amount_capital_debt,-32)
         self.assertEqual(user2_user_balance.amount_payables_receivables,0)
@@ -174,8 +174,8 @@ class activity_test(TestCase):
         self.activity1.add_participant(self.user2)
         self.activity1.add_participant(self.user3)
         self.activity1.add_participant(self.user4)
-        self.activity1.total_cost_actual=3
-        self.activity1.checkout()
+        #self.activity1.total_cost_actual=3
+        self.activity1.checkout(3)
         user2_user_balance=self.user2.user_user_balance_owner.filter(other_user=self.user1)[0]
         self.assertEqual(user2_user_balance.amount_capital_debt,10)
         self.assertEqual(user2_user_balance.amount_payables_receivables,0)

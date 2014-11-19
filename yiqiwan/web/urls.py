@@ -2,8 +2,9 @@ __author__ = 'Administrator'
 from django.conf.urls import patterns, url, include
 from .views.front_web_mobile import home, register, register_success, ActivityDetail, join_activity
 from .views.my import my_home, create_activity, ActivityCreate, my_settings\
-    ,my_joint_activity_list,my_created_activity_list,my_profile,my_balance
-
+    ,my_joint_activity_list,my_created_activity_list,my_profile,my_balance,my_charge_activity
+from django.conf import settings
+from django.conf.urls.static import static
 urlpatterns = patterns(''
 
                        , url(r'^accounts/login.*', 'django.contrib.auth.views.login',
@@ -22,10 +23,11 @@ urlpatterns = patterns(''
 
                        , url(r'^my/joint_activity/list$', my_joint_activity_list, name='my_joint_activity_list')
                         , url(r'^my/created_activity/list$', my_created_activity_list, name='my_created_activity_list')
+                        , url(r'^my/charge_activity/(?P<activity_id>\d+)/$', my_charge_activity, name='my_charge_activity')
                        , url(r'^my/settings/$', my_settings, name='my_settings')
 
                        ,
                        url(r'^activity_detail/(?P<activity_id>\d+)/$', ActivityDetail.as_view(), name='activity_detail')
                        , url(r'^join_activity/(?P<activity_id>\d+)/$', join_activity, name='join_activity')
                        ,
-)
+)+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

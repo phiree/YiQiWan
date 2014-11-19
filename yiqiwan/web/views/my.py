@@ -9,7 +9,11 @@ from django.core.urlresolvers import reverse
 @login_required
 def my_home(request):
         return render(request,'web/m/my/home.html')
-
+#todo
+""""
+创建活动要用向导的形式 1)活动地点-->2)名称,活动类型->3)开始时间,结束时间,报名截止时间->4)参加人数,最多参加人数
+->5)参加人数,最多参加人数
+"""
 def create_activity(request):
 
     if request.method=='GET':
@@ -77,5 +81,15 @@ def my_balance(request):
                                                    'balance_offline_list_owner':balance_offline_list_owner,
                                                    'balance_offline_list_other_user':balance_offline_list_other_user
                                                     })
+
+#活动收款界面
+def my_charge_activity(request,activity_id):
+    activity=Activity.objects.get(pk=activity_id)
+
+    return render(request,'web/m/my/activity_charge.html',{activity:activity})
+
+def charge(request,from_user, to_user,activity=None):
+
+    pass
 
 

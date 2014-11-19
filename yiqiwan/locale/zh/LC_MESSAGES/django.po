@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-18 23:37+0800\n"
+"POT-Creation-Date: 2014-11-20 03:57+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,9 +16,122 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: .\web\templates\web\m\activity_detail.html:4
+msgid "activity detail"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:10
+msgid "name"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:11
+msgid "status"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:12
+msgid "founder"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:13
+msgid "place"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:14
+msgid "address"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:15
+msgid "start time"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:16
+msgid "end time"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:17
+msgid "register deadline"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:18
+msgid "total cost expected"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:19
+msgid "withhold"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:20
+msgid "real_time cost"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:21
+msgid "note:real cost will  to the "
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:22
+msgid "participants"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:27
+msgid "description"
+msgstr ""
+
+#: .\web\templates\web\m\home.html:5
+msgid "activity list"
+msgstr ""
+
+#: .\web\templates\web\m\my\balance.html:4
+msgid "my balance"
+msgstr ""
+
+#: .\web\templates\web\m\my\balance.html:12
+msgid "online balance"
+msgstr ""
+
+#: .\web\templates\web\m\my\balance.html:13
+#: .\web\templates\web\m\my\balance.html:27
+#: .\web\templates\web\m\my\balance.html:55
+msgid "capital/debt"
+msgstr ""
+
+#: .\web\templates\web\m\my\balance.html:15
+#: .\web\templates\web\m\my\balance.html:28
+#: .\web\templates\web\m\my\balance.html:56
+msgid "payables/receivables"
+msgstr ""
+
+#: .\web\templates\web\m\my\balance.html:17
+msgid "profit/loss"
+msgstr ""
+
+#: .\web\templates\web\m\my\balance.html:21
+msgid "offline balance as owner"
+msgstr ""
+
+#: .\web\templates\web\m\my\balance.html:26
+msgid "balance other_user"
+msgstr ""
+
+#: .\web\templates\web\m\my\balance.html:49
+msgid "offline balance as other user"
+msgstr "账户另一方"
+
+#: .\web\templates\web\m\my\balance.html:54
+msgid "balance owner"
+msgstr "账户拥有者"
+
+#: .\web\templates\web\m\my\created_activity_list.html:4
+#: .\web\templates\web\m\my\joint_activity_list.html:4
+msgid "my joint activity list"
+msgstr "我参加的活动"
+
 #: .\web\templates\web\m\my\home.html:5
 msgid "my home title"
 msgstr "我的主页"
+
+#: .\web\templates\web\m\my\settings.html:9
+msgid "choose language"
+msgstr "选择语言"
 
 #: .\web\views\front_web_mobile.py:42
 msgid "this is a goodone"

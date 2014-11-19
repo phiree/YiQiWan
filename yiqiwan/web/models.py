@@ -37,7 +37,7 @@ class Activity(models.Model):
     founder = models.ForeignKey(User, related_name='activity_founder', verbose_name='创建者', blank=True,
                                 null=True, help_text='创建者')
     name = models.CharField(max_length=300, null=True, blank=True)
-    description = SplitField(max_length=8000, null=True, blank=True)
+    description =models.CharField(max_length=8000, null=True, blank=True)
     place = models.ForeignKey(Place)
     min_participants = models.IntegerField()
     max_participants = models.IntegerField()
@@ -52,29 +52,43 @@ class Activity(models.Model):
     #can't ensure
     total_cost_max_expected = models.IntegerField()
     total_cost_actual = models.DecimalField(null=True, blank=True, max_digits=9, decimal_places=1)
-    checkout_strategy=models.ForeignKey('Checkout_Strategy')
+    checkout_strategy=models.ForeignKey('Checkout_Strategy',null=True,blank=True)
     participants = models.ManyToManyField(User, related_name='activity_participants', null=True, blank=True)
-    STATUS = Choices('Open', 'Progressing', 'Over', 'Closed')
-    status = StatusField(STATUS, default='Open', blank=True)
+    status_choice = Choices('Open', 'Progressing', 'Over', 'Closed')
+    status = models.CharField(max_length=20, choices=status_choice, default='Open', blank=True)
     create_time = models.DateTimeField(auto_now=True)
 
-    def get_each_pay(self):
-        total_amount_occur = self.total_cost_actual+self.checkout_strategy.get_charge_amount(self.total_cost_actual)
+    def get_each_pay_preview(self):
+        total_cost_max= self.total_cost_max_expected if self.total_cost_max_expected else self.total_cost_expected
+        total_cost_min=self.total_cost_expected if self.total_cost_expected else self.total_cost_max_expected
+        extra_charge_min=self.checkout_strategy.get_charge_amount(total_cost_min)
+        extra_charge_max=self.checkout_strategy.get_charge_amount(total_cost_max)
+        total_amount_occur_max = total_cost_max+extra_charge_max
+        total_amount_occur_min = total_cost_min+extra_charge_min
+        participant_amount = self.participants.count()
+        if not self.checkout_strategy.is_founder_free:
+            participant_amount += 1
+        return  math.ceil(Decimal(total_amount_occur_min/participant_amount)), math.ceil(Decimal(total_amount_occur_max/participant_amount))
+
+    def get_each_pay(self,actual_cost):
+        total_amount_occur = actual_cost+self.checkout_strategy.get_charge_amount(actual_cost)
         participant_amount = self.participants.count()
         if not self.checkout_strategy.is_founder_free:
             participant_amount += 1
         return math.ceil(Decimal(total_amount_occur/participant_amount))
     #结帐
-    def checkout(self):
+    def checkout(self,actual_cost):
         #活动需要收取的原始费用(参与者支付额未求整之前)
-        real_cost_each = self.get_each_pay()
+        self.total_cost_actual=actual_cost
+        self.save()
+        real_cost_each = self.get_each_pay(actual_cost)
         #确认参与者的两个账户至少有一个的余额能够支付本次活动.
         #或者,允许参加,只不过应付账款增加. 需要参与者线下督促用户付现金.
         #每个参与者的aa费用求整之后的总费用
         total_amount_need_charge = real_cost_each * self.participants.count()
         #利润分要分为两部分,线上支付的aa费用产生的利润, 线下用户直接付给创建者的费用.
         #第一部分的利润由平台和创建者分享, 后一部分由创建者独享.
-        amount_profit = total_amount_need_charge - self.total_cost_actual
+        amount_profit = total_amount_need_charge - actual_cost
         #如果利润小于0,则创建者承担全部亏损
         if amount_profit < 0:
             self.checkout_strategy.founder_profit_percent = 1
