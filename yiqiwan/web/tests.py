@@ -8,7 +8,7 @@ from model_mommy import mommy
 from model_mommy.recipe import Recipe, foreign_key
 class activity_test(TestCase):
     def setUp(self):
-        users=mommy .make("User",_quantity=6)
+        users=mommy .make("User2",_quantity=6)
         self.user1=users[0]
         self.user2=users[1]
         self.user3=users[2]
@@ -45,6 +45,7 @@ class activity_test(TestCase):
         self.user5_user_balance=mommy.make("User_User_Balance",owner=self.user5, other_user=self.user1, amount_capital_debt=10)
         self.user6_user_balance=mommy.make("User_User_Balance",owner=self.user6, other_user=self.user1, amount_capital_debt=10)
 
+        self.system_balance=mommy
     def test_add_participant_already_in(self):
 
         #other_user no need join

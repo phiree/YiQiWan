@@ -23,7 +23,7 @@ def join_activity(request,activity_id):
     if request.method=='POST':
         activity=Activity.objects.get(pk=activity_id)
         user=request.user
-        result=activity.add_participant(user)
+        result=activity.add_participant(user.User2)
     return render(request,'web/m/join_result.html',{'msg':result})
 def join_result(request):
     msg='join ok'

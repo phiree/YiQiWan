@@ -53,7 +53,7 @@ class Activity(models.Model):
     total_cost_max_expected = models.IntegerField()
     total_cost_actual = models.DecimalField(null=True, blank=True, max_digits=9, decimal_places=1)
     checkout_strategy=models.ForeignKey('Checkout_Strategy',null=True,blank=True)
-    participants = models.ManyToManyField(User, related_name='activity_participants', null=True, blank=True)
+    participants = models.ManyToManyField('User2', related_name='activity_participants', null=True, blank=True)
     status_choice = Choices('Open', 'Progressing', 'Over', 'Closed')
     status = models.CharField(max_length=20, choices=status_choice, default='Open', blank=True)
     create_time = models.DateTimeField(auto_now=True)
@@ -235,16 +235,25 @@ class Base_Balance(models.Model):
     def balance_expected(self):
         return self.balance_actual + self.amount_payables_receivables
 
-
+#扩展的user
+class User2(User):
+    user=models.OneToOneField(User)
+    def get_user_user_balance(self,other_user):
+        return User_User_Balance.objects.get_or_create(owner=self.user,other_user=other_user)
 #在线账户总额 每个用户只能有一个在线账户
 class User_Balance(Base_Balance):
-    owner = models.OneToOneField(User)
-User.user_balance=property(lambda u:User_Balance.objects.get_or_create(owner=u)[0])
+    owner = models.OneToOneField(User2)
+User2.user_balance=property(lambda u:User_Balance.objects.get_or_create(owner=u)[0])
+
 
 #用户之间的账户:离线账户
 class User_User_Balance(Base_Balance):
-    owner = models.ForeignKey(User, related_name='user_user_balance_owner')
-    other_user = models.ForeignKey(User, related_name='user_user_balance_other_user')
+    owner = models.ForeignKey(User2, related_name='user_user_balance_owner')
+    other_user = models.ForeignKey(User2, related_name='user_user_balance_other_user')
+
+#系统账户
+class System_Balance(Base_Balance):
+    pass
 
 #流水帐. 类型,1)参与活动(预扣款)2)活动结帐(实际扣款) 3)为线上账户充值 4)从线上账户提现 5)创建者为参与者离线账户充值 6)用户从离线账户取现(现场取回现金)
 flow_type_choice = (('activity_pre_checkout', '活动预结帐'),
@@ -259,9 +268,10 @@ flow_type_choice = (('activity_pre_checkout', '活动预结帐'),
 #借贷流水,
 class Balance_Flow(models.Model):
     flow_type = models.CharField(choices=flow_type_choice, max_length=50)
-    account = models.ForeignKey(Base_Balance, related_name='balance_flow_from')
+    account_from = models.ForeignKey(Base_Balance, related_name='balance_flow_from')
     #account 收支平衡 不需要 to-account 因为流水双方已经在同一个account,面了
-    #to_account=models.ForeignKey(Base_Balance,related_name='balance_flow_to',null=True,blank=True)
+    #update 同一比收支需要分别记录在多个不同的账户里
+    account_to=models.ForeignKey(Base_Balance,related_name='balance_flow_to',null=True,blank=True)
     amount = models.DecimalField(default=0, max_digits=6, decimal_places=1, help_text='金额')
     occur_time = models.DateTimeField(auto_now=True, default=DateTime.now())
     activity = models.ForeignKey(Activity, null=True, blank=True)
@@ -274,27 +284,29 @@ class Balance_Flow(models.Model):
         if self.applied:
             return (False, 'Error.flow had been checked, cannot apply again ')
 
+        #加入活动 预扣款
         if self.flow_type == flow_type_choice[0][0]:
             #
-            self.account.amount_payables_receivables += -1 * self.amount  #应付增加 减法
-            self.account.amount_capital_debt += -1 * self.amount  #资产负债增加,减法
-            #self.to_account.amount_payables_receivables+=self.amount #应收 增加
+            self.account_from.amount_payables_receivables += self.amount  #应付增加 减法
+            self.account.amount_capital_debt -= self.amount  #资产负债增加,减法
+            self.account_to.amount_payables_receivables+=self.amount #应收 增加
 
         #实际扣款 清空应付款,而且清空的金额等于预扣的款项,不是加入时的 balance_required
-        #amount 值是 实际扣款额 和 预付额之间的差价
+        #amount 值 由来源负责计算, 如果是负数 这表明是 返还 预付款.
         elif self.flow_type == flow_type_choice[1][0]:
 
-            self.account.amount_payables_receivables = 0  #清空应付款
+            #不能这样清空应付款
+            self.account_from.amount_payables_receivables -=self.amount  #清空应付款
             #恢复预扣款
-            self.account.amount_capital_debt -= self.amount
+            self.account_from.amount_capital_debt -= self.amount
             #减除实际扣款
-            #self.to_account.amount_payables_receivables-=self.amount #应收减少
-            #self.to_account.amount_capital_debt+=self.amount #资产增加
-
+            self.account_to.amount_payables_receivables-=self.amount #应收减少
+            self.account_to.amount_capital_debt+=self.amount #资产增加
+        #活动取消
         elif self.flow_type == flow_type_choice[2][0]:
-            self.account.amount_payables_receivables += 0  #应付减少
-            self.account.amount_capital_debt += self.amount  #资产增加
-            #self.to_acount.amount_payables_receivables-=self.amount #应收减少
+            self.account_from.amount_payables_receivables -=self.amount  #应付减少
+            self.account_from.amount_capital_debt += self.amount  #资产增加
+            self.acount_to.amount_payables_receivables-=self.amount #应收减少
 
         elif self.flow_type == flow_type_choice[3][0]:  #在线充值
             self.account.amount_capital_debt += self.amount
@@ -318,7 +330,7 @@ def participant_checkout(participant, activity, amount, flow_type):
 
     balance_online = participant.user_balance
     balance_offline = participant.user_user_balance_owner.filter(other_user=activity.founder)[0]
-
+    #实际付款
     if flow_type == flow_type_choice[1][0]:
         balance_online_pre_check,balance_offline_pre_check = None,None
         pre_check_flow_list = Balance_Flow.objects.filter(activity=activity, flow_type=flow_type_choice[0][0])
@@ -337,7 +349,7 @@ def participant_checkout(participant, activity, amount, flow_type):
             balance_offline_pre_check = pre_check_flow_offline.amount
         elif pre_check_flow_online_list.count() > 1:
             raise ('pre_check_flow_online_list.count')
-        #先返回预扣款:
+        #先返回预扣款:模仿实际收款 只不过金额是负数
         if  balance_online_pre_check !=None  :
             balance_flow=Balance_Flow.objects.create(flow_type=flow_type
                         #todo ensure the account exits only one
