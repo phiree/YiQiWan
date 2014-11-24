@@ -9,3 +9,7 @@
 很顺手  不需要放弃
 
 产品的口号:宅在家里泡淘宝,还是找个空气好的时间出来转转?
+
+#important
+env 已经更新django非release版本 pip install https://github.com/django/django/zipball/master
+解决auth migrate的bug:  Lookup failed for model referenced by field

@@ -1,6 +1,6 @@
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,AbstractBaseUser,AbstractUser
 
 from model_utils import Choices
 from model_utils.fields import SplitField, StatusField, MonitorField
@@ -11,6 +11,12 @@ from django.utils import timezone as DateTime
 from decimal import Decimal, ROUND_HALF_EVEN
 from model_utils.managers import InheritanceManager
 from django.utils.translation import gettext as _
+from django.conf import settings
+
+
+class User2(AbstractUser):
+    def get_user_user_balance(self,other_user):
+        return User_User_Balance.objects.get_or_create(owner=self,other_user=other_user)
 
 
 class Place(models.Model):
@@ -22,7 +28,7 @@ class Place(models.Model):
     coordinate_x = models.DecimalField(max_digits=9, decimal_places=6)
     coordinate_y = models.DecimalField(max_digits=9, decimal_places=6)
     phone = models.CharField(max_length=200)
-    owner = models.ForeignKey(User, null=True, blank=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
     create_date = models.DateTimeField()
     last_update_time = models.DateTimeField()
     photo = models.ImageField(blank=True, null=True)
@@ -35,7 +41,7 @@ class Activity(models.Model):
     """
     活动的定义.
     """
-    founder = models.ForeignKey(User, related_name='activity_founder', verbose_name='创建者', blank=True,
+    founder = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='activity_founder', verbose_name='创建者', blank=True,
                                 null=True, help_text='创建者')
     name = models.CharField(max_length=300, null=True, blank=True)
     description =models.CharField(max_length=8000, null=True, blank=True)
@@ -54,17 +60,28 @@ class Activity(models.Model):
     total_cost_max_expected = models.IntegerField()
     total_cost_actual = models.DecimalField(null=True, blank=True, max_digits=9, decimal_places=1)
     checkout_strategy=models.ForeignKey('Checkout_Strategy',null=True,blank=True)
-    participants = models.ManyToManyField('User2', related_name='activity_participants', null=True, blank=True)
+    participants = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='activity_participants', null=True, blank=True)
     status_choice = Choices(('Open','Open'), ('Progressing','Progressing'), ('Over','Over'),('Closed','Closed'))
     status = models.CharField(max_length=20, choices=status_choice, default='Open', blank=True)
-    create_time = models.DateTimeField(default=DateTime.now())
-    #每人支付的总数 is_preview:是否是预览额,否则是实际扣款额
-    def get_each_pay(self,is_preview):
+    create_time = models.DateTimeField(default=DateTime.now(),blank=True)
+
+    #最终可能扣款数 -- 根据参加者数量 动态变化
+    def get_each_pay_real_time(self):
+        return self.get_each_pay(True,True)
+    #预扣款数量
+    def  get_each_pay_pre(self):
+        return self.get_each_pay(True,False)
+    #实际扣款数量
+    def get_each_pay_real(self):
+        return self.get_each_pay(False,False)
+
+    def get_each_pay(self,is_pre_pay,is_real_time):
 
         participant_amount = self.participants.count()
         if not self.checkout_strategy.is_founder_free:
             participant_amount += 1
-        if is_preview:
+        #预扣款数量
+        if is_pre_pay:
             if self.total_cost_max_expected<self.total_cost_expected:
                 raise _('total_cost_max cannot be less than total_cost')
             total_cost_max= self.total_cost_max_expected if self.total_cost_max_expected else self.total_cost_expected
@@ -73,20 +90,29 @@ class Activity(models.Model):
             extra_charge_max=self.checkout_strategy.get_charge_amount(total_cost_max)
             total_amount_occur_max = total_cost_max+extra_charge_max
             total_amount_occur_min = total_cost_min+extra_charge_min
-            return  math.ceil(Decimal(total_amount_occur_min/participant_amount)),\
+            if is_real_time:
+                participant_amount=self.min_participants if participant_amount<self.min_participants else participant_amount
+                return math.ceil(Decimal(total_amount_occur_min/participant_amount)),\
                     math.ceil(Decimal(total_amount_occur_max/participant_amount))
+            else:
+                if not self.max_participants:
+                    self.max_participants=self.min_participants
+                return  math.ceil(Decimal(total_amount_occur_min/self.max_participants)),\
+                    math.ceil(Decimal(total_amount_occur_max/self.min_participants))
         else:
             total_amount_occur_actual = self.total_cost_actual+self.checkout_strategy.get_charge_amount(self.total_cost_actual)
             return math.ceil(Decimal(total_amount_occur_actual/participant_amount))
 
     #结帐
     def checkout(self):
+
+
         actual_cost=self.total_cost_actual
         if not actual_cost:
             raise _('please input actual cost first')
         #活动需要收取的原始费用(参与者支付额未求整之前)
         self.save()
-        real_cost_each = self.get_each_pay(is_preview=False)
+        real_cost_each = self.get_each_pay_real()
         #确认参与者的两个账户至少有一个的余额能够支付本次活动.
         #或者,允许参加,只不过应付账款增加. 需要参与者线下督促用户付现金.
         #每个参与者的aa费用求整之后的总费用
@@ -120,18 +146,9 @@ class Activity(models.Model):
             occur_time=DateTime.now()
         )
 
-    @property
-    def balance_required(self):
-        return self.get_each_pay(is_preview=True)[1]
 
-    #增加參與者
-    def add_participant(self, participant):
-        #check total participants
-        msg = 'join successfully'
-        if participant == self.founder:
-            return (False, 'no need , you are the other_user')
-        if self.participants.filter(id=participant.id):
-            return (False, 'already in')
+    def is_allow_joint_to_all(self):
+
         if self.status != 'Open':
             return (False, 'it is not open')
         #check time
@@ -141,50 +158,72 @@ class Activity(models.Model):
         max_participants = self.max_participants if self.max_participants else self.min_participants
         if self.participants.count() >= max_participants:
             return (False, 'full')
-        offline_balance,created=User_User_Balance.objects.get_or_create(owner=participant,other_user=self.founder)
-        if participant.user_balance.amount_capital_debt < self.balance_required and \
-                        offline_balance.amount_capital_debt < self.balance_required:
-            msg = 'waring:not enough money to pay the amount_debet online,please pay cash to the other_user and ask him to add balance to your account.'
-            #预扣款应该支付给 和创建者相关的离线账号.
+        return (True,)
 
+    def is_allow_joint(self,participant):
+        test_result_to_all=self.is_allow_joint_to_all()
+        if not test_result_to_all[0]:
+            return test_result_to_all
+        if participant == self.founder:
+            return (False, 'no need , you are the other_user')
+        if self.participants.filter(id=participant.id):
+            return (False, 'already in')
+
+        offline_balance,created=User_User_Balance.objects.get_or_create(owner=participant,other_user=self.founder)
+        if participant.user_balance.amount_capital_debt < self.get_each_pay_pre()[1] and \
+                       participant.user_balance.amount_capital_debt\
+                        + offline_balance.amount_capital_debt < self.get_each_pay_pre()[1]:
+            return (True,_('waring:not enough money to pay the amount_debet online'
+                           ',please pay cash to the other_user and ask him to add balance to your account.')
+                    )
+        return (True,)
+    def add_participant(self, participant):
+        #check total participants
+        msg = 'join successfully'
+        test_result=self.is_allow_joint(participant)
+
+        if not test_result[0]:
+            return test_result
         #todo 事务处理
         self.participants.add(participant)
         #凍結預付款 所有用戶都一樣. 该过程只影响离线账户
         #如果用户的在线账户本来就有余额,那么优先使用在线账户.
         #离线账户
-        participant_checkout(participant=participant, activity=self, amount=self.balance_required,
+        participant_checkout(participant=participant, activity=self, amount=self.get_each_pay_pre()[1],
                              flow_type=flow_type_choice[0][0])
         Activity_Timeline.objects.create(user=participant, activity=self, occur_time=DateTime.now(), direction='J')
-        return (True, msg)
+        return test_result
 
     #移除參與者.
-    def remote_participant(self):
+    def remove_participant(self):
         pass
 
     def __str__(self):
         return self.name + "_" + self.activity_type + "_" + self.place.name
     #自动套用strategy
     def save(self, *args, **kwargs):
-        try:
-            #todo 为 model-utils 的inheritmanager 增加一个  get_or_create_subclass 方法
-            strategy= Checkout_Strategy.objects.get_subclass(
-                enabled=True
-            )
-        except MultipleObjectsReturned:
-            raise
-        except ObjectDoesNotExist:
-            strategy= Checkout_Strategy.objects.create(enabled=True)
+        if not self.checkout_strategy:
+            try:
+                #todo 为 model-utils 的inheritmanager 增加一个  get_or_create_subclass 方法
+                strategy= Checkout_Strategy.objects.get_subclass(
+                    enabled=True
+                )
+            except MultipleObjectsReturned:
+                raise
+            except ObjectDoesNotExist:
+                strategy= Checkout_Strategy.objects.create(enabled=True)
+            self.checkout_strategy=strategy
         if self.max_participants<self.min_participants:
             raise  _('max_participant cannot be less than min_participant')
         if self.total_cost_max_expected<self.total_cost_expected:
             raise _('total_cost_max cannot be less than total_cost')
-        self.checkout_strategy=strategy
+        self.create_time=DateTime.now()
         super(Activity,self).save(*args,**kwargs)
 
 #活動的時間線
 class Activity_Timeline(models.Model):
     """記錄用戶的 參與/離去時間"""
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     activity = models.ForeignKey(Activity)
     occur_time = models.DateTimeField(default=DateTime.now())
     direction = models.CharField(choices=(('L', 'leave'), ('J', 'join')), max_length=10)
@@ -193,7 +232,7 @@ class Activity_Timeline(models.Model):
 #营业财务表
 class Financial_Statement(models.Model):
     #这两种借贷方 可以从activity中提取出来..
-    #participant_balances=models.ForeignKey(User_Balance)
+    #participant_balances=models.ForeignKey(settings.AUTH_USER_MODEL_Balance)
     #founder_balance=models.OneToOneField(User)
     #财务事件
     activity = models.ForeignKey(Activity)
@@ -242,20 +281,19 @@ class Base_Balance(models.Model):
         return self.balance_actual + self.amount_payables_receivables
 
 #扩展的user
-class User2(User):
-    user=models.OneToOneField(User)
-    def get_user_user_balance(self,other_user):
-        return User_User_Balance.objects.get_or_create(owner=self.user,other_user=other_user)
+
+
+#User.user2=property(lambda u:User2.objects.get_or_create()[0])
 #在线账户总额 每个用户只能有一个在线账户
 class User_Balance(Base_Balance):
-    owner = models.OneToOneField(User2)
+    owner = models.OneToOneField(settings.AUTH_USER_MODEL)
 User2.user_balance=property(lambda u:User_Balance.objects.get_or_create(owner=u)[0])
 
 
 #用户之间的账户:离线账户
 class User_User_Balance(Base_Balance):
-    owner = models.ForeignKey(User2, related_name='user_user_balance_owner')
-    other_user = models.ForeignKey(User2, related_name='user_user_balance_other_user')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='user_user_balance_owner')
+    other_user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='user_user_balance_other_user')
 
 
 #流水帐. 类型,1)参与活动(预扣款)2)活动结帐(实际扣款) 3)为线上账户充值 4)从线上账户提现 5)创建者为参与者离线账户充值 6)用户从离线账户取现(现场取回现金)
@@ -330,7 +368,11 @@ class Balance_Flow(models.Model):
 def participant_checkout(participant, activity, amount, flow_type):
 
     balance_online = participant.user_balance
-    balance_offline = participant.user_user_balance_owner.filter(other_user=activity.founder)[0]
+    #如果没有离线账户 则创建
+    try:
+        balance_offline,created=User_User_Balance.objects.get_or_create(owner=participant,other_user=activity.founder)
+    except MultipleObjectsReturned:
+        raise _('should"t have multi instance ')
 
     if flow_type == flow_type_choice[1][0]:
         balance_online_pre_check,balance_offline_pre_check = None,None
@@ -339,7 +381,7 @@ def participant_checkout(participant, activity, amount, flow_type):
         pre_check_flow_online_list = pre_check_flow_list.filter(account=balance_online)
         pre_check_flow_offline_list = pre_check_flow_list.filter(account=balance_offline)
         #差价
-        actual_diff_amount = amount - activity.balance_required
+
         if pre_check_flow_online_list.count() == 1:
             pre_check_flow_online = pre_check_flow_online_list[0]
             balance_online_pre_check = pre_check_flow_online.amount

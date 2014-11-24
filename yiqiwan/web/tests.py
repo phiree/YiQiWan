@@ -29,7 +29,8 @@ class activity_test(TestCase):
             participate_deadline=DateTime.now()+timedelta(hours=1),
             total_cost_expected=100,
             total_cost_max_expected=120,
-            total_cost_actual=100
+            total_cost_actual=100,
+            checkout_strategy=strategy
         )
         self.activity1=activities[0]
         self.activity2=activities[1]
@@ -198,13 +199,12 @@ class activity_test(TestCase):
         user2_user_balance=self.user2.user_user_balance_owner.filter(other_user=self.user1)[0]
         user2_balance=self.user2.user_balance
         user3_user_balance=self.user2.user_user_balance_owner.filter(other_user=self.user1)[0]
-        user3_balance=self.user3.user_balance
         #在线账户 应付款10(标记为-10)
         self.assertEqual(user2_balance.amount_payables_receivables,-10)
         self.assertEqual(user2_balance.amount_capital_debt,0)
         #与 user1 相关的离线账户 资产额为-30
-        self.assertEqual(user2_user_balance.amount_capital_debt ,-30)
-        self.assertEqual(user2_user_balance.amount_payables_receivables,-40)
+        self.assertEqual(user2_user_balance.amount_capital_debt ,-43)
+        self.assertEqual(user2_user_balance.amount_payables_receivables,-53)
 
         print('amount_capital_debt_before'+str(user3_user_balance.amount_capital_debt))
         self.activity1.add_participant(self.user3)

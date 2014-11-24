@@ -3,7 +3,7 @@ from django.shortcuts import render,HttpResponseRedirect
 from django.forms import  ModelForm
 from django.views.generic import CreateView
 from ..forms import fm_activity
-from ..models import Activity,User_User_Balance,User_Balance,Base_Balance
+from ..models import Activity,User_User_Balance,User_Balance,Base_Balance,User2
 from django.core.urlresolvers import reverse
 
 @login_required
@@ -73,9 +73,9 @@ def my_profile(request):
 
 def my_balance(request):
 
-    balance_online=request.user.user_balance
-    balance_offline_list_owner=request.user.user_user_balance_owner.all()
-    balance_offline_list_other_user=request.user.user_user_balance_other_user.all()
+    balance_online=request.user.user2.user_balance
+    balance_offline_list_owner=request.user.user2.user_user_balance_owner.all()
+    balance_offline_list_other_user=request.user.user2.user_user_balance_other_user.all()
 
     return render(request,'web/m/my/balance.html',{'balance_online':balance_online,
                                                    'balance_offline_list_owner':balance_offline_list_owner,

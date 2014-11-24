@@ -7,29 +7,34 @@
 
 {%block content%}
 
-<div><span>{%trans 'name'%}:</span>{{object.name}}</div>
-<div>{%trans 'status'%}:{%trans object.status%}</div>
-<div>{%trans 'founder'%}:{{object.founder}}</div>
-<div>{%trans 'place'%}:{{object.place}}</div>
-<div>{%trans 'address'%}:{{object.place.address}}</div>
-<div>{%trans 'start time'%}:{{object.start_time}}</div>
-<div>{%trans 'end time'%}:{{object.end_time}}</div>
-<div>{%trans 'register deadline'%}:{{object.participate_deadline}}</div>
-<div>{%trans 'total cost expected'%}:{{object.total_cost_expected}}</div>
- <div>{%trans 'withhold'%}:{{object.balance_required}}</div>
-        <div>{%trans 'real_time cost'%}:{{object.get_each_pay_preview.0}}~{{object.get_each_pay_preview.1}}</div>
+<div><span>{%trans 'name'%}:</span>{{object.0.name}}</div>
+<div>{%trans 'status'%}:{%trans object.0.status%}</div>
+<div>{%trans 'founder'%}:{{object.0.founder}}</div>
+<div>{%trans 'place'%}:{{object.0.place}}</div>
+<div>{%trans 'address'%}:{{object.0.place.address}}</div>
+<div>{%trans 'start time'%}:{{object.0.start_time}}</div>
+<div>{%trans 'end time'%}:{{object.0.end_time}}</div>
+<div>{%trans 'register deadline'%}:{{object.0.participate_deadline}}</div>
+<div>{%trans 'total cost expected'%}:{{object.0.total_cost_expected}}</div>
+ <div>{%trans 'withhold'%}:{{object.0.balance_required}}</div>
+        <div>{%trans 'real_time cost'%}:{{object.0.get_each_pay_real_time.0}}~{{object.0.get_each_pay_real_time.1}}</div>
         <div style="color:gray">{%trans 'note:real cost will  to the '%}</div>
 <div>{%trans 'participants'%}:
-    {%for participant in object.participants.all%}
+    <span>{{object.0.founder.username}}[{%trans 'founder'%}]</span>
+    {%for participant in object.0.participants.all%}
     <span>{{participant.username}}</span>
     {%endfor%}
 </div>
-        <div>{%trans 'description'%}:{{object.description}}</div>
+        <div>{%trans 'description'%}:{{object.0.description}}</div>
 <div>
-    <form method="post" action="{%url 'web:join_activity' object.pk%}">
+    <form method="post" action="{%url 'web:join_activity' object.0.pk%}">
         {%csrf_token%}
-        {#todo: participant no need to see this button#}
-        <input type="submit" value="加入"/>
+        {%if object.1.0%}
+            <input type="submit" value="加入 {{object.1.1}}"/>
+        {%else%}
+            <input disabled="disabled" type="submit" value="{{object.1.1}}"/>
+        {%endif%}
+
     </form>
 
 </div>
