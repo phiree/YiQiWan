@@ -10,6 +10,7 @@ from django.utils import timezone as DateTime
 #from django.utils.timezone import datetime as DateTime
 from decimal import Decimal, ROUND_HALF_EVEN
 from model_utils.managers import InheritanceManager
+from django.utils.translation import gettext as _
 
 
 class Place(models.Model):
@@ -54,38 +55,42 @@ class Activity(models.Model):
     total_cost_actual = models.DecimalField(null=True, blank=True, max_digits=9, decimal_places=1)
     checkout_strategy=models.ForeignKey('Checkout_Strategy',null=True,blank=True)
     participants = models.ManyToManyField('User2', related_name='activity_participants', null=True, blank=True)
-    status_choice = Choices('Open', 'Progressing', 'Over', 'Closed')
+    status_choice = Choices(('Open','Open'), ('Progressing','Progressing'), ('Over','Over'),('Closed','Closed'))
     status = models.CharField(max_length=20, choices=status_choice, default='Open', blank=True)
-    create_time = models.DateTimeField(auto_now=True)
+    create_time = models.DateTimeField(default=DateTime.now())
+    #每人支付的总数 is_preview:是否是预览额,否则是实际扣款额
+    def get_each_pay(self,is_preview):
 
-    def get_each_pay_preview(self):
-        total_cost_max= self.total_cost_max_expected if self.total_cost_max_expected else self.total_cost_expected
-        total_cost_min=self.total_cost_expected if self.total_cost_expected else self.total_cost_max_expected
-        extra_charge_min=self.checkout_strategy.get_charge_amount(total_cost_min)
-        extra_charge_max=self.checkout_strategy.get_charge_amount(total_cost_max)
-        total_amount_occur_max = total_cost_max+extra_charge_max
-        total_amount_occur_min = total_cost_min+extra_charge_min
         participant_amount = self.participants.count()
         if not self.checkout_strategy.is_founder_free:
             participant_amount += 1
-        return  math.ceil(Decimal(total_amount_occur_min/participant_amount)), math.ceil(Decimal(total_amount_occur_max/participant_amount))
+        if is_preview:
+            if self.total_cost_max_expected<self.total_cost_expected:
+                raise _('total_cost_max cannot be less than total_cost')
+            total_cost_max= self.total_cost_max_expected if self.total_cost_max_expected else self.total_cost_expected
+            total_cost_min=self.total_cost_expected if self.total_cost_expected else self.total_cost_max_expected
+            extra_charge_min=self.checkout_strategy.get_charge_amount(total_cost_min)
+            extra_charge_max=self.checkout_strategy.get_charge_amount(total_cost_max)
+            total_amount_occur_max = total_cost_max+extra_charge_max
+            total_amount_occur_min = total_cost_min+extra_charge_min
+            return  math.ceil(Decimal(total_amount_occur_min/participant_amount)),\
+                    math.ceil(Decimal(total_amount_occur_max/participant_amount))
+        else:
+            total_amount_occur_actual = self.total_cost_actual+self.checkout_strategy.get_charge_amount(self.total_cost_actual)
+            return math.ceil(Decimal(total_amount_occur_actual/participant_amount))
 
-    def get_each_pay(self,actual_cost):
-        total_amount_occur = actual_cost+self.checkout_strategy.get_charge_amount(actual_cost)
-        participant_amount = self.participants.count()
-        if not self.checkout_strategy.is_founder_free:
-            participant_amount += 1
-        return math.ceil(Decimal(total_amount_occur/participant_amount))
     #结帐
-    def checkout(self,actual_cost):
+    def checkout(self):
+        actual_cost=self.total_cost_actual
+        if not actual_cost:
+            raise _('please input actual cost first')
         #活动需要收取的原始费用(参与者支付额未求整之前)
-        self.total_cost_actual=actual_cost
         self.save()
-        real_cost_each = self.get_each_pay(actual_cost)
+        real_cost_each = self.get_each_pay(is_preview=False)
         #确认参与者的两个账户至少有一个的余额能够支付本次活动.
         #或者,允许参加,只不过应付账款增加. 需要参与者线下督促用户付现金.
         #每个参与者的aa费用求整之后的总费用
-        total_amount_need_charge = real_cost_each * self.participants.count()
+        total_amount_need_charge = real_cost_each * (self.participants.count()+1)
         #利润分要分为两部分,线上支付的aa费用产生的利润, 线下用户直接付给创建者的费用.
         #第一部分的利润由平台和创建者分享, 后一部分由创建者独享.
         amount_profit = total_amount_need_charge - actual_cost
@@ -117,9 +122,7 @@ class Activity(models.Model):
 
     @property
     def balance_required(self):
-        total_price = self.total_cost_expected if self.total_cost_expected else self.total_cost_max_expected
-
-        return math.ceil(Decimal(total_price / self.min_participants))
+        return self.get_each_pay(is_preview=True)[1]
 
     #增加參與者
     def add_participant(self, participant):
@@ -171,7 +174,10 @@ class Activity(models.Model):
             raise
         except ObjectDoesNotExist:
             strategy= Checkout_Strategy.objects.create(enabled=True)
-
+        if self.max_participants<self.min_participants:
+            raise  _('max_participant cannot be less than min_participant')
+        if self.total_cost_max_expected<self.total_cost_expected:
+            raise _('total_cost_max cannot be less than total_cost')
         self.checkout_strategy=strategy
         super(Activity,self).save(*args,**kwargs)
 
@@ -225,7 +231,7 @@ class Base_Balance(models.Model):
     amount_profit_loss = models.DecimalField(default=0, max_digits=6, decimal_places=1,
                                              help_text='利润/亏损')  #利润和亏损也合并 负数则为亏损
     amount_payables_receivables = models.DecimalField(default=0, max_digits=6, decimal_places=1,
-                                                      help_text='应收/应付')  #预款总额 应收和应付也合并 负数则为亏损
+                                                      help_text='应收/应付')  #预款总额 应收和应付也合并 负数则为应付
     #实际余额
     @property
     def balance_actual(self):
@@ -251,29 +257,26 @@ class User_User_Balance(Base_Balance):
     owner = models.ForeignKey(User2, related_name='user_user_balance_owner')
     other_user = models.ForeignKey(User2, related_name='user_user_balance_other_user')
 
-#系统账户
-class System_Balance(Base_Balance):
-    pass
 
 #流水帐. 类型,1)参与活动(预扣款)2)活动结帐(实际扣款) 3)为线上账户充值 4)从线上账户提现 5)创建者为参与者离线账户充值 6)用户从离线账户取现(现场取回现金)
-flow_type_choice = (('activity_pre_checkout', '活动预结帐'),
+flow_type_choice = (('activity_pre_checkout', '活动预结帐'), #0
                     ('activity_checkout', '活动结帐'),
-                    ('activity_checkout', '活动取消'),
+                    ('activity_cancel', '活动取消'),
 
                     ('recharge_offline', '在线充值'),  # 用户充值给系统
                     ('withdraw_offline', '在线提现'),  # 用户从系统体现
                     ('recharge_online', '离线充值'),  #用户之间的余额转移,如 参与者交款给 创建者
                     ('withdraw_online', '离线提现'),  #                     参与者要回现金
+                    ('activity_return_pre_checkout','返回预扣款')
 )  #同上
 #借贷流水,
 class Balance_Flow(models.Model):
     flow_type = models.CharField(choices=flow_type_choice, max_length=50)
-    account_from = models.ForeignKey(Base_Balance, related_name='balance_flow_from')
+    account = models.ForeignKey(Base_Balance, related_name='balance_flow_from')
     #account 收支平衡 不需要 to-account 因为流水双方已经在同一个account,面了
-    #update 同一比收支需要分别记录在多个不同的账户里
-    account_to=models.ForeignKey(Base_Balance,related_name='balance_flow_to',null=True,blank=True)
+    #to_account=models.ForeignKey(Base_Balance,related_name='balance_flow_to',null=True,blank=True)
     amount = models.DecimalField(default=0, max_digits=6, decimal_places=1, help_text='金额')
-    occur_time = models.DateTimeField(auto_now=True, default=DateTime.now())
+    occur_time = models.DateTimeField(  default=DateTime.now())
     activity = models.ForeignKey(Activity, null=True, blank=True)
     applied = models.BooleanField(default=False)
 
@@ -284,37 +287,35 @@ class Balance_Flow(models.Model):
         if self.applied:
             return (False, 'Error.flow had been checked, cannot apply again ')
 
-        #加入活动 预扣款
         if self.flow_type == flow_type_choice[0][0]:
             #
-            self.account_from.amount_payables_receivables += self.amount  #应付增加 减法
-            self.account.amount_capital_debt -= self.amount  #资产负债增加,减法
-            self.account_to.amount_payables_receivables+=self.amount #应收 增加
+            self.account.amount_payables_receivables -= self.amount  #应付增加 减法
+            self.account.amount_capital_debt -=self.amount  #资产负债增加,减法
+            #self.to_account.amount_payables_receivables+=self.amount #应收 增加
 
         #实际扣款 清空应付款,而且清空的金额等于预扣的款项,不是加入时的 balance_required
-        #amount 值 由来源负责计算, 如果是负数 这表明是 返还 预付款.
+        #amount 值是 实际扣款额 和 预付额之间的差价
         elif self.flow_type == flow_type_choice[1][0]:
 
-            #不能这样清空应付款
-            self.account_from.amount_payables_receivables -=self.amount  #清空应付款
+            #self.account.amount_payables_receivables += self.amount  #减少应付款 加法--应付款已经在 返还预付款里面结清, 不需要处理 直接扣除资产即可.
             #恢复预扣款
-            self.account_from.amount_capital_debt -= self.amount
+            self.account.amount_capital_debt -= self.amount #资产减少 减法
             #减除实际扣款
-            self.account_to.amount_payables_receivables-=self.amount #应收减少
-            self.account_to.amount_capital_debt+=self.amount #资产增加
-        #活动取消
-        elif self.flow_type == flow_type_choice[2][0]:
-            self.account_from.amount_payables_receivables -=self.amount  #应付减少
-            self.account_from.amount_capital_debt += self.amount  #资产增加
-            self.acount_to.amount_payables_receivables-=self.amount #应收减少
+            #self.to_account.amount_payables_receivables-=self.amount #应收减少
+            #self.to_account.amount_capital_debt+=self.amount #资产增加
+        #取消活动
+        elif self.flow_type == flow_type_choice[2][0] or self.flow_type==flow_type_choice[7][0]:
+            self.account.amount_payables_receivables += self.amount  #应付减少,加法
+            self.account.amount_capital_debt += self.amount  #资产增加 加法
+            #self.to_acount.amount_payables_receivables-=self.amount #应收减少
 
         elif self.flow_type == flow_type_choice[3][0]:  #在线充值
-            self.account.amount_capital_debt += self.amount
-            self.to_account.amount_capital_debt -= self.amount
+            self.account.amount_capital_debt += self.amount #资产增加
+            #self.to_account.amount_capital_debt -= self.amount
 
         elif self.flow_type == flow_type_choice[4][0]:  #在线提现
             self.account.amount_capital_debt -= self.amount
-            self.to_account.amount_capital_debt += self.amount
+            #self.to_account.amount_capital_debt += self.amount
         elif self.flow_type == flow_type_choice[5][0]:  #离线充值
             self.account.amount_capital_debt += self.amount
         elif self.flow_type == flow_type_choice[6][0]:  #离线充值
@@ -330,7 +331,7 @@ def participant_checkout(participant, activity, amount, flow_type):
 
     balance_online = participant.user_balance
     balance_offline = participant.user_user_balance_owner.filter(other_user=activity.founder)[0]
-    #实际付款
+
     if flow_type == flow_type_choice[1][0]:
         balance_online_pre_check,balance_offline_pre_check = None,None
         pre_check_flow_list = Balance_Flow.objects.filter(activity=activity, flow_type=flow_type_choice[0][0])
@@ -349,13 +350,13 @@ def participant_checkout(participant, activity, amount, flow_type):
             balance_offline_pre_check = pre_check_flow_offline.amount
         elif pre_check_flow_online_list.count() > 1:
             raise ('pre_check_flow_online_list.count')
-        #先返回预扣款:模仿实际收款 只不过金额是负数
+        #先返回预扣款:
         if  balance_online_pre_check !=None  :
-            balance_flow=Balance_Flow.objects.create(flow_type=flow_type
+            balance_flow=Balance_Flow.objects.create(flow_type=flow_type_choice[7][0]
                         #todo ensure the account exits only one
                         #应收应付 已经
                         ,account=balance_online
-                        ,amount=balance_online_pre_check*-1
+                        ,amount=balance_online_pre_check
                         ,occur_time=DateTime.now()
                         ,activity=activity
                         ,applied=False
@@ -365,14 +366,14 @@ def participant_checkout(participant, activity, amount, flow_type):
             balance_flow.applied=True
             balance_flow.save()
 
-         #在线账户支付后的余额
+         #返回离线账户的预扣款
         if balance_offline_pre_check!=None :
 
-            balance_flow_offline=Balance_Flow.objects.create(flow_type=flow_type
+            balance_flow_offline=Balance_Flow.objects.create(flow_type=flow_type_choice[7][0]
                         #todo ensure the account exits only one
                         #应收应付 已经
                         ,account=balance_offline
-                        ,amount=balance_offline_pre_check*-1
+                        ,amount=balance_offline_pre_check
                         ,occur_time=DateTime.now()
                         ,activity=activity
                         ,applied=False
@@ -431,7 +432,7 @@ class Checkout_Strategy(models.Model):
     founder_profit_percent = models.DecimalField(default=0.2, max_digits=2, decimal_places=1)
     #创建者是否免单
     is_founder_free = models.BooleanField(default=False)
-    last_update_time=models.DateTimeField(auto_now=True, default=DateTime.now())
+    last_update_time=models.DateTimeField(  default=DateTime.now())
     #todo:ensure there is only one suitable strategy for certain condition.
     #目前还没有其他条件
     enabled=models.BooleanField(default=False)

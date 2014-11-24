@@ -1,0 +1,23 @@
+{% extends "web/m/base.html" %}
+{% load i18n %}
+{%block header%}
+{%trans 'my balance'%}
+{%endblock%}
+{%block content%}
+<fieldset>
+    <legend>{%trans 'activity summary' %}</legend>
+    <div>
+        <div>{%trans 'name'%}:{{activity.name}}</div>
+        <div>{%trans 'place'%}:{{activity.place}}</div>
+        <div>{%trans 'period'%}:{{activity.begin_time}}~{{activity.end_time}}</div>
+    </div>
+</fieldset>
+        <fieldset>
+            <legend>{%trans 'charge status'%}</legend>
+            <div>
+                {%for participant in activity.participants %}
+                    {%with .%}
+                {%endfor%}
+            </div>
+        </fieldset>
+{%endblock%}
