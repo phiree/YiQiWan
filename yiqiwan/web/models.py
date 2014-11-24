@@ -153,11 +153,11 @@ class Activity(models.Model):
             return (False, 'it is not open')
         #check time
         if DateTime.now() > self.participate_deadline:
-            return (False, 'too late')
+            return (False, _('too late'))
         #check person amount_debet
         max_participants = self.max_participants if self.max_participants else self.min_participants
         if self.participants.count() >= max_participants:
-            return (False, 'full')
+            return (False, _('full'))
         return (True,)
 
     def is_allow_joint(self,participant):
@@ -165,9 +165,9 @@ class Activity(models.Model):
         if not test_result_to_all[0]:
             return test_result_to_all
         if participant == self.founder:
-            return (False, 'no need , you are the other_user')
+            return (False, _('no need , you are the founder'))
         if self.participants.filter(id=participant.id):
-            return (False, 'already in')
+            return (False, _('already in'))
 
         offline_balance,created=User_User_Balance.objects.get_or_create(owner=participant,other_user=self.founder)
         if participant.user_balance.amount_capital_debt < self.get_each_pay_pre()[1] and \
@@ -179,7 +179,7 @@ class Activity(models.Model):
         return (True,)
     def add_participant(self, participant):
         #check total participants
-        msg = 'join successfully'
+        msg = _('join successfully')
         test_result=self.is_allow_joint(participant)
 
         if not test_result[0]:
@@ -238,7 +238,7 @@ class Financial_Statement(models.Model):
     activity = models.ForeignKey(Activity)
     #支出(活动参与者)为负,收入(活动建立者,系统利润)为正
     amount_for_participants = models.DecimalField(default=0, max_digits=6, decimal_places=1, help_text='参与者支付金额')
-    amount_for_founder = models.DecimalField(default=0, max_digits=6, decimal_places=1, help_text='创建者收取金额')
+    amount_for_founder = models.DecimalField(default=0, max_digits=6, decimal_places=1, help_text=_('profit for founder'))
     amount_for_founder_profit = models.DecimalField(default=0, max_digits=6, decimal_places=1, help_text='创建者盈利')
     amount_for_system_profit = models.DecimalField(default=0, max_digits=6, decimal_places=1, help_text='系统盈利')
 

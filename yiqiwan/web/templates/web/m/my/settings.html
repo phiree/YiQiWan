@@ -9,7 +9,7 @@
 <a href="#popupLogin" data-rel="popup" data-position-to="window" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-check ui-btn-icon-left ui-btn-a" data-transition="pop">{%trans 'choose language'%}</a>
         <h3>{{LANGUAGE_CODE}}</h3>
 <div data-role="popup" id="popupLogin" data-theme="a" class="ui-corner-all">
-<form action="{% url 'set_language' %}?" method="post">
+<form action="{% url 'set_language' %}" method="post">
     {% csrf_token %}
     <input name="next" type="hidden" value="{{ redirect_to }}"/>
     <select name="language">

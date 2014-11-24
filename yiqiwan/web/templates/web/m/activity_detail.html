@@ -15,8 +15,8 @@
 <div>{%trans 'start time'%}:{{object.0.start_time}}</div>
 <div>{%trans 'end time'%}:{{object.0.end_time}}</div>
 <div>{%trans 'register deadline'%}:{{object.0.participate_deadline}}</div>
-<div>{%trans 'total cost expected'%}:{{object.0.total_cost_expected}}</div>
- <div>{%trans 'withhold'%}:{{object.0.balance_required}}</div>
+<div>{%trans 'total cost expected'%}:{{object.0.total_cost_expected}}~{{object.0.total_cost_max_expected}}</div>
+ <div>{%trans 'withhold'%}:{{object.0.get_each_pay_pre.1}}</div>
         <div>{%trans 'real_time cost'%}:{{object.0.get_each_pay_real_time.0}}~{{object.0.get_each_pay_real_time.1}}</div>
         <div style="color:gray">{%trans 'note:real cost will  to the '%}</div>
 <div>{%trans 'participants'%}:

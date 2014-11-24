@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-25 07:09+0800\n"
+"POT-Creation-Date: 2014-11-25 07:16+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -168,7 +168,7 @@ msgstr ""
 
 #: .\web\templates\web\m\my\balance.html:49
 msgid "offline balance as other user"
-msgstr "offline balance as other user"
+msgstr ""
 
 #: .\web\templates\web\m\my\balance.html:54
 msgid "balance owner"
@@ -193,7 +193,7 @@ msgstr ""
 
 #: .\web\templates\web\m\my\home.html:5
 msgid "my home title"
-msgstr "My Home"
+msgstr ""
 
 #: .\web\templates\web\m\my\settings.html:9
 msgid "choose language"
@@ -202,8 +202,3 @@ msgstr ""
 #: .\web\views\front_web_mobile.py:53
 msgid "this is a goodone"
 msgstr ""
-
-#, fuzzy
-#~| msgid "my home title"
-#~ msgid "my profile"
-#~ msgstr "My Home"

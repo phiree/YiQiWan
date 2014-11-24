@@ -75,7 +75,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
-LANGUAGE_CODE = 'zh-hans'
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
@@ -98,5 +98,5 @@ LOCALE_PATHS = (
 )
 LANGUAGES=LANGUAGES = (
     ('en', 'English'),
-    ('zh-cn', u'简体中文'), # instead of 'zh-CN'
+    ('zh-hans', u'简体中文'), # instead of 'zh-CN'
     )
