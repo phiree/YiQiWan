@@ -51,6 +51,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
 )
+CONTEXT_PROCESSORS=(
+    'django.core.context_processors.request'
+,)
 TEMPLATE_CONTEXT_PROCESSORS=global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     'django.core.context_processors.i18n',
 )
@@ -64,14 +67,24 @@ WSGI_APPLICATION = 'yiqiwan.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
-
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db2.sqlite3'),
     }
-}
+}'''
+DATABASES = {
+    'default': {
+        'ENGINE': 'mysql.connector.django',
+        'NAME': 'yiqiwan',
+        'USER': '92auto',
+        'PASSWORD': 'twgdhbtzhy',
+        'HOST': '127.0.0.1',
+        'ATOMIC_REQUESTS':True,
 
+    }
+}
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 

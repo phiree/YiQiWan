@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-20 03:57+0800\n"
+"POT-Creation-Date: 2014-11-25 14:09+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,71 +16,62 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: .\web\templates\web\m\activity_detail.html:4
-msgid "activity detail"
+#: .\web\models.py:86 .\web\models.py:219
+msgid "total_cost_max cannot be less than total_cost"
 msgstr ""
 
-#: .\web\templates\web\m\activity_detail.html:10
-msgid "name"
+#: .\web\models.py:112
+msgid "please input actual cost first"
 msgstr ""
 
-#: .\web\templates\web\m\activity_detail.html:11
-msgid "status"
+#: .\web\models.py:156
+msgid "too late"
 msgstr ""
 
-#: .\web\templates\web\m\activity_detail.html:12
-msgid "founder"
+#: .\web\models.py:160
+msgid "full"
 msgstr ""
 
-#: .\web\templates\web\m\activity_detail.html:13
-msgid "place"
+#: .\web\models.py:168
+msgid "no need , you are the founder"
 msgstr ""
 
-#: .\web\templates\web\m\activity_detail.html:14
-msgid "address"
+#: .\web\models.py:170
+msgid "already in"
 msgstr ""
 
-#: .\web\templates\web\m\activity_detail.html:15
-msgid "start time"
+#: .\web\models.py:176
+msgid ""
+"waring:not enough money to pay the amount_debet online,please pay cash to "
+"the other_user and ask him to add balance to your account."
 msgstr ""
 
-#: .\web\templates\web\m\activity_detail.html:16
-msgid "end time"
+#: .\web\models.py:182
+msgid "join successfully"
 msgstr ""
 
-#: .\web\templates\web\m\activity_detail.html:17
-msgid "register deadline"
+#: .\web\models.py:217
+msgid "max_participant cannot be less than min_participant"
 msgstr ""
 
-#: .\web\templates\web\m\activity_detail.html:18
-msgid "total cost expected"
+#: .\web\models.py:241
+msgid "profit for founder"
 msgstr ""
 
-#: .\web\templates\web\m\activity_detail.html:19
-msgid "withhold"
-msgstr ""
-
-#: .\web\templates\web\m\activity_detail.html:20
-msgid "real_time cost"
-msgstr ""
-
-#: .\web\templates\web\m\activity_detail.html:21
-msgid "note:real cost will  to the "
-msgstr ""
-
-#: .\web\templates\web\m\activity_detail.html:22
-msgid "participants"
-msgstr ""
-
-#: .\web\templates\web\m\activity_detail.html:27
-msgid "description"
+#: .\web\models.py:375
+msgid "should\"t have multi instance "
 msgstr ""
 
 #: .\web\templates\web\m\home.html:5
 msgid "activity list"
 msgstr ""
 
+#: .\web\templates\web\m\login.html:10
+msgid "register"
+msgstr "注册"
+
 #: .\web\templates\web\m\my\balance.html:4
+#: .\web\templates\web\m\my\charge_activity.html:4
 msgid "my balance"
 msgstr ""
 
@@ -114,25 +105,45 @@ msgstr ""
 
 #: .\web\templates\web\m\my\balance.html:49
 msgid "offline balance as other user"
-msgstr "账户另一方"
+msgstr ""
 
 #: .\web\templates\web\m\my\balance.html:54
 msgid "balance owner"
-msgstr "账户拥有者"
+msgstr ""
+
+#: .\web\templates\web\m\my\charge_activity.html:8
+msgid "activity summary"
+msgstr ""
+
+#: .\web\templates\web\m\my\charge_activity.html:10
+msgid "name"
+msgstr ""
+
+#: .\web\templates\web\m\my\charge_activity.html:11
+msgid "place"
+msgstr ""
+
+#: .\web\templates\web\m\my\charge_activity.html:12
+msgid "period"
+msgstr ""
+
+#: .\web\templates\web\m\my\charge_activity.html:16
+msgid "charge status"
+msgstr ""
 
 #: .\web\templates\web\m\my\created_activity_list.html:4
 #: .\web\templates\web\m\my\joint_activity_list.html:4
 msgid "my joint activity list"
-msgstr "我参加的活动"
+msgstr ""
 
 #: .\web\templates\web\m\my\home.html:5
 msgid "my home title"
-msgstr "我的主页"
+msgstr ""
 
 #: .\web\templates\web\m\my\settings.html:9
 msgid "choose language"
-msgstr "选择语言"
+msgstr ""
 
-#: .\web\views\front_web_mobile.py:42
+#: .\web\views\front_web_mobile.py:53
 msgid "this is a goodone"
-msgstr "注册成功"
+msgstr ""

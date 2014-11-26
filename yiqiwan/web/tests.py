@@ -132,7 +132,7 @@ class activity_test(TestCase):
     def test_check_out_fix_charge(self):
         """系统收取固定费用"""
         self.user1.user_balance.amount_capital_debt=0
-        self.user2.user_balance.amount_payables_receivables=0
+        self.user2.user_balance.amount_receivables_payables=0
         self.activity1.add_participant(self.user2)
         self.activity1.add_participant(self.user3)
         self.activity1.add_participant(self.user4)
@@ -140,11 +140,11 @@ class activity_test(TestCase):
         self.activity1.checkout()
         user2_user_balance=self.user2.user_user_balance_owner.filter(other_user=self.user1)[0]
         self.assertEqual(user2_user_balance.amount_capital_debt,-7)
-        self.assertEqual(user2_user_balance.amount_payables_receivables,0)
+        self.assertEqual(user2_user_balance.amount_receivables_payables,0)
 
         user2_balance=User_Balance.objects.filter(owner=self.user2)[0]
         self.assertEqual(user2_balance.amount_capital_debt,0)
-        self.assertEqual(user2_balance.amount_payables_receivables,0)
+        self.assertEqual(user2_balance.amount_receivables_payables,0)
         fs=Financial_Statement.objects.all()[0]
         print(fs.amount_for_participants/fs.activity.participants.count()+1)
         print(fs.amount_for_participants)
@@ -160,7 +160,7 @@ class activity_test(TestCase):
 
     def test_check_out_actual_cost_greater_than_expected(self):
         self.user1.user_balance.amount_capital_debt=0
-        self.user2.user_balance.amount_payables_receivables=0
+        self.user2.user_balance.amount_receivables_payables=0
         self.activity1.add_participant(self.user2)
         self.activity1.add_participant(self.user3)
         self.activity1.add_participant(self.user4)
@@ -168,16 +168,16 @@ class activity_test(TestCase):
         self.activity1.checkout()
         user2_user_balance=self.user2.user_user_balance_owner.filter(other_user=self.user1)[0]
         self.assertEqual(user2_user_balance.amount_capital_debt,-32)
-        self.assertEqual(user2_user_balance.amount_payables_receivables,0)
+        self.assertEqual(user2_user_balance.amount_receivables_payables,0)
 
         user2_balance=User_Balance.objects.filter(owner=self.user2)[0]
         self.assertEqual(user2_balance.amount_capital_debt,0)
-        self.assertEqual(user2_balance.amount_payables_receivables,0)
+        self.assertEqual(user2_balance.amount_receivables_payables,0)
 
 
     def test_check_out_actual_cost_less_than_expected(self):
         self.user1.user_balance.amount_capital_debt=0
-        self.user2.user_balance.amount_payables_receivables=0
+        self.user2.user_balance.amount_receivables_payables=0
         self.activity1.add_participant(self.user2)
         self.activity1.add_participant(self.user3)
         self.activity1.add_participant(self.user4)
@@ -186,10 +186,10 @@ class activity_test(TestCase):
         self.activity1.checkout()
         user2_user_balance=self.user2.user_user_balance_owner.filter(other_user=self.user1)[0]
         self.assertEqual(user2_user_balance.amount_capital_debt,10)
-        self.assertEqual(user2_user_balance.amount_payables_receivables,0)
+        self.assertEqual(user2_user_balance.amount_receivables_payables,0)
         user2_balance=User_Balance.objects.filter(owner=self.user2)[0]
         self.assertEqual(user2_balance.amount_capital_debt,8)
-        self.assertEqual(user2_balance.amount_payables_receivables,0)
+        self.assertEqual(user2_balance.amount_receivables_payables,0)
 
     def test_check_balance(self):
         """账户余额"""
@@ -200,11 +200,11 @@ class activity_test(TestCase):
         user2_balance=self.user2.user_balance
         user3_user_balance=self.user2.user_user_balance_owner.filter(other_user=self.user1)[0]
         #在线账户 应付款10(标记为-10)
-        self.assertEqual(user2_balance.amount_payables_receivables,-10)
+        self.assertEqual(user2_balance.amount_receivables_payables,-10)
         self.assertEqual(user2_balance.amount_capital_debt,0)
         #与 user1 相关的离线账户 资产额为-30
         self.assertEqual(user2_user_balance.amount_capital_debt ,-43)
-        self.assertEqual(user2_user_balance.amount_payables_receivables,-53)
+        self.assertEqual(user2_user_balance.amount_receivables_payables,-53)
 
         print('amount_capital_debt_before'+str(user3_user_balance.amount_capital_debt))
         self.activity1.add_participant(self.user3)
@@ -221,9 +221,9 @@ class activity_test(TestCase):
         user2_user_balance=self.user2.user_user_balance_owner.filter(other_user=self.user1)[0]
         user2_balance=self.user2.user_balance
         self.assertEqual(user2_user_balance.amount_capital_debt,-43)
-        self.assertEqual(user2_user_balance.amount_payables_receivables,-53)
+        self.assertEqual(user2_user_balance.amount_receivables_payables,-53)
         self.assertEqual(user2_balance.amount_capital_debt,0)
-        self.assertEqual(user2_balance.amount_payables_receivables,-10)
+        self.assertEqual(user2_balance.amount_receivables_payables,-10)
 
         #activity1 checkout
         self.activity1.total_cost_actual=20
@@ -231,9 +231,9 @@ class activity_test(TestCase):
         user2_user_balance=self.user2.user_user_balance_owner.filter(other_user=self.user1)[0]
         user2_balance=self.user2.user_balance
         self.assertEqual(user2_user_balance.amount_capital_debt,7)
-        self.assertEqual(user2_user_balance.amount_payables_receivables,0)
+        self.assertEqual(user2_user_balance.amount_receivables_payables,0)
         self.assertEqual(user2_balance.amount_capital_debt,0)
-        self.assertEqual(user2_balance.amount_payables_receivables,0)
+        self.assertEqual(user2_balance.amount_receivables_payables,0)
         #join activity2  120+5/2=63
         self.activity2.add_participant(self.user2)
         #join activity3 120+5/2= 63  126-7=119
@@ -241,26 +241,26 @@ class activity_test(TestCase):
         user2_user_balance=self.user2.user_user_balance_owner.filter(other_user=self.user1)[0]
         user2_balance=self.user2.user_balance
         self.assertEqual(user2_user_balance.amount_capital_debt,-119)
-        self.assertEqual(user2_user_balance.amount_payables_receivables,-126)
+        self.assertEqual(user2_user_balance.amount_receivables_payables,-126)
         self.assertEqual(user2_balance.amount_capital_debt,0)
-        self.assertEqual(user2_balance.amount_payables_receivables,0)
+        self.assertEqual(user2_balance.amount_receivables_payables,0)
 
         #('activity2 checkout') #actual=100  -63-53 -116-7
         self.activity2.checkout()
         user2_user_balance=self.user2.user_user_balance_owner.filter(other_user=self.user1)[0]
         user2_balance=self.user2.user_balance
         self.assertEqual(user2_user_balance.amount_capital_debt,-109)
-        self.assertEqual(user2_user_balance.amount_payables_receivables,-63)
+        self.assertEqual(user2_user_balance.amount_receivables_payables,-63)
         self.assertEqual(user2_balance.amount_capital_debt,0)
-        self.assertEqual(user2_balance.amount_payables_receivables,0)
+        self.assertEqual(user2_balance.amount_receivables_payables,0)
 
         self.activity3.checkout()
         user2_user_balance=self.user2.user_user_balance_owner.filter(other_user=self.user1)[0]
         user2_balance=self.user2.user_balance
         self.assertEqual(user2_user_balance.amount_capital_debt,-99)
-        self.assertEqual(user2_user_balance.amount_payables_receivables,0)
+        self.assertEqual(user2_user_balance.amount_receivables_payables,0)
         self.assertEqual(user2_balance.amount_capital_debt,0)
-        self.assertEqual(user2_balance.amount_payables_receivables,0)
+        self.assertEqual(user2_balance.amount_receivables_payables,0)
         #活动结束,
 
 

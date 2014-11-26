@@ -13,3 +13,7 @@
 #important
 env 已经更新django非release版本 pip install https://github.com/django/django/zipball/master
 解决auth migrate的bug:  Lookup failed for model referenced by field
+
+django 1.8  不能使用  mysql-connector:
+http://bugs.mysql.com/bug.php?id=74337
+

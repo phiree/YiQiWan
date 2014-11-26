@@ -1,0 +1,34 @@
+{% extends "web/m/base.html" %}
+{% load i18n %}
+{%block header%}
+{%trans 'my blance flow'%}
+{%endblock%}
+{%block content%}
+<div>
+    <table class="table">
+
+        <thead>
+        <tr>
+            <td></td>
+            <td>{%trans 'flow type'%}</td>
+            <td>{%trans 'amount'%}</td>
+            <td>{%trans 'related'%}</td>
+        </tr>
+        </thead>
+        <tbody>
+        {%for flow in flow_list%}
+        <tr>
+            <td>{{flow.account.owner}},{{flow.account.other_user}}</td>
+            <td>{{flow.get_flow_type_display}}</td>
+            <td>{{flow.amount}}</td>
+            <td>{%if flow.activity%}
+                <a href="{%url 'web:activity_detail' flow.activity.id%}">{{flow.activity}}</a>
+            {%endif%}
+            </td>
+        </tr>
+        {%endfor%}
+        </tbody>
+    </table>
+</div>
+  
+{%endblock%}

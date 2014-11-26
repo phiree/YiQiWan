@@ -10,32 +10,50 @@
   
 <div class="ui-body ui-body-a ui-corner-all">
     <h3> {%trans 'online balance'%}</h3>
-          <p>{%trans 'capital/debt'%}:{{balance_online.amount_capital_debt}}</p>
+    <p>{%trans 'capital/debt'%}:{{balance_online.amount_capital_debt}}</p>
 
     <p>{%trans 'payables/receivables'%}:{{balance_online.amount_profit_loss}}</p>
 
-    <p>{%trans 'profit/loss'%}:{{balance_online.amount_payables_receivables}}</p>
+    <p>{%trans 'profit/loss'%}:{{balance_online.amount_receivables_payables}}</p>
       
 </div>
 <div class="ui-body ui-body-a ui-corner-all">
-    <h3> {%trans 'offline balance as owner'%}</h3>
+    <h3> {%trans 'balance with other user'%}</h3><span>{%trans 'capital/debt'%}:{{balance_offline_summary.1}}</span>
+    <span>{%trans 'receivable/payable'%}:{{balance_offline_summary.2}}</span>
     <table data-role="table" class="ui-responsive table-stroke">
         <thead>
         <tr>
 
-            <th>{%trans 'balance other_user'%}</th>
+            <th>{%trans 'other_user'%}</th>
             <th>{%trans 'capital/debt'%}
-            <th>{%trans 'payables/receivables'%}</th>
+            <th>{%trans 'receivables/payables'%}</th>
+            <td></td>
 
         </tr>
         </thead>
-        <tbody>{%for balance in balance_offline_list_owner%}
-               
+        <tbody>{%for balance in balance_offline_summary.0%}
         <tr>
-            <td>{{balance.other_user}}</td>
-            <td>{{balance.amount_capital_debt}}</td>
-            <td>{{balance.amount_payables_receivables}}</td>
 
+            <td>{%if balance.owner.id == user.id%} {{balance.other_user}}
+                {%else%} {{balance.owner}}{%endif%}
+            </td>
+
+            <td>
+{%if balance.owner.id == user.id%}
+                 {{balance.amount_capital_debt }}
+{%else%} {%widthratio balance.amount_capital_debt 1 -1 %}
+                {%endif%}
+
+            </td>
+            <td>
+{%if balance.owner.id == user.id%}
+                 {{ balance.amount_receivables_payables }}
+                {%else%} {%widthratio balance.amount_receivables_payables 1 -1 %}
+                {%endif%}
+                </td>
+<td>
+  <a href="{%url 'web:my_balance_flow_list_for_account' balance.id%}">查看详情</a>
+</td>
         </tr>
 
         {%endfor%}
@@ -45,30 +63,4 @@
      
 </div>
 
-<div class="ui-body ui-body-a ui-corner-all">
-    <h3> {%trans 'offline balance as other user'%}</h3> 
-    <table data-role="table" class="ui-responsive table-stroke">
-        <thead>
-        <tr>
-
-            <th>{%trans 'balance owner'%}</th>
-            <th>{%trans 'capital/debt'%}</th>
-            <th>{%trans 'payables/receivables'%}</th>
-
-        </tr>
-        </thead>
-        <tbody>
-        {%for balance in balance_offline_list_other_user%}   
-        <tr>
-            <td>{{balance.owner}}</td>
-            <td>{{balance.amount_capital_debt}}</td>
-            <td>{{balance.amount_payables_receivables}}</td>
-
-        </tr>
-        {%endfor%}
-        </tbody>
-    </table>
-     
-      
-</div>
 {%endblock%}

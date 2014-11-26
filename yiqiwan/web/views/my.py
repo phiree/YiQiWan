@@ -5,7 +5,7 @@ from django.views.generic import CreateView
 from ..forms import fm_activity
 from ..models import Activity,User_User_Balance,User_Balance,Base_Balance,User2
 from django.core.urlresolvers import reverse
-
+from ..biz import balance as biz_balance
 @login_required
 def my_home(request):
         return render(request,'web/m/my/home.html')
@@ -74,13 +74,11 @@ def my_profile(request):
 def my_balance(request):
 
     balance_online=request.user.user_balance
-    balance_offline_list_owner=request.user.user_user_balance_owner.all()
-    balance_offline_list_other_user=request.user.user_user_balance_other_user.all()
+    balance_offline_summary=request.user.get_user_offline_balance_summary()
 
     return render(request,'web/m/my/balance.html',{'balance_online':balance_online,
-                                                   'balance_offline_list_owner':balance_offline_list_owner,
-                                                   'balance_offline_list_other_user':balance_offline_list_other_user
-                                                    })
+                                                   'balance_offline_summary':balance_offline_summary,
+                                                     })
 
 #活动收款界面
 def my_charge_activity(request,activity_id):
@@ -91,5 +89,12 @@ def my_charge_activity(request,activity_id):
 def charge(request,from_user, to_user,activity=None):
 
     pass
+def my_balance_flow_list(request):
+    return my_balance_flow_list(request,None)
+
+def my_balance_flow_list_for_account(request,account_id):
+    flow_list=biz_balance.get_user_balance_flow(request.user,account_id)
+    return render(request,'web/m/my/balance_flow_list.html',{'flow_list':flow_list})
+
 
 

@@ -13,11 +13,26 @@ from model_utils.managers import InheritanceManager
 from django.utils.translation import gettext as _
 from django.conf import settings
 
-
+from django.db.models import Q
 class User2(AbstractUser):
     def get_user_user_balance(self,other_user):
         return User_User_Balance.objects.get_or_create(owner=self,other_user=other_user)
-
+    def get_user_user_balance_list(self):
+        return User_User_Balance.objects.filter(Q(owner=self) | Q(other_user=self))
+    def get_user_offline_balance_summary(self):
+        balance_list=self.get_user_user_balance_list()
+        summary_amount_capital_debt=0
+        summary_amount_receivables_payables=0
+        summary_amount_profit_loss=0
+        for b in balance_list:
+            v=1
+            if b.owner==self:
+                v=1
+            else:
+                v=-1
+            summary_amount_capital_debt+=v*b.amount_capital_debt
+            summary_amount_receivables_payables+=v*b.amount_receivables_payables
+        return (balance_list, summary_amount_capital_debt,summary_amount_receivables_payables)
 
 class Place(models.Model):
     """
@@ -191,6 +206,7 @@ class Activity(models.Model):
         #离线账户
         participant_checkout(participant=participant, activity=self, amount=self.get_each_pay_pre()[1],
                              flow_type=flow_type_choice[0][0])
+
         Activity_Timeline.objects.create(user=participant, activity=self, occur_time=DateTime.now(), direction='J')
         return test_result
 
@@ -269,7 +285,7 @@ class Base_Balance(models.Model):
     amount_capital_debt = models.DecimalField(default=0, max_digits=6, decimal_places=1, help_text='资产/负债')  #资产和负债可以合并
     amount_profit_loss = models.DecimalField(default=0, max_digits=6, decimal_places=1,
                                              help_text='利润/亏损')  #利润和亏损也合并 负数则为亏损
-    amount_payables_receivables = models.DecimalField(default=0, max_digits=6, decimal_places=1,
+    amount_receivables_payables = models.DecimalField(default=0, max_digits=6, decimal_places=1,
                                                       help_text='应收/应付')  #预款总额 应收和应付也合并 负数则为应付
     #实际余额
     @property
@@ -278,7 +294,7 @@ class Base_Balance(models.Model):
 
     #包含预付预收的
     def balance_expected(self):
-        return self.balance_actual + self.amount_payables_receivables
+        return self.balance_actual + self.amount_receivables_payables
 
 #扩展的user
 
@@ -327,25 +343,25 @@ class Balance_Flow(models.Model):
 
         if self.flow_type == flow_type_choice[0][0]:
             #
-            self.account.amount_payables_receivables -= self.amount  #应付增加 减法
+            self.account.amount_receivables_payables -= self.amount  #应付增加 减法
             self.account.amount_capital_debt -=self.amount  #资产负债增加,减法
-            #self.to_account.amount_payables_receivables+=self.amount #应收 增加
+            #self.to_account.amount_receivables_payables+=self.amount #应收 增加
 
         #实际扣款 清空应付款,而且清空的金额等于预扣的款项,不是加入时的 balance_required
         #amount 值是 实际扣款额 和 预付额之间的差价
         elif self.flow_type == flow_type_choice[1][0]:
 
-            #self.account.amount_payables_receivables += self.amount  #减少应付款 加法--应付款已经在 返还预付款里面结清, 不需要处理 直接扣除资产即可.
+            #self.account.amount_receivables_payables += self.amount  #减少应付款 加法--应付款已经在 返还预付款里面结清, 不需要处理 直接扣除资产即可.
             #恢复预扣款
             self.account.amount_capital_debt -= self.amount #资产减少 减法
             #减除实际扣款
-            #self.to_account.amount_payables_receivables-=self.amount #应收减少
+            #self.to_account.amount_receivables_payables-=self.amount #应收减少
             #self.to_account.amount_capital_debt+=self.amount #资产增加
         #取消活动
         elif self.flow_type == flow_type_choice[2][0] or self.flow_type==flow_type_choice[7][0]:
-            self.account.amount_payables_receivables += self.amount  #应付减少,加法
+            self.account.amount_receivables_payables += self.amount  #应付减少,加法
             self.account.amount_capital_debt += self.amount  #资产增加 加法
-            #self.to_acount.amount_payables_receivables-=self.amount #应收减少
+            #self.to_acount.amount_receivables_payables-=self.amount #应收减少
 
         elif self.flow_type == flow_type_choice[3][0]:  #在线充值
             self.account.amount_capital_debt += self.amount #资产增加
