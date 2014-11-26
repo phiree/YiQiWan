@@ -1,4 +1,5 @@
 env_yiqiwan/
+*.sqlite*
 __pycache__/
 #################
 ## Eclipse
