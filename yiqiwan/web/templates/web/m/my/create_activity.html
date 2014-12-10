@@ -1,7 +1,8 @@
 {% extends "web/m/base.html" %}
+        {% load i18n %}
 {%load staticfiles%}
 {%block header%}
-<h1>創建活動</h1>
+ {%trans 'create activity'%}
 {%endblock%}
 {%block content%}
 
@@ -14,19 +15,23 @@
 
     {{ form.name.label_tag }}
     {{form.name}}
-    {{ form.place.label_tag }}
-    {{form.place}}
-    <a href="{%url 'web:my_create_place'%}">创建新地点</a>
-    <label for="id_total_cost">活動費用</label>
+
+    <label for="address">{%trans 'address'%}</label>
+    <input type="text" id="address" name="address" value="{{form.place.address}}"/>
+    {{ form.total_cost_expected.label_tag }}
     {{form.total_cost_expected}}
     {{form.total_cost_max_expected}}
-    <label for="id_participant_amount">人數</label>
+
+     {{ form.min_participants.label_tag }}
     {{form.min_participants}} {{form.max_participants}}
-    <label for="id_start_time">活动時間</label>
+
+   <label for="id_start_time">{%trans 'activity period'%}</label>
     {{form.start_time}} {{form.end_time}}
-    <label for="id_participate_deadline">报名截止时间</label>
+    {{ form.participate_deadline.label_tag }}
     {{form.participate_deadline}}
-    <button type="submit">創建活動</button>
+     {{ form.description.label_tag }}
+    {{form.description}}
+    <button type="submit">{%trans 'create activity'%}</button>
 </form>
 
 

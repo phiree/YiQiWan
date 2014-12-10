@@ -45,10 +45,11 @@ def register(request):
             User_Balance.objects.get_or_create(owner=created_user)
             created_user.backend = 'django.contrib.auth.backends.ModelBackend'
             login(request, user=created_user)
-            return HttpResponseRedirect(redirect_to= reverse('web:register_success'))
+            return HttpResponseRedirect(redirect_to= reverse('web:my_interest'))
     return render(request,'web/m/register.html',{'form':form})
 
 
 def register_success(request):
-    return render(request,'web/m/register_success.html',{'msg':_('this is a goodone')})
+    return HttpResponseRedirect(reverse('web:my_interest'))
+    #return render(request,'web/m/my/interest.html',{'msg':_('this is a goodone')})
 

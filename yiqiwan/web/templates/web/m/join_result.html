@@ -1,4 +1,5 @@
 {% extends "web/m/base.html" %}
-        {%block content%}
-        加入结果:{{msg}}
+{%load i18n%}
+{%block content%}
+        {%trans '加入结果'%}:{{msg}}
         {%endblock%}

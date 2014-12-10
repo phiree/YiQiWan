@@ -5,7 +5,7 @@ from datetime import   timedelta
 from django.utils import timezone as DateTime
 # Create your tests here.
 from model_mommy import mommy
-from model_mommy.recipe import Recipe, foreign_key
+
 class activity_test(TestCase):
     def setUp(self):
         users=mommy .make("User2",_quantity=6)
@@ -20,6 +20,7 @@ class activity_test(TestCase):
                             ,fix_charge=5
                             ,enabled=True
                             )
+
         activities=mommy.make("Activity",
                                   description='desc',
                                   _quantity=3,
@@ -30,7 +31,7 @@ class activity_test(TestCase):
             total_cost_expected=100,
             total_cost_max_expected=120,
             total_cost_actual=100,
-            checkout_strategy=strategy
+            checkout_strategy=strategy,
         )
         self.activity1=activities[0]
         self.activity2=activities[1]

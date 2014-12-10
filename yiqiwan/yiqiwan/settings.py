@@ -56,6 +56,7 @@ CONTEXT_PROCESSORS=(
 ,)
 TEMPLATE_CONTEXT_PROCESSORS=global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     'django.core.context_processors.i18n',
+    'django.core.context_processors.request',
 )
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
@@ -73,7 +74,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db2.sqlite3'),
     }
-}'''
+}
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'mysql.connector.django',
@@ -85,6 +87,7 @@ DATABASES = {
 
     }
 }
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
@@ -109,7 +112,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 LOCALE_PATHS = (
     os.path.join(BASE_DIR,'locale'),
 )
-LANGUAGES=LANGUAGES = (
-    ('en', 'English'),
-    ('zh-hans', u'简体中文'), # instead of 'zh-CN'
+FILE_CHARSET='utf-8'
+LANGUAGES= (
+    ('en-us', 'English'),
+    ('zh-cn',u'简体中文'), # instead of 'zh-CN'
     )

@@ -1,0 +1,28 @@
+{% extends "web/m/base.html" %}
+{% load i18n %}
+{%block header%}
+{%trans '我的兴趣'%}
+{%endblock%}
+{%block content%}
+<div>
+
+</div>
+  
+<div class="ui-body ui-body-a ui-corner-all">
+
+    {%if 'register' in request.META.HTTP_REFERER%}
+    <div>您已注册成功.请选择您的兴趣爱好,方便系统为您推荐合适的活动</div>
+    {%endif%}
+    <div class="ui-bar ui-bar-a">
+        {{msg}}
+    </div>
+<form method="post">
+    {%csrf_token%}
+    {%for field in form%}
+    {{field}}
+    {%endfor%}
+    <input type="submit" value="确定">
+   </form> 
+</div>
+
+{%endblock%}

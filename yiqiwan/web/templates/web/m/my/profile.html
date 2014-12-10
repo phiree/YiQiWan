@@ -7,11 +7,11 @@
        <div>
 
  {%if user.is_anonymous %}
-            <a href="{%url 'web:login'%}" rel="nofollow">登录</a>|<a
-                href="{%url 'web:register'%}" rel="nofollow">注册</a>|
+            <a href="{%url 'web:login'%}" rel="nofollow">{%trans 'login'%}</a>|<a
+                href="{%url 'web:register'%}" rel="nofollow">{%trans 'register'%}</a>|
             {%else%}
-            欢迎您,{{user}}|<a href="{%url 'web:my_home'%}">个人中心</a>|
-            <a href="{%url 'web:logout'%}" rel="nofollow">注销</a>|
+            Welcome,{{user}}|<a href="{%url 'web:my_home'%}">{%trans 'my homepage'%}</a>|
+            <a href="{%url 'web:logout'%}" rel="nofollow">{%trans 'logout'%}</a>|
             {%endif%}
     </div>
         {%endblock%}

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 __author__ = 'Administrator'
 from ..models import User,Activity,Balance_Flow,User_User_Balance
 from datetime import datetime as DateTime

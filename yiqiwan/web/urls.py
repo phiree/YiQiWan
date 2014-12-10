@@ -21,7 +21,8 @@ urlpatterns = patterns(''
                          , url(r'^my/balance/flow_list/$',  my.my_balance_flow_list ,name='my_balance_flow_list')
                           , url(r'^my/balance/flow_list_for_account/(?P<account_id>\d+)$',  my.my_balance_flow_list_for_account ,name='my_balance_flow_list_for_account')
                        , url(r'^my/create_activity$', my.ActivityCreate.as_view(), name='my_create_activity')
-                       , url(r'^my/create_place$', my.create_activity, name='my_create_place')
+                       , url(r'^my/create_place$', my.create_place, name='my_create_place')
+                       , url(r'^my/my_interest$', my.my_interest, name='my_interest')
 
                        , url(r'^my/joint_activity/list$', my.my_joint_activity_list, name='my_joint_activity_list')
                         , url(r'^my/created_activity/list$', my.my_created_activity_list, name='my_created_activity_list')

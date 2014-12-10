@@ -1,4 +1,5 @@
-{% extends "web/m/base.html" %}     {%load staticfiles%}
+{% extends "web/m/base.html" %}
+        {%load staticfiles%}
         {%load i18n%}
         {%block content%}
             <form method="post" action="{%url 'web:login'%}{%if next%}?next={{next}}{%endif%}"> {%csrf_token%}

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from django.db import models
 from django.contrib.auth.models import User,AbstractBaseUser,AbstractUser
@@ -5,18 +7,24 @@ from django.contrib.auth.models import User,AbstractBaseUser,AbstractUser
 from model_utils import Choices
 from model_utils.fields import SplitField, StatusField, MonitorField
 
+
 # from datetime import  datetime as DateTime
+import datetime
+
 from django.utils import timezone as DateTime
 #from django.utils.timezone import datetime as DateTime
 from decimal import Decimal, ROUND_HALF_EVEN
 from model_utils.managers import InheritanceManager
-from django.utils.translation import gettext as _
+from django.utils.translation import ugettext as _,ugettext_lazy as _lazy
+
 from django.conf import settings
 
 from django.db.models import Q
 class User2(AbstractUser):
+    interests=models.ManyToManyField('Interest',null=True,blank=True)
     def get_user_user_balance(self,other_user):
         return User_User_Balance.objects.get_or_create(owner=self,other_user=other_user)
+
     def get_user_user_balance_list(self):
         return User_User_Balance.objects.filter(Q(owner=self) | Q(other_user=self))
     def get_user_offline_balance_summary(self):
@@ -40,15 +48,14 @@ class Place(models.Model):
     """
     name = models.CharField(max_length=300)
     address = models.CharField(max_length=300)
-    coordinate_x = models.DecimalField(max_digits=9, decimal_places=6)
-    coordinate_y = models.DecimalField(max_digits=9, decimal_places=6)
-    phone = models.CharField(max_length=200)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
-    create_date = models.DateTimeField()
-    last_update_time = models.DateTimeField()
-    photo = models.ImageField(blank=True, null=True)
-    pass
+    phone = models.CharField(max_length=200, blank=True, null=True)
+    coordinate_x = models.DecimalField(max_digits=9, decimal_places=6,null=True)
+    coordinate_y = models.DecimalField(max_digits=9, decimal_places=6,null=True)
 
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
+    create_date = models.DateTimeField(default=DateTime.now)
+    last_update_time = models.DateTimeField(default=DateTime.now)
+    photo = models.ImageField(blank=True, null=True)
     def __str__(self):
         return self.address
 
@@ -56,12 +63,12 @@ class Activity(models.Model):
     """
     活动的定义.
     """
-    founder = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='activity_founder', verbose_name='创建者', blank=True,
-                                null=True, help_text='创建者')
-    name = models.CharField(max_length=300, null=True, blank=True)
-    description =models.CharField(max_length=8000, null=True, blank=True)
+    founder = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='activity_founder', verbose_name=_lazy('founder'), blank=True,
+                                null=True, help_text=_lazy('创建者'))
+    name = models.CharField(max_length=300, null=True, blank=True,verbose_name=_lazy('名称'))
+    description =models.CharField(max_length=8000, null=True, blank=True,verbose_name=_lazy('描述'))
     place = models.ForeignKey(Place)
-    min_participants = models.IntegerField()
+    min_participants = models.IntegerField(verbose_name=_lazy('最少参与人数'))
     max_participants = models.IntegerField()
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
@@ -78,7 +85,7 @@ class Activity(models.Model):
     participants = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='activity_participants', null=True, blank=True)
     status_choice = Choices(('Open','Open'), ('Progressing','Progressing'), ('Over','Over'),('Closed','Closed'))
     status = models.CharField(max_length=20, choices=status_choice, default='Open', blank=True)
-    create_time = models.DateTimeField(default=DateTime.now(),blank=True)
+    create_time = models.DateTimeField(default=DateTime.now,blank=True)
 
     #最终可能扣款数 -- 根据参加者数量 动态变化
     def get_each_pay_real_time(self):
@@ -207,7 +214,7 @@ class Activity(models.Model):
         participant_checkout(participant=participant, activity=self, amount=self.get_each_pay_pre()[1],
                              flow_type=flow_type_choice[0][0])
 
-        Activity_Timeline.objects.create(user=participant, activity=self, occur_time=DateTime.now(), direction='J')
+        Activity_Timeline.objects.create(user=participant, activity=self, occur_time=DateTime.now, direction='J')
         return test_result
 
     #移除參與者.
@@ -232,7 +239,7 @@ class Activity(models.Model):
         if self.max_participants<self.min_participants:
             raise  _('max_participant cannot be less than min_participant')
         if self.total_cost_max_expected<self.total_cost_expected:
-            raise _('total_cost_max cannot be less than total_cost')
+            raise _(u'total_cost_max cannot be less than total_cost')
         self.create_time=DateTime.now()
         super(Activity,self).save(*args,**kwargs)
 
@@ -241,7 +248,7 @@ class Activity_Timeline(models.Model):
     """記錄用戶的 參與/離去時間"""
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     activity = models.ForeignKey(Activity)
-    occur_time = models.DateTimeField(default=DateTime.now())
+    occur_time = models.DateTimeField(default=DateTime.now)
     direction = models.CharField(choices=(('L', 'leave'), ('J', 'join')), max_length=10)
 
 
@@ -317,10 +324,10 @@ flow_type_choice = (('activity_pre_checkout', '活动预结帐'), #0
                     ('activity_checkout', '活动结帐'),
                     ('activity_cancel', '活动取消'),
 
-                    ('recharge_offline', '在线充值'),  # 用户充值给系统
-                    ('withdraw_offline', '在线提现'),  # 用户从系统体现
-                    ('recharge_online', '离线充值'),  #用户之间的余额转移,如 参与者交款给 创建者
-                    ('withdraw_online', '离线提现'),  #                     参与者要回现金
+                    ('recharge_offline', '离线充值'),  # 用户充值给系统
+                    ('withdraw_offline', '离提现'),  # 用户从系统体现
+                    ('recharge_online', '在线充值'),  #用户之间的余额转移,如 参与者交款给 创建者
+                    ('withdraw_online', '在线提现'),  #                     参与者要回现金
                     ('activity_return_pre_checkout','返回预扣款')
 )  #同上
 #借贷流水,
@@ -330,7 +337,7 @@ class Balance_Flow(models.Model):
     #account 收支平衡 不需要 to-account 因为流水双方已经在同一个account,面了
     #to_account=models.ForeignKey(Base_Balance,related_name='balance_flow_to',null=True,blank=True)
     amount = models.DecimalField(default=0, max_digits=6, decimal_places=1, help_text='金额')
-    occur_time = models.DateTimeField(  default=DateTime.now())
+    occur_time = models.DateTimeField(  default=DateTime.now)
     activity = models.ForeignKey(Activity, null=True, blank=True)
     applied = models.BooleanField(default=False)
 
@@ -363,16 +370,17 @@ class Balance_Flow(models.Model):
             self.account.amount_capital_debt += self.amount  #资产增加 加法
             #self.to_acount.amount_receivables_payables-=self.amount #应收减少
 
-        elif self.flow_type == flow_type_choice[3][0]:  #在线充值
+        elif self.flow_type == flow_type_choice[3][0]:  #离线充值
             self.account.amount_capital_debt += self.amount #资产增加
-            #self.to_account.amount_capital_debt -= self.amount
+            self.account.amount_receivables_payables += self.amount
 
-        elif self.flow_type == flow_type_choice[4][0]:  #在线提现
+        elif self.flow_type == flow_type_choice[4][0]:  #离线提现
             self.account.amount_capital_debt -= self.amount
-            #self.to_account.amount_capital_debt += self.amount
-        elif self.flow_type == flow_type_choice[5][0]:  #离线充值
+            self.account.amount_receivables_payables -= self.amount
+
+        elif self.flow_type == flow_type_choice[5][0]:  #在线充值
             self.account.amount_capital_debt += self.amount
-        elif self.flow_type == flow_type_choice[6][0]:  #离线充值
+        elif self.flow_type == flow_type_choice[6][0]:  #在线提现
             self.account.amount_capital_debt -= self.amount
 
         #todo 事务处理
@@ -490,7 +498,7 @@ class Checkout_Strategy(models.Model):
     founder_profit_percent = models.DecimalField(default=0.2, max_digits=2, decimal_places=1)
     #创建者是否免单
     is_founder_free = models.BooleanField(default=False)
-    last_update_time=models.DateTimeField(  default=DateTime.now())
+    last_update_time=models.DateTimeField(default=DateTime.now)
     #todo:ensure there is only one suitable strategy for certain condition.
     #目前还没有其他条件
     enabled=models.BooleanField(default=False)
@@ -517,9 +525,14 @@ class Checkout_Strategy_Percent_Charge(Checkout_Strategy):
         charge=charge if charge<=self.max_charge else self.max_charge
         return  charge
 
-#多种策略可以选择
 
-#如何决定每个活动的 结帐策略?
+class Interest(models.Model):
+    """
+    兴趣
+    """
+    name=models.CharField(max_length=100)
+    parent=models.ForeignKey('Interest',blank=True,null=True)
+
 
 
 

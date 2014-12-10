@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-25 14:09+0800\n"
+"POT-Creation-Date: 2014-12-10 06:08+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,50 +16,124 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: .\web\models.py:86 .\web\models.py:219
+#: .\web\models.py:108 .\web\models.py:242
 msgid "total_cost_max cannot be less than total_cost"
-msgstr ""
+msgstr " "
 
-#: .\web\models.py:112
+#: .\web\models.py:134
 msgid "please input actual cost first"
 msgstr ""
 
-#: .\web\models.py:156
+#: .\web\models.py:178
 msgid "too late"
 msgstr ""
 
-#: .\web\models.py:160
+#: .\web\models.py:182
 msgid "full"
 msgstr ""
 
-#: .\web\models.py:168
+#: .\web\models.py:190
 msgid "no need , you are the founder"
 msgstr ""
 
-#: .\web\models.py:170
+#: .\web\models.py:192
 msgid "already in"
 msgstr ""
 
-#: .\web\models.py:176
+#: .\web\models.py:198
 msgid ""
 "waring:not enough money to pay the amount_debet online,please pay cash to "
 "the other_user and ask him to add balance to your account."
 msgstr ""
 
-#: .\web\models.py:182
+#: .\web\models.py:204
 msgid "join successfully"
 msgstr ""
 
-#: .\web\models.py:217
+#: .\web\models.py:240
 msgid "max_participant cannot be less than min_participant"
 msgstr ""
 
-#: .\web\models.py:241
+#: .\web\models.py:264
 msgid "profit for founder"
 msgstr ""
 
-#: .\web\models.py:375
+#: .\web\models.py:399
 msgid "should\"t have multi instance "
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:4
+msgid "activity detail"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:10
+msgid "name"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:11
+msgid "status"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:12
+#: .\web\templates\web\m\activity_detail.html:23
+msgid "founder"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:13
+msgid "place"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:14
+#: .\web\templates\web\m\my\create_activity.html:19
+msgid "address"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:15
+msgid "start time"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:16
+msgid "end time"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:17
+msgid "register deadline"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:18
+msgid "total cost expected"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:19
+msgid "withhold"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:20
+msgid "real_time_cost"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:21
+msgid "note:real cost will to the "
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:22
+msgid "participants"
+msgstr ""
+
+#: .\web\templates\web\m\activity_detail.html:28
+msgid "description"
+msgstr ""
+
+#: .\web\templates\web\m\base.html:25
+msgid "走起"
+msgstr ""
+
+#: .\web\templates\web\m\base.html:43
+msgid "活动"
+msgstr ""
+
+#: .\web\templates\web\m\base.html:45
+msgid "我的"
 msgstr ""
 
 #: .\web\templates\web\m\home.html:5
@@ -67,11 +141,11 @@ msgid "activity list"
 msgstr ""
 
 #: .\web\templates\web\m\login.html:10
+#: .\web\templates\web\m\my\profile.html:11
 msgid "register"
-msgstr "注册"
+msgstr ""
 
 #: .\web\templates\web\m\my\balance.html:4
-#: .\web\templates\web\m\my\charge_activity.html:4
 msgid "my balance"
 msgstr ""
 
@@ -80,14 +154,12 @@ msgid "online balance"
 msgstr ""
 
 #: .\web\templates\web\m\my\balance.html:13
-#: .\web\templates\web\m\my\balance.html:27
-#: .\web\templates\web\m\my\balance.html:55
+#: .\web\templates\web\m\my\balance.html:21
+#: .\web\templates\web\m\my\balance.html:28
 msgid "capital/debt"
 msgstr ""
 
 #: .\web\templates\web\m\my\balance.html:15
-#: .\web\templates\web\m\my\balance.html:28
-#: .\web\templates\web\m\my\balance.html:56
 msgid "payables/receivables"
 msgstr ""
 
@@ -96,39 +168,45 @@ msgid "profit/loss"
 msgstr ""
 
 #: .\web\templates\web\m\my\balance.html:21
-msgid "offline balance as owner"
+msgid "balance with other user"
 msgstr ""
 
-#: .\web\templates\web\m\my\balance.html:26
-msgid "balance other_user"
+#: .\web\templates\web\m\my\balance.html:22
+msgid "receivable/payable"
 msgstr ""
 
-#: .\web\templates\web\m\my\balance.html:49
-msgid "offline balance as other user"
+#: .\web\templates\web\m\my\balance.html:27
+msgid "other_user"
 msgstr ""
 
-#: .\web\templates\web\m\my\balance.html:54
-msgid "balance owner"
+#: .\web\templates\web\m\my\balance.html:29
+msgid "receivables/payables"
 msgstr ""
 
-#: .\web\templates\web\m\my\charge_activity.html:8
-msgid "activity summary"
+#: .\web\templates\web\m\my\balance_flow_list.html:4
+msgid "my blance flow"
 msgstr ""
 
-#: .\web\templates\web\m\my\charge_activity.html:10
-msgid "name"
+#: .\web\templates\web\m\my\balance_flow_list.html:13
+msgid "flow type"
 msgstr ""
 
-#: .\web\templates\web\m\my\charge_activity.html:11
-msgid "place"
+#: .\web\templates\web\m\my\balance_flow_list.html:14
+msgid "amount"
 msgstr ""
 
-#: .\web\templates\web\m\my\charge_activity.html:12
-msgid "period"
+#: .\web\templates\web\m\my\balance_flow_list.html:15
+msgid "related"
 msgstr ""
 
-#: .\web\templates\web\m\my\charge_activity.html:16
-msgid "charge status"
+#: .\web\templates\web\m\my\create_activity.html:5
+#: .\web\templates\web\m\my\create_activity.html:34
+#: .\web\templates\web\m\my\home.html:10
+msgid "create activity"
+msgstr ""
+
+#: .\web\templates\web\m\my\create_activity.html:28
+msgid "activity period"
 msgstr ""
 
 #: .\web\templates\web\m\my\created_activity_list.html:4
@@ -136,11 +214,35 @@ msgstr ""
 msgid "my joint activity list"
 msgstr ""
 
+#: .\web\templates\web\m\my\created_activity_list.html:10
+msgid "charge from participant"
+msgstr ""
+
 #: .\web\templates\web\m\my\home.html:5
 msgid "my home title"
 msgstr ""
 
-#: .\web\templates\web\m\my\settings.html:9
+#: .\web\templates\web\m\my\profile.html:4
+msgid "my profile"
+msgstr ""
+
+#: .\web\templates\web\m\my\profile.html:10
+msgid "login"
+msgstr ""
+
+#: .\web\templates\web\m\my\profile.html:13
+msgid "my homepage"
+msgstr ""
+
+#: .\web\templates\web\m\my\profile.html:14
+msgid "logout"
+msgstr ""
+
+#: .\web\templates\web\m\my\settings.html:5
+msgid "settings"
+msgstr ""
+
+#: .\web\templates\web\m\my\settings.html:10
 msgid "choose language"
 msgstr ""
 

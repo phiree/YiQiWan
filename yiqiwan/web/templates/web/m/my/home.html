@@ -7,11 +7,12 @@
 {%block content%}
 
         <ul data-role="listview"   data-inset="true">
-            <li><a href="{%url 'web:my_create_activity' %}">創建活動</a></li>
+            <li><a href="{%url 'web:my_create_activity' %}">{%trans 'create activity'%}</a></li>
             <li><a href="{%url 'web:my_settings'%}">设置</a></li>
             <li><a href="{%url 'web:my_joint_activity_list'%}">我参与的活动</a></li>
             <li><a href="{%url 'web:my_created_activity_list'%}">我创建的活动</a></li>
-            <li><a href="{%url 'web:my_profile'%}">我的资料</a></li>
+            <li><a href="{%url 'web:my_profile'%}">我的账号</a></li>
+            <li><a href="{%url 'web:my_interest'%}">我的兴趣</a></li>
             <li><a href="{%url 'web:my_balance'%}">我的财务</a></li>
         </ul>
 

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 __author__ = 'Administrator'
 from django.forms import ModelForm,TextInput,DateTimeInput,PasswordInput
 from ..models import Activity,User2

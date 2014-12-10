@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 __author__ = 'Administrator'
 from django.db.models.signals import post_save
 from django.dispatch import receiver

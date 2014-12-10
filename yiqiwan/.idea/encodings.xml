@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
-    <file url="file://$PROJECT_DIR$/docs/memo.txt" charset="UTF-16BE" />
+  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/docs/memo.txt" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/locale/zh/LC_MESSAGES/django.po" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/models.py" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/web/templates/web/m/activity_detail.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/templates/web/m/base.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/templates/web/m/home.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/templates/web/m/join_result.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/templates/web/m/login.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/templates/web/m/logout.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/templates/web/m/my/settings.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/templatetags/get_user_user_balance.py" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yiqiwan/urls.py" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>
 

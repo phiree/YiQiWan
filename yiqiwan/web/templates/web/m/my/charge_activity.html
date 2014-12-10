@@ -1,5 +1,25 @@
 {% extends "web/m/base.html" %}
+        {%load staticfiles%}
 {% load i18n %}
+        {%load  get_user_user_balance%}
+        {%block header_script_ref%}
+        <script  src="{%static 'web/jquery/plugin/jquery.cookie.js'%}" type="text/javascript"></script>
+         <script src="{%static 'web/jquery/plugin/jquery.djangocsrf.js'%}" type="text/javascript"></script>
+        {%endblock%}
+         {%block header_script%}
+        $.djangocsrf( "enable" );
+        $('.btn_charge').click(function(){
+            form_data=$(this).parents('form').serialize();
+            $.post("{%url 'web:my_charge_activity' activity.id%}",form_data,
+                    function(result)
+                    {
+                     alert(result);
+                    }
+                )
+        });
+
+     {%endblock%}
+
 {%block header%}
 {%trans 'my balance'%}
 {%endblock%}
@@ -15,8 +35,10 @@
         <fieldset>
             <legend>{%trans 'charge status'%}</legend>
             <div>
-                {%for participant in activity.participants %}
-                    {%with .%}
+                {%for participant in activity.participants.all%}
+                {{participant}} {{activity.founder|get_balance:participant.id}}<form>
+                <input type="hidden" name="charge_user_id" value="{{participant.id}}"/>
+               <label for="amount">{%trans '收款额'%}</label> <input name="amount" type="number"  /><input class="btn_charge" value="{%trans '确定收款'%}" id="btn_charge" type="button" /> </form>
                 {%endfor%}
             </div>
         </fieldset>

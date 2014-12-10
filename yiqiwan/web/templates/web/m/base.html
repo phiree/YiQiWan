@@ -1,24 +1,32 @@
 {%load staticfiles%}
+{%load i18n%}
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>YiQiWan</title>
 
     <script src="{%static 'web/jquery/jquery.min.js'%}"></script>
     <script src="{%static 'web/jquery/jquery_mobile/jquery.mobile-1.4.5.min.js'%}"></script>
+    {%block header_script_ref%}
+    {%endblock%}
     <link rel="stylesheet" href="{%static 'web/jquery/jquery_mobile/css/themes/default/jquery.mobile-1.4.5.min.css'%}">
+    <script>
+    $(function(){
+     {%block header_script%}
+     {%endblock%}
+    });
+
+    </script>
 
 </head>
 <body>
-<div data-role="page" data-title="{%block page_title%}一起玩{%endblock%}">
+<div data-role="page" data-url="{{request.get_full_path }}" data-title="{%block page_title%}{%trans '走起'%}{%endblock%}">
 
     <div data-role="header">
        <a href="#" data-rel="back" class="ui-btn ui-shadow ui-corner-all ui-icon-back ui-btn-icon-notext"></a>
         <h1>
         {%block header%}
-
         {%endblock%}
             </h1>
     </div>
@@ -31,12 +39,11 @@
 
 
     <div data-role="footer" data-position="fixed">
-        <a href="{%url 'web:site_home' %}" rel="nofollow">活动</a>
+        <a href="{%url 'web:site_home' %}" rel="nofollow">{%trans '活动'%}</a>
         <a href="{%url 'web:my_home'%}"
-           rel="nofollow">我的</a>
-
-        <a href="{%url 'web:my_home'%}"
-           rel="nofollow">{{request.LANGUAGE_CODE}}</a>
+           rel="nofollow">{%trans '我的'%}</a>
+        <a href="{%url 'web:my_settings'%}"
+           rel="nofollow">语言</a>
 
     </div>
     {%endblock%}

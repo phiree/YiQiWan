@@ -1,3 +1,4 @@
+
 花了好几个小时处理一些应该很容易的问题:
 1)html5 的 input type=datetime-local 存储到django model时格式错误 没解决
 2)createview 如何设置来自request的默认值,比如 活动.创建者=request.user 不需要从forms获得.

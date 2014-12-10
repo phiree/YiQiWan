@@ -6,7 +6,9 @@
 {%block content%}
         <ul data-role="listview"   data-inset="true">
             {%for activity in activity_list%}
-                <li><a href="{%url 'web:activity_detail' activity.id %}">{{activity}}</a></li>
+                <li><a href="{%url 'web:activity_detail' activity.id %}">{{activity}}</a>
+                    <a href="{%url 'web:my_charge_activity' activity.id%}">{%trans 'charge from participant'%}</a></li>
+
             {%endfor%}
 
 
