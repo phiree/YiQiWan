@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-10 06:08+0800\n"
+"POT-Creation-Date: 2014-12-18 04:12+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -124,23 +124,15 @@ msgstr ""
 msgid "description"
 msgstr ""
 
-#: .\web\templates\web\m\base.html:25
-msgid "走起"
-msgstr ""
-
-#: .\web\templates\web\m\base.html:43
-msgid "活动"
-msgstr ""
-
-#: .\web\templates\web\m\base.html:45
-msgid "我的"
-msgstr ""
-
 #: .\web\templates\web\m\home.html:5
 msgid "activity list"
 msgstr ""
 
-#: .\web\templates\web\m\login.html:10
+#: .\web\templates\web\m\join_result.html:4
+msgid "加入结果"
+msgstr ""
+
+#: .\web\templates\web\m\login.html:11
 #: .\web\templates\web\m\my\profile.html:11
 msgid "register"
 msgstr ""
@@ -219,7 +211,7 @@ msgid "charge from participant"
 msgstr ""
 
 #: .\web\templates\web\m\my\home.html:5
-msgid "my home title"
+msgid "我的主页"
 msgstr ""
 
 #: .\web\templates\web\m\my\profile.html:4
@@ -244,8 +236,4 @@ msgstr ""
 
 #: .\web\templates\web\m\my\settings.html:10
 msgid "choose language"
-msgstr ""
-
-#: .\web\views\front_web_mobile.py:53
-msgid "this is a goodone"
 msgstr ""

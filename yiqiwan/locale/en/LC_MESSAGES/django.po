@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-10 06:35+0800\n"
+"POT-Creation-Date: 2014-12-18 04:13+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -132,7 +132,7 @@ msgstr ""
 msgid "加入结果"
 msgstr ""
 
-#: .\web\templates\web\m\login.html:10
+#: .\web\templates\web\m\login.html:11
 #: .\web\templates\web\m\my\profile.html:11
 msgid "register"
 msgstr ""
@@ -212,8 +212,9 @@ msgid "charge from participant"
 msgstr ""
 
 #: .\web\templates\web\m\my\home.html:5
-msgid "my home title"
-msgstr "My Home"
+#, fuzzy
+msgid "我的主页"
+msgstr "My"
 
 #: .\web\templates\web\m\my\profile.html:4
 #, fuzzy
@@ -241,15 +242,11 @@ msgstr ""
 msgid "choose language"
 msgstr ""
 
-#: .\web\views\front_web_mobile.py:53
-msgid "this is a goodone"
-msgstr ""
+#~ msgid "my home title"
+#~ msgstr "My Home"
 
 #~ msgid "走起"
 #~ msgstr "zouqi"
 
 #~ msgid "活动"
 #~ msgstr "Activities"
-
-#~ msgid "我的"
-#~ msgstr "My"
