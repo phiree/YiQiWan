@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     #'django_tables2',
     'web',
+    'region',
 )
 AUTH_USER_MODEL = 'web.User2'
 MIDDLEWARE_CLASSES = (
@@ -68,7 +69,7 @@ WSGI_APPLICATION = 'yiqiwan.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
-'''
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -87,7 +88,7 @@ DATABASES = {
 
     }
 }
-
+'''
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 

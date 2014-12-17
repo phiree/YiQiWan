@@ -1,0 +1,37 @@
+{%load staticfiles%}
+{% load i18n %}
+<div id="tabs_region">
+        <ul>
+            <li><a href="/region/region_list/1">选择省/直辖市</a> </li>
+            <li><a id='tl-1' href="#tabs-2">选择区县</a> </li>
+            <li><a id='tl-2' href="#tabs-3">选择辖区</a> </li>
+        </ul>
+        <div id="tabs-1"> </div>
+        <div id="tabs-2"> </div>
+        <div id="tabs-3"> </div>
+    </div>
+        <script>
+            $(function(){
+                //load top level
+
+                   var tabs= $("#tabs_region").tabs();
+
+                    $(document).on('click'
+                                ,'.region_item'
+                                ,function(e){
+                                     //get region_level
+
+                                    level=parseInt($(this).attr('level'));
+                                     rid=parseInt($(this).attr('rid'));
+                                    if(level==3)
+                                    {
+                                        last_region_click(rid);
+                                    }
+
+                                     $('#tl-'+level).attr('href','/region/region_list/'+rid);
+                                      $( "#tabs_region" ).tabs( "option", "active", level );
+                                      $( "#tabs_region" ).tabs( 'refresh' );
+                                });
+
+                });
+        </script>

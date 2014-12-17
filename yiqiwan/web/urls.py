@@ -23,7 +23,9 @@ urlpatterns = patterns(''
                        , url(r'^my/create_activity$', my.ActivityCreate.as_view(), name='my_create_activity')
                        , url(r'^my/create_place$', my.create_place, name='my_create_place')
                        , url(r'^my/my_interest$', my.my_interest, name='my_interest')
-
+                         , url(r'^my/my_scope$', my.my_scope, name='my_scope')
+                          , url(r'^my/update_scope/$', my.update_scope, name='update_scope')
+                            , url(r'^my/delete_scope/$', my.delete_scope, name='delete_scope')
                        , url(r'^my/joint_activity/list$', my.my_joint_activity_list, name='my_joint_activity_list')
                         , url(r'^my/created_activity/list$', my.my_created_activity_list, name='my_created_activity_list')
                         , url(r'^my/charge_activity/(?P<activity_id>\d+)/$', my.my_charge_activity, name='my_charge_activity')

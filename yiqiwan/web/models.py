@@ -6,7 +6,7 @@ from django.contrib.auth.models import User,AbstractBaseUser,AbstractUser
 
 from model_utils import Choices
 from model_utils.fields import SplitField, StatusField, MonitorField
-
+from region.models import Region
 
 # from datetime import  datetime as DateTime
 import datetime
@@ -21,7 +21,7 @@ from django.conf import settings
 
 from django.db.models import Q
 class User2(AbstractUser):
-    interests=models.ManyToManyField('Interest',null=True,blank=True)
+    interests=models.ManyToManyField('Interest',null=True,blank=True, related_name='m2m_user2_interests')
     def get_user_user_balance(self,other_user):
         return User_User_Balance.objects.get_or_create(owner=self,other_user=other_user)
 
@@ -531,9 +531,13 @@ class Interest(models.Model):
     兴趣
     """
     name=models.CharField(max_length=100)
-    parent=models.ForeignKey('Interest',blank=True,null=True)
+    parent=models.ForeignKey('Interest',blank=True, null=True)
 
-
+class User_Scope(models.Model):
+    """用户的活动范围"""
+    user=models.ForeignKey(User2)
+    region=models.ForeignKey(Region)
+    last_updated=models.DateTimeField()
 
 
 

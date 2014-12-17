@@ -6,10 +6,12 @@ from django.views.generic import CreateView
 from ..forms import fm_activity
 from ..forms.fm_my import fm_charge_activity,fm_interest
 from ..models import Activity,User_User_Balance,User_Balance\
-    ,Base_Balance,User2,Balance_Flow,flow_type_choice,Place,Interest
+    ,Base_Balance,User2,Balance_Flow,flow_type_choice,Place,Interest,User_Scope
+from region.models import Region
 from django.core.urlresolvers import reverse
 from ..biz import balance as biz_balance
 from django.utils import timezone as DateTime
+
 from django.utils.translation import gettext as _
 from django.http import JsonResponse
 @login_required
@@ -144,3 +146,19 @@ def my_interest(request):
 
     return render(request,'web/m/my/interest.html',{'form':form,'msg':msg})
 
+def my_scope(request):
+    scopes=User_Scope.objects.all().order_by('-last_updated')
+    return render(request,'web/m/my/scope.html',{'scopes':scopes})
+
+def update_scope(request):
+    if request.method=='POST':
+        region_id=request.POST.get('region_id')
+        region=Region.objects.get(region_id=region_id)
+        User_Scope.objects.create(user=request.user,region=region,last_updated=DateTime.now())
+        return JsonResponse({'result':'ok'})
+
+def delete_scope(request):
+    if request.method=='POST':
+        user_scope_id=request.POST.get('user_scope_id')
+        User_Scope.objects.get(pk=user_scope_id).delete()
+        return JsonResponse({'result':'ok'})
