@@ -1,11 +1,13 @@
 {%load staticfiles%}
 {% load i18n %}
-<div id="tabs_region">
+<div data-role="tabs"  id="tabs_region">
+     <div data-role="navbar">
         <ul>
-            <li><a href="/region/region_list/1">选择省/直辖市</a> </li>
-            <li><a id='tl-1' href="#tabs-2">选择区县</a> </li>
-            <li><a id='tl-2' href="#tabs-3">选择辖区</a> </li>
+            <li><a id="tl-0" href="/region/region_list/1">省/直辖市</a> </li>
+            <li><a id='tl-1' href="#tabs-2">市</a> </li>
+            <li><a id='tl-2' href="#tabs-3">区县</a> </li>
         </ul>
+         </div>
         <div id="tabs-1"> </div>
         <div id="tabs-2"> </div>
         <div id="tabs-3"> </div>
@@ -27,10 +29,12 @@
                                     {
                                         last_region_click(rid);
                                     }
+                                    $('#tl-'+(level-1)).text($(this).text());
 
                                      $('#tl-'+level).attr('href','/region/region_list/'+rid);
-                                      $( "#tabs_region" ).tabs( "option", "active", level );
-                                      $( "#tabs_region" ).tabs( 'refresh' );
+                                      //$( "#tabs_region" ).tabs( 'refresh' );
+                                      $( "#tabs_region" ).tabs( "option", "active", level);
+
                                 });
 
                 });
