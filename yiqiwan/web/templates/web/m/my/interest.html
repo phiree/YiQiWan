@@ -18,10 +18,15 @@
     </div>
 <form method="post">
     {%csrf_token%}
+    <fieldset>
+        <legend></legend>
+
     {%for field in form%}
     {{field}}
     {%endfor%}
-    <input type="submit" value="确定">
+        <input type="submit" value="确定">
+        </fieldset>
+
    </form> 
 </div>
 

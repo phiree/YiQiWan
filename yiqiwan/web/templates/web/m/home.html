@@ -4,10 +4,23 @@
 {%block header%}
 {%trans 'activity list'%}
 {%endblock%}
+{%block navbar%}
+{%endblock%}
 {%block content%}
-{%for activity in activity_list%}
-<div>
-    <a href="{%url 'web:activity_detail' activity.id%}">{{activity}}</a>
+<div data-demo-html="true">
+    <div data-role="navbar" data-grid="c">
+        <ul>
+            <li><a href="#" class=" ui-btn-active">{%trans '全部'%}</a></li>
+            <li><a href="#">Two</a></li>
+            <li><a href="#">Three</a></li>
+            <li><a href="#">Four</a></li>
+        </ul>
+    </div>
+    <!-- /navbar -->
 </div>
-{%endfor%}
+<ul data-role="listview" data-inset="true">
+    {%for activity in activity_list%}
+    <li><a href="{%url 'web:activity_detail' activity.id%}">{{activity}}</a></li>
+    {%endfor%}
+</ul>
 {%endblock%}

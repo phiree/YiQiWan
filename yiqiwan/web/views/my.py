@@ -90,7 +90,7 @@ def my_profile(request):
 def my_balance(request):
 
     balance_online=request.user.user_balance
-    balance_offline_summary=request.user.get_user_offline_balance_summary()
+    balance_offline_summary=request.user.get_user_offline_balance_summary
 
     return render(request,'web/m/my/balance.html',{'balance_online':balance_online,
                                                    'balance_offline_summary':balance_offline_summary,

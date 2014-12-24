@@ -5,7 +5,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>YiQiWan</title>
-     <link rel="stylesheet" href="{%static 'web/jquery/jquery_mobile/css/themes/default/jquery.mobile-1.4.5.min.css'%}">
+    <link rel="stylesheet" href="{%static 'web/jquery/jquery_mobile/css/themes/default/jquery.mobile-1.4.5.min.css'%}">
     <link rel="stylesheet" href="{%static 'web/my.css'%}">
     {%block header_css_ref%}
     {%endblock%}
@@ -21,20 +21,32 @@
      {%endblock%}
     });
 
+
+
     </script>
 
 </head>
 <body>
-<div data-role="page" data-url="{{request.get_full_path }}" data-title="{%block page_title%}{%trans '走起'%}{%endblock%}">
+<div data-url="{{request.get_full_path }}" data-title="{%block page_title%}{%trans '走起'%}{%endblock%}">
 
     <div data-role="header">
-       <a href="#" data-rel="back" class="ui-btn ui-shadow ui-corner-all ui-icon-back ui-btn-icon-notext"></a>
+        <div data-role="controlgroup" data-type="horizontal" class="  ui-btn-left">
+            <a href="{%url 'web:site_home' %}" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-notext  ui-icon-home ">menu</a>
+        </div>
         <h1>
-        {%block header%}
-        {%endblock%}
-            </h1>
+            {%block header%}
+            {%endblock%}
+        </h1>
+
+        <div data-role="controlgroup" data-type="horizontal" class="ui-btn-right">
+            <a href="{%url 'web:my_home' %}" class=" ui-btn  ui-shadow ui-corner-all  ui-btn-icon-notext ui-icon-user">啊啊</a>
+            <a href="#" class=" ui-btn  ui-shadow ui-corner-all  ui-btn-icon-notext ui-icon-search">v</a>
+        </div>
+
     </div>
-    <div role="main"  data-role="ui-content">
+    {%block navbar%}
+    {%endblock%}
+    <div role="main" class="ui-content" data-role="ui-content">
         {%block content%}
 
         {%endblock%}
@@ -42,14 +54,6 @@
     {%block footer%}
 
 
-    <div data-role="footer" data-position="fixed">
-        <a href="{%url 'web:site_home' %}" rel="nofollow">{%trans '活动'%}</a>
-        <a href="{%url 'web:my_home'%}"
-           rel="nofollow">{%trans '我的'%}</a>
-        <a href="{%url 'web:my_settings'%}"
-           rel="nofollow">语言</a>
-
-    </div>
     {%endblock%}
 </div>
 </body>

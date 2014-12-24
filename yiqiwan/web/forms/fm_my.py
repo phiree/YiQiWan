@@ -13,8 +13,11 @@ class CustomSelectMultiple(ModelMultipleChoiceField):
     def label_from_instance(self, obj):
         return "%s" %(obj.name)
 class fm_interest(ModelForm):
-    interests = CustomSelectMultiple(widget=CheckboxSelectMultiple, queryset=Interest.objects.all(),required=False )
+    #interests = CustomSelectMultiple(widget=CheckboxSelectMultiple, queryset=Interest.objects.all(),required=False )
     class Meta:
         model=User2
         fields=['interests',]
+        widgets={
+            'interests':CheckboxSelectMultiple(attrs={'data-role':"flipswitch"})
+        }
         #widgets = {"interests":CheckboxSelectMultiple(),}
